@@ -70,11 +70,6 @@ def send_question(recipient_id, question, options):
                             "title": 'D',
                             "payload": "USER_DEFINED_PAYLOAD"
                         },
-                        {
-                            "type": "postback",
-                            "title": 'E',
-                            "payload": "USER_DEFINED_PAYLOAD"
-                        },
                     ]
                 }
             }
