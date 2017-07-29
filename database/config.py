@@ -9,7 +9,7 @@ def get_params():
     config = ConfigParser(os.environ)
     config.read('/dev/null')
     return params(
-        host=os.environ['HOST'],
-        username=os.environ['USERNAME'],
-        password=os.environ['PASSWORD'],
+        host=os.environ['DB_HOST'],
+        username=os.environ['DB_USERNAME'],
+        password=os.environ['DB_PASSWORD'],
         port=3306)

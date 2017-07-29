@@ -4,3 +4,4 @@ dist
 build/*
 .ropeproject
 __pycache__
+config.sh
