@@ -2,7 +2,7 @@ from collections import namedtuple
 import doctest
 
 from helper_scripts.utility import enum
-from db_connection import DBConnection
+from database.db_connection import DBConnection
 
 answer = namedtuple('answer', 'options, correct')
 
@@ -24,7 +24,8 @@ db_connection = DBConnection.Instance().get_connection()
 
 def question_from_topic(topic):
     cursor = db_connection.cursor()
-    sql = 'SELECT * from questions_question where topic = %s limit 1'
+    sql = 'SELECT * from questions_question where topic = %s and deleted = 0 '\
+        'order by rand() limit 1'
     cursor.execute(sql, (topic))
     response = cursor.fetchone()
     cursor.close()
@@ -50,7 +51,7 @@ def video(question_id):
 def options_and_answer(question_id):
     cursor = db_connection.cursor()
     sql = 'SELECT o.option_text from questions_option o join ' \
-        'questions_question q on o.qid_id = q.id where q.qid = %s'
+        'questions_question q on o.qid_id = q.id where q.id = %s'
     cursor.execute(sql, (question_id))
     return answer(
         options=[item['option_text'] for item in cursor.fetchall()],
@@ -60,7 +61,7 @@ def options_and_answer(question_id):
 def correct_answer(question_id):
     cursor = db_connection.cursor()
     sql = 'SELECT o.correct from questions_option o join questions_question q '\
-        'on o.qid_id = q.id where q.qid = %s'
+        'on o.qid_id = q.id where q.id = %s'
     cursor.execute(sql, (question_id))
     answers = [item['correct'] for item in cursor.fetchall()]
     for index, answer in enumerate(answers):
