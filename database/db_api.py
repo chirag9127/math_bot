@@ -24,7 +24,8 @@ db_connection = DBConnection.Instance().get_connection()
 
 def question_from_topic(topic):
     cursor = db_connection.cursor()
-    sql = 'SELECT * from questions_question where topic = %s limit 1'
+    sql = 'SELECT * from questions_question where topic = %s order by rand()' \
+        'limit 1'
     cursor.execute(sql, (topic))
     response = cursor.fetchone()
     cursor.close()
