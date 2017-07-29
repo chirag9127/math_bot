@@ -2,7 +2,7 @@ from collections import namedtuple
 import doctest
 
 from helper_scripts.utility import enum
-from db_connection import DBConnection
+from database.db_connection import DBConnection
 
 answer = namedtuple('answer', 'options, correct')
 
