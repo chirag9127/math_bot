@@ -53,14 +53,17 @@ def send_question(recipient_id, question, options):
                         {
                             "type": "postback",
                             "title": 'A',
+                            "payload": 'A',
                         },
                         {
                             "type": "postback",
                             "title": 'B',
+                            "payload": 'B',
                         },
                         {
                             "type": "postback",
                             "title": 'C',
+                            "payload": 'C',
                         },
                     ]
                 }
