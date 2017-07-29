@@ -1,7 +1,7 @@
 import pymysql
 import pymysql.cursors
 
-from config import get_params
+from database.config import get_params
 from helper_scripts.singleton import Singleton
 
 

@@ -1,7 +1,6 @@
 import json
 import os
 import requests
-
 from messenger_bot.consts import *
 from database.db_api import question_from_topic
 from messenger_bot.api_ai import APIAI

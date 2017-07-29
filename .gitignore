@@ -5,3 +5,4 @@ build/*
 .ropeproject
 __pycache__
 config.sh
+env_vars.sh
