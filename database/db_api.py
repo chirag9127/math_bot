@@ -60,7 +60,7 @@ def options_and_answer(question_id):
 def correct_answer(question_id):
     cursor = db_connection.cursor()
     sql = 'SELECT o.correct from questions_option o join questions_question q '\
-        'on o.qid_id = q.id where q.qid = %s'
+        'on o.qid_id = q.id where q.id = %s'
     cursor.execute(sql, (question_id))
     answers = [item['correct'] for item in cursor.fetchall()]
     for index, answer in enumerate(answers):
