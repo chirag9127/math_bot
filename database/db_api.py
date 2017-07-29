@@ -50,7 +50,7 @@ def video(question_id):
 def options_and_answer(question_id):
     cursor = db_connection.cursor()
     sql = 'SELECT o.option_text from questions_option o join ' \
-        'questions_question q on o.qid_id = q.id where q.qid = %s'
+        'questions_question q on o.qid_id = q.id where q.id = %s'
     cursor.execute(sql, (question_id))
     return answer(
         options=[item['option_text'] for item in cursor.fetchall()],
