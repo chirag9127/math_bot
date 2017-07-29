@@ -1,8 +1,8 @@
 import os
 
 from flask import Flask, request
-from logger import log
-from responder import response
+from messenger_bot.logger import log
+from messenger_bot.responder import response
 
 app = Flask(__name__)
 

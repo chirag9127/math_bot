@@ -2,7 +2,7 @@ import json
 import requests
 
 from messenger_bot.api_ai import APIAI
-from logger import log
+from messenger_bot.logger import log
 
 
 def response(message_text, sender_id):
