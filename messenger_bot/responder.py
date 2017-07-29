@@ -16,7 +16,9 @@ def response(message_text, sender_id):
     if intent == STUDY:
         send_text_message(sender_id, response[RESULT][FULFILLMENT][SPEECH])
         topic = response[RESULT][PARAMETERS][TOPICS]
-        log(question_from_topic(topic))
+        question = question_from_topic(topic)
+        log(question)
+        send_question(sender_id, question)
 
 
 def send(data):
