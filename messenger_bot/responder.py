@@ -52,9 +52,29 @@ def send_question(recipient_id, question, options):
                     "buttons": [
                         {
                             "type": "postback",
-                            "title": option,
+                            "title": 'A',
                             "payload": "USER_DEFINED_PAYLOAD"
-                        } for option in options.options
+                        },
+                        {
+                            "type": "postback",
+                            "title": 'B',
+                            "payload": "USER_DEFINED_PAYLOAD"
+                        },
+                        {
+                            "type": "postback",
+                            "title": 'C',
+                            "payload": "USER_DEFINED_PAYLOAD"
+                        },
+                        {
+                            "type": "postback",
+                            "title": 'D',
+                            "payload": "USER_DEFINED_PAYLOAD"
+                        },
+                        {
+                            "type": "postback",
+                            "title": 'E',
+                            "payload": "USER_DEFINED_PAYLOAD"
+                        },
                     ]
                 }
             }
