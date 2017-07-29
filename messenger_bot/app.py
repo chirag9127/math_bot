@@ -46,9 +46,11 @@ def webhook():
                             message_text, sender_id)
                         log(response)
                         if 'result' in response and 'fulfillment' \
-                                in response['result']:
+                                in response['result'] and 'speech' in \
+                                response['result']['fulfillment']:
                             send_message(sender_id,
-                                         response['result']['fulfillment'])
+                                         response['result']
+                                         ['fulfillment']['speech'])
                         else:
                             send_message(sender_id, 'roger that!')
                     if messaging_event.get("delivery"):  # delivery confirmation
