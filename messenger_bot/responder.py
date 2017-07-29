@@ -47,7 +47,7 @@ def send_question(recipient_id, question):
                 "type": "template",
                 "payload": {
                     "template_type": "button",
-                    "text": question['question_text'],
+                    "text": question['question_text'].replace('<br/>', ''),
                     "buttons": [
                         {
                             "type": "web_url",
