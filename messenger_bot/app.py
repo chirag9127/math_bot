@@ -5,6 +5,8 @@ import json
 import requests
 from flask import Flask, request
 
+from messenger_bot.api_ai_responder import APIResponder
+
 app = Flask(__name__)
 
 
@@ -40,6 +42,9 @@ def webhook():
                         sender_id = messaging_event["sender"]["id"]
                         recipient_id = messaging_event["recipient"]["id"]
                         message_text = messaging_event["message"]["text"]
+                        response = APIResponder.Instance().response(
+                            message_text, sender_id)
+                        log(response)
 
                         send_message(sender_id, "roger that!")
                     if messaging_event.get("delivery"):  # delivery confirmation
