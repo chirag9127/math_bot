@@ -47,7 +47,7 @@ def send_question(recipient_id, question, options):
             "attachment": {
                 "type": "template",
                 "payload": {
-                    "template_type": "generic",
+                    "template_type": "button",
                     "text": question['question_text'],
                     "buttons": [
                         {
