@@ -47,24 +47,28 @@ def send_question(recipient_id, question, options):
             "attachment": {
                 "type": "template",
                 "payload": {
-                    "template_type": "button",
-                    "text": question['question_text'],
-                    "buttons": [
+                    "template_type": "generic",
+                    "elements": [
                         {
-                            "type": "postback",
-                            "title": 'A',
-                            "payload": 'A',
-                        },
-                        {
-                            "type": "postback",
-                            "title": 'B',
-                            "payload": 'B',
-                        },
-                        {
-                            "type": "postback",
-                            "title": 'C',
-                            "payload": 'C',
-                        },
+                        "title": question['question_text'],
+                        "buttons": [
+                            {
+                                "type": "postback",
+                                "title": 'A',
+                                "payload": 'A',
+                            },
+                            {
+                                "type": "postback",
+                                "title": 'B',
+                                "payload": 'B',
+                            },
+                            {
+                                "type": "postback",
+                                "title": 'C',
+                                "payload": 'C',
+                            }
+                        ]
+                        }
                     ]
                 }
             }
