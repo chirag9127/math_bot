@@ -20,6 +20,7 @@ config = {
         'gunicorn==19.6.0',
         'itsdangerous==0.24',
         'requests==2.10.0',
+        'apiai',
     ],
     'name': 'math_bot'
 }

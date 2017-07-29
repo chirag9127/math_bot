@@ -34,21 +34,22 @@ def webhook():
     if data["object"] == "page":
 
         for entry in data["entry"]:
-            for messaging_event in entry["messaging"]:
-                if messaging_event.get("message"):  # someone sent us a message
-                    sender_id = messaging_event["sender"]["id"]
-                    recipient_id = messaging_event["recipient"]["id"]
-                    message_text = messaging_event["message"]["text"]
+            if 'messaging' in entry:
+                for messaging_event in entry["messaging"]:
+                    if messaging_event.get("message"):
+                        sender_id = messaging_event["sender"]["id"]
+                        recipient_id = messaging_event["recipient"]["id"]
+                        message_text = messaging_event["message"]["text"]
 
-                    send_message(sender_id, "roger that!")
-                if messaging_event.get("delivery"):  # delivery confirmation
-                    pass
+                        send_message(sender_id, "roger that!")
+                    if messaging_event.get("delivery"):  # delivery confirmation
+                        pass
 
-                if messaging_event.get("optin"):  # optin confirmation
-                    pass
+                    if messaging_event.get("optin"):  # optin confirmation
+                        pass
 
-                if messaging_event.get("postback"):
-                    pass
+                    if messaging_event.get("postback"):
+                        pass
 
     return "ok", 200
 
