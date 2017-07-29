@@ -19,17 +19,51 @@ def response(message_text, sender_id):
         log(question_from_topic(topic))
 
 
-def send_text_message(recipient_id, message_text):
-
-    log("sending message to {recipient}: {text}".format(
-        recipient=recipient_id, text=message_text))
-
+def send(data):
     params = {
         "access_token": os.environ["PAGE_ACCESS_TOKEN"]
     }
     headers = {
         "Content-Type": "application/json"
     }
+    r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+                      params=params, headers=headers, data=data)
+    if r.status_code != 200:
+        log(r.status_code)
+        log(r.text)
+
+
+def send_question(recipient_id, question):
+    data = json.dumps({
+        "recipient": {
+            "id": recipient_id
+        },
+        "message": {
+            "attachment": {
+                "type": "template",
+                "payload": {
+                    "template_type": "button",
+                    "text": question['question_text'],
+                    "buttons": [
+                        {
+                            "type": "web_url",
+                            "url": "https://petersapparel.parseapp.com",
+                            "title": "Show Website"
+                        },
+                        {
+                            "type": "postback",
+                            "title": "Start Chatting",
+                            "payload": "USER_DEFINED_PAYLOAD"
+                        }
+                    ]
+                }
+            }
+        }
+    })
+    send(data)
+
+
+def send_text_message(recipient_id, message_text):
     data = json.dumps({
         "recipient": {
             "id": recipient_id
@@ -38,8 +72,4 @@ def send_text_message(recipient_id, message_text):
             "text": message_text
         }
     })
-    r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-                      params=params, headers=headers, data=data)
-    if r.status_code != 200:
-        log(r.status_code)
-        log(r.text)
+    send(data)
