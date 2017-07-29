@@ -62,10 +62,6 @@ def send_question(recipient_id, question, options):
                             "type": "postback",
                             "title": 'C',
                         },
-                        {
-                            "type": "postback",
-                            "title": 'D',
-                        },
                     ]
                 }
             }
