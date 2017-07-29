@@ -17,7 +17,9 @@ def response(message_text, sender_id):
         send_text_message(sender_id, response[RESULT][FULFILLMENT][SPEECH])
         topic = response[RESULT][PARAMETERS][TOPICS]
         question = question_from_topic(topic)
+        options = options_and_answer(question[ID])
         log(question)
+        log(options)
         send_question(sender_id, question)
 
 
