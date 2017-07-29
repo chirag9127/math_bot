@@ -1,0 +1,8 @@
+STUDY = 'Study'
+RESULT = 'result'
+METADATA = 'metadata'
+INTENT_NAME = 'intentName'
+FULFILLMENT = 'fulfillment'
+SPEECH = 'speech'
+PARAMETERS = 'parameters'
+TOPICS = 'Topics'
