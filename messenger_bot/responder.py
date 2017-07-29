@@ -20,7 +20,7 @@ def response(message_text, sender_id):
         options = options_and_answer(question[ID])
         log(question)
         log(options)
-        send_question(sender_id, question)
+        send_question(sender_id, question, options)
     else:
         send_text_message(sender_id, response[RESULT][FULFILLMENT][SPEECH])
 
@@ -39,7 +39,7 @@ def send(data):
         log(r.text)
 
 
-def send_question(recipient_id, question):
+def send_question(recipient_id, question, options):
     data = json.dumps({
         "recipient": {
             "id": recipient_id
@@ -49,18 +49,13 @@ def send_question(recipient_id, question):
                 "type": "template",
                 "payload": {
                     "template_type": "button",
-                    "text": question['question_text'].replace('<br/>', ''),
+                    "text": question['question_text'],
                     "buttons": [
                         {
-                            "type": "web_url",
-                            "url": "https://petersapparel.parseapp.com",
-                            "title": "Show Website"
-                        },
-                        {
                             "type": "postback",
-                            "title": "Start Chatting",
+                            "title": option,
                             "payload": "USER_DEFINED_PAYLOAD"
-                        }
+                        } for option in options.options
                     ]
                 }
             }
