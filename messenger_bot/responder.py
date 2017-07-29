@@ -2,7 +2,7 @@ import json
 import os
 import requests
 
-from consts import *
+from messenger_bot.consts import *
 from database.db_api import question_from_topic
 from messenger_bot.api_ai import APIAI
 from messenger_bot.logger import log
