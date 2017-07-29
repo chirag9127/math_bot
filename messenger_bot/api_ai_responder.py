@@ -3,7 +3,7 @@ import os
 
 import apiai
 
-from util.singleton import Singleton
+from helper_scripts.singleton import Singleton
 
 
 CLIENT_ACCESS_TOKEN = os.environ["CLIENT_ACCESS_TOKEN"]

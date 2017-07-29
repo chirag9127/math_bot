@@ -45,8 +45,12 @@ def webhook():
                         response = APIResponder.Instance().response(
                             message_text, sender_id)
                         log(response)
-
-                        send_message(sender_id, "roger that!")
+                        if 'result' in response and 'fulfillment' \
+                                in response['result']:
+                            send_message(sender_id,
+                                         response['result']['fulfillment'])
+                        else:
+                            send_message(sender_id, 'roger that!')
                     if messaging_event.get("delivery"):  # delivery confirmation
                         pass
 
