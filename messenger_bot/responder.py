@@ -1,4 +1,5 @@
 import json
+import os
 import requests
 
 from messenger_bot.api_ai import APIAI
