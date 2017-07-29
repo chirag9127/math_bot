@@ -10,7 +10,7 @@ CLIENT_ACCESS_TOKEN = os.environ["CLIENT_ACCESS_TOKEN"]
 
 
 @Singleton
-class APIResponder(object):
+class APIAI(object):
 
     def __init__(self):
         self.ai = apiai.ApiAI(CLIENT_ACCESS_TOKEN)
