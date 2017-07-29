@@ -21,6 +21,8 @@ def response(message_text, sender_id):
         log(question)
         log(options)
         send_question(sender_id, question)
+    else:
+        send_text_message(sender_id, response[RESULT][FULFILLMENT][SPEECH])
 
 
 def send(data):
