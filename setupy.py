@@ -4,13 +4,14 @@ config = {
     'include_package_data': True,
     'description': 'math bot for SAT',
     'version': '0.0.1',
-    'packages': ['database'],
+    'packages': ['database', 'helper_scripts'],
     'zip_safe': False,
     'setup_requires': [],
     'install_requires': [
         'nose',
         'xmltodict',
-        'mock'
+        'mock',
+        'pymysql'
     ],
     'name': 'math_bot'
 }
