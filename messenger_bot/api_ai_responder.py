@@ -1,3 +1,4 @@
+import json
 import os
 
 import apiai
@@ -20,4 +21,5 @@ class APIResponder(object):
         request.query = query
         response = request.getresponse()
         response = response.read()
+        response = json.loads(response)
         return response
