@@ -25,7 +25,7 @@ db_connection = DBConnection.Instance().get_connection()
 def question_from_topic(topic):
     cursor = db_connection.cursor()
     sql = 'SELECT * from questions_question where topic = %s and deleted = 0 '\
-        'order by rand() limit 1'
+        'and correct = TRUE order by rand() limit 1'
     cursor.execute(sql, (topic))
     response = cursor.fetchone()
     cursor.close()
@@ -34,7 +34,7 @@ def question_from_topic(topic):
 
 def question_from_sub_topic(sub_topic):
     cursor = db_connection.cursor()
-    sql = 'SELECT * from questions_question where sub_topic = %s limit 1'
+    sql = 'SELECT * from questions_question where sub_topic = %s and correct = TRUE limit 1'
     cursor.execute(sql, (sub_topic))
     response = cursor.fetchone()
     cursor.close()

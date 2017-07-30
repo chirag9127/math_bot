@@ -13,3 +13,5 @@ CREATE TABLE user_response(
 	FOREIGN KEY (id) REFERENCES user_request(id)
 );
 
+ALTER TABLE questions_question
+  ADD COLUMN correct BOOLEAN DEFAULT FALSE;
