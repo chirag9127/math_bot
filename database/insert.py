@@ -19,10 +19,11 @@ def insert_user_request(request_id, request):
 
 def parse_request_data(request):
     data = ast.literal_eval(request)
-    return user_request(
-        id=data['entry'][0]['messaging'][0]['sender']['id'],
-        query=data['entry'][0]['messaging'][0]['message']['text']
-        )
+    if 'message' in data['entry'][0]['messaging'][0].keys():
+        return user_request(
+            id=data['entry'][0]['messaging'][0]['sender']['id'],
+            query=data['entry'][0]['messaging'][0]['message']['text']
+            )
 
 
 def insert_user_response(response_id, response):
@@ -43,3 +44,12 @@ def parse_response_data(response):
         response=data['result']['fulfillment']['speech'],
         sender_id=data['sessionId']
     )
+
+
+def insert_users_question(response_id, sender_id, question):
+    pass
+
+
+def parse_question(question):
+    data = ast.literal_eval(response)
+    return data['id']
