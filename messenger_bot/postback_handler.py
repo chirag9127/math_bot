@@ -70,6 +70,8 @@ def handle_question(payload, sender_id):
         send_image(sender_id, random.choice(wrong_gifs))
 
     if has_video(question_id):
+        send_text_message(
+            sender_id, "Here's the video solution to the question")
         video_link = "{0}{1}".format(
             S3_LINK, video(question_id))
         send_video(sender_id, video_link)
