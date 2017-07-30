@@ -21,8 +21,7 @@ def response(message_text, sender_id):
         greeting_flow(sender_id, response)
     else:
         send_text_message(sender_id,
-                          response[RESULT][FULFILLMENT][SPEECH].replace(
-                              '/\\n/g', '\n'))
+                          response[RESULT][FULFILLMENT][SPEECH])
 
 
 def greeting_flow(sender_id, response):
