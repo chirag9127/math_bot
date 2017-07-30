@@ -63,11 +63,18 @@ def parse_question(question):
     return data['id']
 
 
-def insert_user_answer(response_id, answer):
+def get_response_id(question_id, sender_id):
+    with db_connection.cursor() as cursor:
+        sql = 'SELECT id from questions_given WHERE sender_id = %s AND question_id = %s ORDER BY time_asked LIMIT 1'
+        cursor.execute(sql, (sender_id, question_id))
+        return cursor.fetchone()['id']
+
+
+def insert_user_answer(answer):
     with db_connection.cursor() as cursor:
         sql = 'INSERT INTO answer_provided (id, sender_id, question_id, answer, is_correct) VALUES (%s, %s, %s, %s, %s)'
         values = parse_answer(answer)
-        log(response_id)
+        response_id = get_response_id(values.question_id, values.sender_id)
         cursor.execute(sql, (response_id, values.sender_id, values.question_id, values.answer, values.is_correct))
     db_connection.commit()
 
