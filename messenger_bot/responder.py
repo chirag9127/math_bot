@@ -31,7 +31,12 @@ def response(message_text, sender_id, request_id):
 
 
 def diagnostic_yes_flow(sender_id, response):
-    pass
+    send_text_message(sender_id, response[RESULT][FULFILLMENT][SPEECH])
+    question = question_from_topic('Arithmetic')
+    options = options_and_answer(question[ID])
+    send_question(sender_id, question, options,
+                  remaining=4, topics=['Algebra', 'Geometry',
+                                       'Word Porblem', 'Statistics'])
 
 
 def diagnostic_no_flow(sender_id, response):
@@ -102,7 +107,7 @@ def send(data):
         log(r.text)
 
 
-def send_question(recipient_id, question, options):
+def send_question(recipient_id, question, options, **kwargs):
     log(question)
     data = json.dumps({
         "recipient": {
@@ -119,7 +124,9 @@ def send_question(recipient_id, question, options):
                             "type": "postback",
                             "title": option['text'],
                             "payload": str({'id': option['id'],
-                                            'correct': options.correct}),
+                                            'correct': options.correct,
+                                            'qid': question['id']}.update(
+                                                kwargs)),
                         } for option in options.options
                     ]
                 }
