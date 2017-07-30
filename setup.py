@@ -21,6 +21,7 @@ config = {
         'itsdangerous==0.24',
         'requests==2.10.0',
         'apiai',
+        'google-api-python-client',
     ],
     'name': 'math_bot'
 }

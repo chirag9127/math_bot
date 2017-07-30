@@ -8,3 +8,4 @@ itsdangerous==0.24
 requests==2.10.0
 apiai
 PyMySQL==0.7.9
+google-api-python-client
