@@ -1,5 +1,6 @@
 from collections import namedtuple
 import doctest
+import random
 
 from helper_scripts.utility import enum
 from database.db_connection import DBConnection
@@ -50,23 +51,25 @@ def video(question_id):
 
 def options_and_answer(question_id):
     cursor = db_connection.cursor()
-    sql = 'SELECT o.option_text from questions_option o join ' \
-        'questions_question q on o.qid_id = q.id where q.id = %s'
+    sql = 'SELECT o.id, o.option_text, o.correct from questions_option ' \
+        'o join questions_question q on o.qid_id = q.id where q.id = %s'
     cursor.execute(sql, (question_id))
+    options = cursor.fetchall()
+    while len(options) > 3:
+        item = random.choice(options)
+        if item['correct'] == 1:
+            continue
+        options.remove(item)
     return answer(
-        options=[item['option_text'] for item in cursor.fetchall()],
-        correct=correct_answer(question_id))
+        options=[{'id': opt['id'], 'text': opt['option_text']}
+                 for opt in options],
+        correct=correct_answer(options))
 
 
-def correct_answer(question_id):
-    cursor = db_connection.cursor()
-    sql = 'SELECT o.correct from questions_option o join questions_question q '\
-        'on o.qid_id = q.id where q.id = %s'
-    cursor.execute(sql, (question_id))
-    answers = [item['correct'] for item in cursor.fetchall()]
-    for index, answer in enumerate(answers):
-        if answer == 1:
-            return index
+def correct_answer(options):
+    for opt in options:
+        if opt['correct'] == 1:
+            return opt['id']
 
 
 def subtopics():

@@ -52,19 +52,11 @@ def send_question(recipient_id, question, options):
                     "buttons": [
                         {
                             "type": "postback",
-                            "title": 'A',
-                            "payload": 'A',
-                        },
-                        {
-                            "type": "postback",
-                            "title": 'B',
-                            "payload": 'B',
-                        },
-                        {
-                            "type": "postback",
-                            "title": 'C',
-                            "payload": 'C',
-                        }
+                            "title": option['text'],
+                            "payload": '{"id": "{0}",'
+                                       '"correct": "{1}"}'.format(
+                                           option['id'], options.correct),
+                        } for option in options.options
                     ]
                 }
             }
