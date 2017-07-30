@@ -6,7 +6,7 @@ db_connection = DBConnection.Instance().get_connection()
 
 user_request = namedtuple('user_request', 'id, query')
 
-user_response = namedtuple('user_response', 'intent, entities, response, action')
+user_response = namedtuple('user_response', 'intent, entities, response, sender_id')
 
 
 def insert_user_request(request_id, request):
@@ -25,15 +25,21 @@ def parse_request_data(request):
         )
 
 
-def insert_user_response(response):
+def insert_user_response(response_id, response):
     with db_connection.cursor() as cursor:
-        sql_to_request = 'INSERT INTO user_request (intent, entities) VALUES (%s, %s)'
-        values = parse_response_data(request)
-        cursor.execute(sql_to_request, (values.intent, values.entities))
-        sql_to_response = 'INSERT INTO user_response (response, action) VALUES (%s, %s)'
-        cursor.execute(sql_to_response, (values.response, values.action))
+        sql_to_request = 'UPDATE user_request SET intent = %s, entities = %s WHERE id=%s'
+        values = parse_response_data(response)
+        cursor.execute(sql_to_request, (values.intent, values.entities, response_id))
+        sql_to_response = 'INSERT INTO user_response (id, sender_id, response) VALUES (%s, %s, %s)'
+        cursor.execute(sql_to_response, (response_id, values.sender_id, values.response))
     db_connection.commit()
 
 
-def parse_response_data(request):
-    pass
+def parse_response_data(response):
+    data = ast.literal_eval(response)
+    return user_response(
+        intent=data['result']['metadata']['intentName'],
+        entities=str(data['result']['parameters']),
+        response=data['result']['fulfillment']['speech'],
+        sender_id=data['sessionId']
+    )
