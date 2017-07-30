@@ -36,7 +36,7 @@ def send_happy_gif(sender_id):
     send_image(sender_id, random.choice(happy_gifs))
 
 
-def send_image(sender_id, image_link):
+def send_image(recipient_id, image_link):
     data = json.dumps({
         "recipient": {
             "id": recipient_id
