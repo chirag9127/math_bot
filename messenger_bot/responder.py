@@ -3,6 +3,7 @@ import os
 import random
 import requests
 
+from helper_scripts.utility import filter_question
 from messenger_bot.consts import *
 from database.db_api import question_from_topic, options_and_answer
 from messenger_bot.api_ai import APIAI
@@ -92,7 +93,7 @@ def send_question(recipient_id, question, options):
                 "type": "template",
                 "payload": {
                     "template_type": "button",
-                    "text": question['question_text'],
+                    "text": filter_question(question['question_text']),
                     "buttons": [
                         {
                             "type": "postback",
