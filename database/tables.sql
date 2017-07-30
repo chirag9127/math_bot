@@ -17,3 +17,21 @@ CREATE TABLE user_response(
 
 ALTER TABLE questions_question
   ADD COLUMN correct BOOLEAN DEFAULT FALSE;
+
+CREATE TABLE questions_given(
+	id varchar(36),
+	sender_id varchar(20) NOT NULL,
+	question_id varchar(20) NOT NULL,
+	time_asked timestamp,
+	FOREIGN KEY (id) REFERENCES user_request(id)
+	);
+
+ CREATE TABLE answer_provided(
+ 	id varchar(36),
+	sender_id varchar(20) NOT NULL,
+ 	question_id varchar(20) NOT NULL,
+ 	time_asked timestamp,
+ 	answer_id varchar(20),
+ 	is_correct BOOLEAN NOT NULL,
+ 	FOREIGN KEY (id) REFERENCES user_request(id)
+ 	);

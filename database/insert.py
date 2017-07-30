@@ -52,5 +52,5 @@ def insert_users_question(response_id, sender_id, question):
 
 
 def parse_question(question):
-    data = ast.literal_eval(response)
+    data = ast.literal_eval(question)
     return data['id']

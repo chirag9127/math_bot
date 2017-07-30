@@ -25,7 +25,7 @@ db_connection = DBConnection.Instance().get_connection()
 
 def question_from_topic(topic):
     cursor = db_connection.cursor()
-    sql = 'SELECT * from questions_question where topic = %s and deleted = 0 '\
+    sql = 'SELECT question_text, id from questions_question where topic = %s and deleted = 0 '\
         'and correct = TRUE order by rand() limit 1'
     cursor.execute(sql, (topic))
     response = cursor.fetchone()
