@@ -48,7 +48,7 @@ def handle(event):
 
 def handle_test(payload, sender_id):
     if 'result' in payload:
-        result = payload['payload']
+        result = payload['result']
     else:
         result = []
     if payload['id'] == payload['correct']:
