@@ -87,6 +87,7 @@ def send(data):
 
 
 def send_question(recipient_id, question, options):
+    log(question)
     data = json.dumps({
         "recipient": {
             "id": recipient_id
