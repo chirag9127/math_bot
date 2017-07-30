@@ -16,14 +16,14 @@ def response(message_text, sender_id, request_id):
         message_text, sender_id)
     intent = response[RESULT][METADATA][INTENT_NAME]
     insert_user_response(request_id, str(response))
+    log(response)
     if intent == STUDY:
         study_flow(sender_id, response)
     elif intent == GREETING:
         greeting_flow(sender_id, response)
     else:
         send_text_message(sender_id,
-                          response[RESULT][FULFILLMENT][SPEECH].replace(
-                              '/\\n/g', '\n'))
+                          response[RESULT][FULFILLMENT][SPEECH])
 
 
 def greeting_flow(sender_id, response):
