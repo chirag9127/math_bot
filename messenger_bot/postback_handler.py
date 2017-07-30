@@ -1,8 +1,11 @@
 import ast
 import random
 
+from messenger_bot.consts import *
 from messenger_bot.logger import log
-from messenger_bot.responder import send_text_message, send_image
+from messenger_bot.responder import send_text_message, send_image, \
+    send_question
+from database.db_api import question_from_topic, options_and_answer
 
 
 correct_gifs = [
@@ -23,9 +26,25 @@ def handle(event):
     if 'postback' in event and 'payload' in event['postback']:
         payload = event['postback']['payload']
         payload = ast.literal_eval(payload)
-        if payload['id'] == payload['correct']:
-            send_text_message(sender_id, "That's the right answer!")
-            send_image(sender_id, random.choice(correct_gifs))
+        if 'test' in payload and payload['test'] is True:
+            if 'result' in payload:
+                result = payload['payload']
+            else:
+                result = []
+            if payload['id'] == payload['correct']:
+                result.append({'qid': payload['qid'], 'correct': True})
+            else:
+                result.append({'qid': payload['qid'], 'correct': False})
+            topics = payload['topics']
+            question = question_from_topic(topics.pop())
+            options = options_and_answer(question[ID])
+            send_question(sender_id, question, options,
+                          remaining=payload['remaining'] - 1,
+                          topics=topics, diagnostic=True, test=True)
         else:
-            send_text_message(sender_id, "Sorry! That's not correct.")
-            send_image(sender_id, random.choice(wrong_gifs))
+            if payload['id'] == payload['correct']:
+                send_text_message(sender_id, "That's the right answer!")
+                send_image(sender_id, random.choice(correct_gifs))
+            else:
+                send_text_message(sender_id, "Sorry! That's not correct.")
+                send_image(sender_id, random.choice(wrong_gifs))

@@ -36,7 +36,8 @@ def diagnostic_yes_flow(sender_id, response):
     options = options_and_answer(question[ID])
     send_question(sender_id, question, options,
                   remaining=4, topics=['Algebra', 'Geometry',
-                                       'Word Porblem', 'Statistics'])
+                                       'Word Porblem', 'Statistics'],
+                  diagnostic=True, test=True)
 
 
 def diagnostic_no_flow(sender_id, response):
