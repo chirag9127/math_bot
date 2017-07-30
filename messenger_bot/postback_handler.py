@@ -24,7 +24,7 @@ def handle(event):
         payload = ast.literal_eval(payload)
         if payload['id'] == payload['correct']:
             send_text_message(sender_id, "That's the right answer!")
-            send_image(random.choice(correct_gifs))
+            send_image(sender_id, random.choice(correct_gifs))
         else:
             send_text_message(sender_id, "Sorry! That's not correct.")
-            send_image(random.choice(wrong_gifs))
+            send_image(sender_id, random.choice(wrong_gifs))
