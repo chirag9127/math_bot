@@ -13,8 +13,9 @@ def insert_user_request(request_id, request):
     with db_connection.cursor() as cursor:
         sql = 'INSERT INTO user_request (id, sender_id, query) VALUES (%s, %s, %s)'
         values = parse_request_data(request)
-        cursor.execute(sql, (request_id, values.id, values.query))
-    db_connection.commit()
+        if values:
+            cursor.execute(sql, (request_id, values.id, values.query))
+            db_connection.commit()
 
 
 def parse_request_data(request):
