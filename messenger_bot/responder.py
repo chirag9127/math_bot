@@ -35,8 +35,8 @@ def diagnostic_yes_flow(sender_id, response):
     question = question_from_topic('Arithmetic')
     options = options_and_answer(question[ID])
     send_question(sender_id, question, options,
-                  remaining=4, topics=['Algebra', 'Geometry',
-                                       'Word Porblem', 'Statistics'],
+                  remaining=3, topics=['Algebra', 'Geometry',
+                                       'Word Porblem'],
                   diagnostic=True, test=True)
 
 
