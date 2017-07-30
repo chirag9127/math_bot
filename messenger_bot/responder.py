@@ -28,11 +28,11 @@ def greeting_flow(sender_id, response):
 
 
 def send_happy_gif(sender_id):
-    happy_gifs = {
+    happy_gifs = [
         'https://media.giphy.com/media/DYH297XiCS2Ck/giphy.gif',
         'https://media.giphy.com/media/3oz8xRF0v9WMAUVLNK/giphy.gif',
         'https://media.giphy.com/media/11sBLVxNs7v6WA/giphy.gif',
-    }
+    ]
     send_image(sender_id, random.choice(happy_gifs))
 
 
