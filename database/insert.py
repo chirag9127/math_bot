@@ -1,5 +1,6 @@
 from database.db_connection import DBConnection
 from collections import namedtuple
+from messenger_bot.logger import log
 import ast
 
 db_connection = DBConnection.Instance().get_connection()
@@ -66,6 +67,7 @@ def insert_user_answer(response_id, answer):
     with db_connection.cursor() as cursor:
         sql = 'INSERT INTO answer_provided (id, sender_id, question_id, answer, is_correct) VALUES (%s, %s, %s, %s, %s)'
         values = parse_answer(answer)
+        log(response_id)
         cursor.execute(sql, (response_id, values.sender_id, values.question_id, values.answer, values.is_correct))
     db_connection.commit()
 
