@@ -15,7 +15,7 @@ def response(message_text, sender_id, request_id):
     response = APIAI.Instance().response(
         message_text, sender_id)
     intent = response[RESULT][METADATA][INTENT_NAME]
-    insert_user_response(request_id, response)
+    insert_user_response(request_id, str(response))
     if intent == STUDY:
         study_flow(sender_id, response)
     elif intent == GREETING:
