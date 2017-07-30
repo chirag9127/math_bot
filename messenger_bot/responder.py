@@ -116,7 +116,8 @@ def send_question(recipient_id, question, options, **kwargs):
             'correct': options.correct,
             'qid': question['id']
         }
-        payload = str(payload.update(kwargs))
+        payload.update(kwargs)
+        payload = str(payload)
         button = {
             "type": "postback",
             "title": option['text'],
