@@ -9,11 +9,11 @@ user_request = namedtuple('user_request', 'id, query')
 user_response = namedtuple('user_response', 'intent, entities, response, action')
 
 
-def insert_user_request(request):
+def insert_user_request(request_id, request):
     with db_connection.cursor() as cursor:
-        sql = 'INSERT INTO user_request (id, query) VALUES (%s, %s)'
+        sql = 'INSERT INTO user_request (id, sender_id, query) VALUES (%s, %s, %s)'
         values = parse_request_data(request)
-        cursor.execute(sql, (values.id, values.query))
+        cursor.execute(sql, (request_id, values.id, values.query))
     db_connection.commit()
 
 

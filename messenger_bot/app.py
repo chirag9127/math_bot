@@ -1,5 +1,5 @@
 import os
-
+from uuid import uuid4
 from flask import Flask, request
 from database.insert import insert_user_request
 from messenger_bot.logger import log
@@ -26,7 +26,8 @@ def verify():
 @app.route('/', methods=['POST'])
 def webhook():
     data = request.get_json()
-    insert_user_request(str(data))
+    request_id = str(uuid4())
+    insert_user_request(request_id, str(data))
     """
     you may not want to log every incoming message in production,
     but it's good for testing
