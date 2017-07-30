@@ -52,6 +52,7 @@ def webhook():
 
                     if messaging_event.get("postback"):
                         handle(messaging_event)
+                        log(messaging_event)
 
     return "ok", 200
 
