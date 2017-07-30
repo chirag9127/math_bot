@@ -8,13 +8,14 @@ from messenger_bot.consts import *
 from database.db_api import question_from_topic, options_and_answer
 from messenger_bot.api_ai import APIAI
 from messenger_bot.logger import log
+from databse.insert import insert_user_response
 
 
-def response(message_text, sender_id):
+def response(message_text, sender_id, request_id):
     response = APIAI.Instance().response(
         message_text, sender_id)
     intent = response[RESULT][METADATA][INTENT_NAME]
-    log(response)
+    insert_user_response(request_id, response)
     if intent == STUDY:
         study_flow(sender_id, response)
     elif intent == GREETING:
