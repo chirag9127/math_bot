@@ -1,6 +1,8 @@
 import json
 import os
+import random
 import requests
+
 from messenger_bot.consts import *
 from database.db_api import question_from_topic, options_and_answer
 from messenger_bot.api_ai import APIAI
@@ -13,15 +15,50 @@ def response(message_text, sender_id):
     intent = response[RESULT][METADATA][INTENT_NAME]
     log(response)
     if intent == STUDY:
-        send_text_message(sender_id, response[RESULT][FULFILLMENT][SPEECH])
-        topic = response[RESULT][PARAMETERS][TOPICS]
-        question = question_from_topic(topic)
-        options = options_and_answer(question[ID])
-        log(question)
-        log(options)
-        send_question(sender_id, question, options)
+        study_flow(sender_id, response)
+    elif intent == GREETING:
+        greeting_flow(sender_id, response)
     else:
         send_text_message(sender_id, response[RESULT][FULFILLMENT][SPEECH])
+
+
+def greeting_flow(sender_id, response):
+    send_text_message(sender_id, response[RESULT][FULFILLMENT][SPEECH])
+    send_happy_gif(sender_id)
+
+
+def send_happy_gif(sender_id):
+    happy_gifs = {
+        'https://media.giphy.com/media/DYH297XiCS2Ck/giphy.gif',
+        'https://media.giphy.com/media/3oz8xRF0v9WMAUVLNK/giphy.gif',
+        'https://media.giphy.com/media/11sBLVxNs7v6WA/giphy.gif',
+    }
+    send_image(sender_id, random.choice(happy_gifs))
+
+
+def send_image(sender_id, image_link):
+    data = json.dumps({
+        "recipient": {
+            "id": recipient_id
+        },
+        "message": {
+            "attachment": {
+                "type": "image",
+                "payload": {
+                    "url": image_link,
+                }
+            }
+        }
+    })
+    send(data)
+
+
+def study_flow(sender_id, response):
+    send_text_message(sender_id, response[RESULT][FULFILLMENT][SPEECH])
+    topic = response[RESULT][PARAMETERS][TOPICS]
+    question = question_from_topic(topic)
+    options = options_and_answer(question[ID])
+    send_question(sender_id, question, options)
 
 
 def send(data):
