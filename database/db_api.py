@@ -35,16 +35,27 @@ def question_from_topic(topic):
 
 def question_from_sub_topic(sub_topic):
     cursor = db_connection.cursor()
-    sql = 'SELECT * from questions_question where sub_topic = %s and correct = TRUE limit 1'
+    sql = 'SELECT * from questions_question where sub_topic = %s and ' \
+        'correct = TRUE limit 1'
     cursor.execute(sql, (sub_topic))
     response = cursor.fetchone()
     cursor.close()
     return response
 
 
+def has_video(question_id):
+    cursor = db_connection.cursor()
+    sql = 'select video_added from questions_question where id = %s'
+    cursor.execute(sql, question_id)
+    val = cursor.fetchone()['video_added']
+    if val == 1:
+        return True
+    return False
+
+
 def video(question_id):
     cursor = db_connection.cursor()
-    sql = 'SELECT video from questions_question where qid = %s'
+    sql = 'SELECT video from questions_question where id = %s'
     cursor.execute(sql, (question_id))
     return cursor.fetchone()['video']
 

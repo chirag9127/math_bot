@@ -1,11 +1,13 @@
 import ast
+import os
 import random
 
 from messenger_bot.consts import *
 from messenger_bot.logger import log
 from messenger_bot.responder import send_text_message, send_image, \
-    send_question
-from database.db_api import question_from_topic, options_and_answer
+    send_question, send_video
+from database.db_api import question_from_topic, options_and_answer, \
+    has_video, video
 
 
 correct_gifs = [
@@ -18,6 +20,7 @@ wrong_gifs = [
     'https://media.giphy.com/media/BPZenX37AtXyw/giphy.gif',
     'https://media.giphy.com/media/l4pLY0zySvluEvr0c/giphy.gif',
 ]
+S3_LINK = os.environ['S3_LINK']
 
 
 def handle(event):
@@ -58,9 +61,15 @@ def handle_test(payload, sender_id):
 
 
 def handle_question(payload, sender_id):
+    question_id = payload['qid']
     if payload['id'] == payload['correct']:
         send_text_message(sender_id, "That's the right answer!")
         send_image(sender_id, random.choice(correct_gifs))
     else:
         send_text_message(sender_id, "Sorry! That's not correct.")
         send_image(sender_id, random.choice(wrong_gifs))
+
+    if has_video(question_id):
+        video_link = "{0}{1}".format(
+            S3_LINK, video(question_id))
+        send_video(sender_id, video_link)

@@ -37,7 +37,7 @@ def diagnostic_yes_flow(sender_id, response):
     send_question(sender_id, question, options,
                   remaining=3, topics=['Algebra', 'Geometry',
                                        'Word Problems', 'Statistics'],
-                  diagnostic=True, test=True)
+                  diagnostic=True, test=True, topic='Arithmetic')
 
 
 def diagnostic_no_flow(sender_id, response):
@@ -86,12 +86,29 @@ def send_image(recipient_id, image_link):
     send(data)
 
 
+def send_video(recipient_id, video_link):
+    data = json.dumps({
+        "recipient": {
+            "id": recipient_id
+        },
+        "message": {
+            "attachment": {
+                "type": "video",
+                "payload": {
+                    "url": video_link,
+                }
+            }
+        }
+    })
+    send(data)
+
+
 def study_flow(sender_id, response):
     send_text_message(sender_id, response[RESULT][FULFILLMENT][SPEECH])
     topic = response[RESULT][PARAMETERS][TOPICS]
     question = question_from_topic(topic)
     options = options_and_answer(question[ID])
-    send_question(sender_id, question, options)
+    send_question(sender_id, question, options, topic=topic)
 
 
 def send(data):
