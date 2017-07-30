@@ -22,16 +22,16 @@ CREATE TABLE questions_given(
 	id varchar(36),
 	sender_id varchar(20) NOT NULL,
 	question_id varchar(20) NOT NULL,
-	time_asked timestamp,
+	time_asked timestamp DEFAULT CURRENT_TIMESTAMP,
 	FOREIGN KEY (id) REFERENCES user_request(id)
 	);
 
- CREATE TABLE answer_provided(
- 	id varchar(36),
+CREATE TABLE answer_provided(
+	id varchar(36),
 	sender_id varchar(20) NOT NULL,
- 	question_id varchar(20) NOT NULL,
- 	time_asked timestamp,
- 	answer_id varchar(20),
- 	is_correct BOOLEAN NOT NULL,
- 	FOREIGN KEY (id) REFERENCES user_request(id)
- 	);
+	question_id varchar(20) NOT NULL,
+	time_asked timestamp DEFAULT CURRENT_TIMESTAMP,
+	answer_id varchar(20),
+	is_correct BOOLEAN NOT NULL,
+	FOREIGN KEY (id) REFERENCES user_request(id)
+	);

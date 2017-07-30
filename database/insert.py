@@ -47,8 +47,12 @@ def parse_response_data(response):
     )
 
 
-def insert_users_question(response_id, sender_id, question):
-    pass
+def insert_user_question(response_id, sender_id, question):
+    with db_connection.cursor() as cursor:
+        sql = 'INSERT INTO questions_given (id, sender_id, question_id) VALUES (%s, %s, %s)'
+        question_id = parse_question(question)
+        cursor.execute(sql, (response_id, sender_id, question_id))
+    db_connection.commit()
 
 
 def parse_question(question):

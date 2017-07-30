@@ -8,7 +8,7 @@ from messenger_bot.consts import *
 from database.db_api import question_from_topic, options_and_answer
 from messenger_bot.api_ai import APIAI
 from messenger_bot.logger import log
-from database.insert import insert_user_response
+from database.insert import insert_user_response, insert_user_question
 
 
 def response(message_text, sender_id, request_id):
@@ -18,23 +18,23 @@ def response(message_text, sender_id, request_id):
     insert_user_response(request_id, str(response))
     log(response)
     if intent == STUDY:
-        study_flow(sender_id, response)
+        study_flow(sender_id, response, request_id)
     elif intent == GREETING:
         greeting_flow(sender_id, response)
     elif intent == DIAGNOSTIC_NO:
         diagnostic_no_flow(sender_id, response)
     elif intent == DIAGNOSTIC_YES:
-        diagnostic_yes_flow(sender_id, response)
+        diagnostic_yes_flow(sender_id, response, request_id)
     else:
         send_text_message(sender_id,
                           response[RESULT][FULFILLMENT][SPEECH])
 
 
-def diagnostic_yes_flow(sender_id, response):
+def diagnostic_yes_flow(sender_id, response, request_id):
     send_text_message(sender_id, response[RESULT][FULFILLMENT][SPEECH])
     question = question_from_topic('Arithmetic')
     options = options_and_answer(question[ID])
-    send_question(sender_id, question, options,
+    send_question(sender_id, request_id, question, options,
                   remaining=3, topics=['Algebra', 'Geometry',
                                        'Word Problems', 'Statistics'],
                   diagnostic=True, test=True, topic='Arithmetic')
@@ -103,12 +103,12 @@ def send_video(recipient_id, video_link):
     send(data)
 
 
-def study_flow(sender_id, response):
+def study_flow(sender_id, response, request_id):
     send_text_message(sender_id, response[RESULT][FULFILLMENT][SPEECH])
     topic = response[RESULT][PARAMETERS][TOPICS]
     question = question_from_topic(topic)
     options = options_and_answer(question[ID])
-    send_question(sender_id, question, options, topic=topic)
+    send_question(sender_id, request_id, question, options, topic=topic)
 
 
 def send(data):
@@ -125,8 +125,9 @@ def send(data):
         log(r.text)
 
 
-def send_question(recipient_id, question, options, **kwargs):
+def send_question(recipient_id, request_id, question, options, **kwargs):
     log(question)
+    insert_user_question(request_id, recipient_id, str(question))
     buttons = []
     for option in options.options:
         payload = {
