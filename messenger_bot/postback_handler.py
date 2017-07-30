@@ -55,7 +55,8 @@ def handle_test(payload, sender_id):
         result.append({'qid': payload['qid'], 'correct': True})
     else:
         result.append({'qid': payload['qid'], 'correct': False})
-    if remaining == 0:
+    remaining = payload['remaining']
+    if remaining < 0:
         count_correct = sum([1 if res['correct'] else 0 for res in result])
         count_total = len(result)
         send_text_message(sender_id, "You got {0} out of {1}".format(
