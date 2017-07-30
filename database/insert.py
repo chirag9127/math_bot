@@ -8,6 +8,8 @@ user_request = namedtuple('user_request', 'id, query')
 
 user_response = namedtuple('user_response', 'intent, entities, response, sender_id')
 
+user_answer = namedtuple('user_answer', 'sender_id, question_id, answer, is_correct')
+
 
 def insert_user_request(request_id, request):
     with db_connection.cursor() as cursor:
@@ -58,3 +60,21 @@ def insert_user_question(response_id, sender_id, question):
 def parse_question(question):
     data = ast.literal_eval(question)
     return data['id']
+
+
+def insert_user_answer(response_id, answer):
+    with db_connection.cursor() as cursor:
+        sql = 'INSERT INTO answer_provided (id, sender_id, question_id, answer, is_correct) VALUES (%s, %s, %s, %s, %s)'
+        values = parse_answer(answer)
+        cursor.execute(sql, (response_id, values.sender_id, values.question_id, values.answer, values.is_correct))
+    db_connection.commit()
+
+
+def parse_answer(answer):
+    data = ast.literal_eval(answer)
+    return user_answer(
+        sender_id=data['sender']['id'],
+        question_id=ast.literal_eval(data['postback']['payload'])['qid'],
+        answer=data['postback']['title'],
+        is_correct=True if ast.literal_eval(data['postback']['payload'])['correct'] else False
+        )

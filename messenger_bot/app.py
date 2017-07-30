@@ -1,7 +1,7 @@
 import os
 from uuid import uuid4
 from flask import Flask, request
-from database.insert import insert_user_request
+from database.insert import insert_user_request, insert_user_answer
 from messenger_bot.logger import log
 from messenger_bot.responder import response
 from messenger_bot.postback_handler import handle
@@ -53,6 +53,7 @@ def webhook():
                     if messaging_event.get("postback"):
                         handle(messaging_event)
                         log(messaging_event)
+                        insert_user_answer(request_id, str(messaging_event))
 
     return "ok", 200
 

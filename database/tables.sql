@@ -31,7 +31,7 @@ CREATE TABLE answer_provided(
 	sender_id varchar(20) NOT NULL,
 	question_id varchar(20) NOT NULL,
 	time_asked timestamp DEFAULT CURRENT_TIMESTAMP,
-	answer_id varchar(20),
+	answer varchar(1024),
 	is_correct BOOLEAN NOT NULL,
 	FOREIGN KEY (id) REFERENCES user_request(id)
 	);
