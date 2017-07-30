@@ -21,7 +21,9 @@ def response(message_text, sender_id, request_id):
     elif intent == GREETING:
         greeting_flow(sender_id, response)
     else:
-        send_text_message(sender_id, response[RESULT][FULFILLMENT][SPEECH])
+        send_text_message(sender_id,
+                          response[RESULT][FULFILLMENT][SPEECH].replace(
+                              '/\\n/g', '\n'))
 
 
 def greeting_flow(sender_id, response):
