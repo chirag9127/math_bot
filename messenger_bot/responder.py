@@ -23,9 +23,15 @@ def response(message_text, sender_id, request_id):
         greeting_flow(sender_id, response)
     elif intent == DIAGNOSTIC_NO:
         diagnostic_no_flow(sender_id, response)
+    elif intent == DIAGNOSTIC_YES:
+        diagnostic_yes_flow(sender_id, response)
     else:
         send_text_message(sender_id,
                           response[RESULT][FULFILLMENT][SPEECH])
+
+
+def diagnostic_yes_flow(sender_id, response):
+    pass
 
 
 def diagnostic_no_flow(sender_id, response):
@@ -112,8 +118,8 @@ def send_question(recipient_id, question, options):
                         {
                             "type": "postback",
                             "title": option['text'],
-                            "payload": '({0}, {1})'.format(
-                                option['id'], options.correct),
+                            "payload": str({'id': option['id'],
+                                            'correct': options.correct}),
                         } for option in options.options
                     ]
                 }
