@@ -3,6 +3,7 @@ import os
 from flask import Flask, request
 from messenger_bot.logger import log
 from messenger_bot.responder import response
+from messenger_bot.postback_handler import handle
 
 app = Flask(__name__)
 
@@ -48,7 +49,7 @@ def webhook():
                         pass
 
                     if messaging_event.get("postback"):
-                        pass
+                        handle(messaging_event)
 
     return "ok", 200
 
