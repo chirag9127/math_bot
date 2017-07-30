@@ -109,6 +109,20 @@ def send(data):
 
 def send_question(recipient_id, question, options, **kwargs):
     log(question)
+    buttons = []
+    for option in options.options:
+        payload = {
+            'id': option['id'],
+            'correct': options.correct,
+            'qid': question['id']
+        }
+        payload = str(payload.update(kwargs))
+        button = {
+            "type": "postback",
+            "title": option['text'],
+            "payload": payload,
+        }
+        buttons.append(button)
     data = json.dumps({
         "recipient": {
             "id": recipient_id
@@ -119,16 +133,7 @@ def send_question(recipient_id, question, options, **kwargs):
                 "payload": {
                     "template_type": "button",
                     "text": filter_question(question['question_text']),
-                    "buttons": [
-                        {
-                            "type": "postback",
-                            "title": option['text'],
-                            "payload": str({'id': option['id'],
-                                            'correct': options.correct,
-                                            'qid': question['id']}.update(
-                                                kwargs)),
-                        } for option in options.options
-                    ]
+                    "buttons": buttons,
                 }
             }
         }
