@@ -8,7 +8,7 @@ from messenger_bot.consts import *
 from database.db_api import question_from_topic, options_and_answer
 from messenger_bot.api_ai import APIAI
 from messenger_bot.logger import log
-from databse.insert import insert_user_response
+from database.insert import insert_user_response
 
 
 def response(message_text, sender_id, request_id):
