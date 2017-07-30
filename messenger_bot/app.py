@@ -26,7 +26,7 @@ def verify():
 @app.route('/', methods=['POST'])
 def webhook():
     data = request.get_json()
-    insert_user_request(data)
+    insert_user_request(str(data))
     """
     you may not want to log every incoming message in production,
     but it's good for testing
