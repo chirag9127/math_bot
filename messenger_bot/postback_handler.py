@@ -18,6 +18,7 @@ wrong_gifs = [
 
 
 def handle(event):
+    log(event)
     sender_id = event['sender']['id']
     if 'postback' in event and 'payload' in event['postback']:
         payload = event['postback']['payload']
