@@ -85,5 +85,5 @@ def parse_answer(answer):
         sender_id=data['sender']['id'],
         question_id=ast.literal_eval(data['postback']['payload'])['qid'],
         answer=data['postback']['title'],
-        is_correct=True if ast.literal_eval(data['postback']['payload'])['correct'] else False
+        is_correct=True if ast.literal_eval(data['postback']['payload'])['correct'] == if ast.literal_eval(data['postback']['payload'])['id'] else False
         )
