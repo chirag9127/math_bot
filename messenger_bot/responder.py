@@ -21,9 +21,19 @@ def response(message_text, sender_id, request_id):
         study_flow(sender_id, response)
     elif intent == GREETING:
         greeting_flow(sender_id, response)
+    elif intent == DIAGNOSTIC_NO:
+        diagnostic_no_flow(sender_id, response)
     else:
         send_text_message(sender_id,
                           response[RESULT][FULFILLMENT][SPEECH])
+
+
+def diagnostic_no_flow(sender_id, response):
+    send_text_message(sender_id, response[RESULT][FULFILLMENT][SPEECH])
+    send_text_message(sender_id, 'Practice questions')
+    send_text_message(sender_id, 'Do tests')
+    send_text_message(sender_id, 'Watch Youtube Video explaining concept')
+    send_text_message(sender_id, 'Ask us to solve a question')
 
 
 def greeting_flow(sender_id, response):
