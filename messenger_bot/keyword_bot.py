@@ -3,7 +3,7 @@ from messenger_bot.responder import send_image, send_text_message
 
 
 def is_keyword_query(message_text):
-    if message_text.starts_with('Solve:'):
+    if message_text.startswith('Solve:'):
         return True
     return False
 
