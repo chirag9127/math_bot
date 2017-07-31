@@ -13,11 +13,11 @@ def get_wolfram_key():
 def get_solution_gifs(question):
     API = get_wolfram_key()
     client = wolframalpha.Client(API)
-    result = client.query(question)
-    if not result or not result.pods:
-        return None
     gifs = []
     try:
+        result = client.query(question)
+        if not result or not result.pods:
+            return None
         for item in result.pods:
             if 'subpod' in item and isinstance(item['subpod'], list):
                 for i in item['subpod']:
