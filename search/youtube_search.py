@@ -30,10 +30,28 @@ class YouTubeSearcher:
             if search_result["id"]["kind"] == "youtube#video":
                 videos.append(
                     {'title': search_result["snippet"]["title"],
-                     'video_id': search_result["id"]["videoId"]})
+                     'video_id': search_result["id"]["videoId"],
+                     'description': search_result["snippet"]["description"]})
         return videos
 
 
 if __name__ == '__main__':
-    search_results = YouTubeSearcher().search_for_videos('Algebra videos')
-    print (search_results)
+    queries = [
+        'Algebra videos',
+        'What are some SAT math hacks?',
+        'I want to learn to solve complicated questions',
+        'What do I need to know about geometry for SAT Math?',
+        'Tutorial on slope intercept form of a line',
+        'Can you show me a video on how to solve basic equations?',
+        'circles videos',
+        'Video on solving quadratic equations',
+        "Let's study about polygons",
+        "How to solve linear equations in two variables?",
+    ]
+    with open('dataset.tsv', 'w') as fo:
+        fo.write('query\ttitle\tdescription\tid\n')
+        for query in queries:
+            search_results = YouTubeSearcher().search_for_videos(query)
+            for res in search_results:
+                fo.write('{0}\t{1}\t{2}\t{3}\n'.format(
+                    query, res['title'], res['description'], res['video_id']))
