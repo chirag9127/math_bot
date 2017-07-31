@@ -13,4 +13,13 @@ def get_solution_gifs(question):
     API = get_wolfram_key()
     client = wolframalpha.Client(API)
     result = client.query(question)
-    return [pod['subpod']['img']['@src'] for pod in result.pods]
+    if not result or not result.pods:
+        return None
+    gifs = []
+    for item in result.pods:
+        if 'subpod' in item and isinstance(item['subpod'], list):
+            for i in item['subpod']:
+                gifs.append(i['img']['@src'])
+        elif 'subpod' in item and isinstance(item['subpod'], dict):
+            gifs.append(item['subpod']['img']['@src'])
+    return gifs
