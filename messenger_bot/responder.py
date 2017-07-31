@@ -9,13 +9,9 @@ from database.db_api import question_from_topic, options_and_answer
 from messenger_bot.api_ai import APIAI
 from messenger_bot.logger import log
 from database.insert import insert_user_response, insert_user_question
-from messenger_bot.keyword_bot import is_keyword_query, keyword_response
 
 
 def response(message_text, sender_id, request_id):
-    if is_keyword_query(message_text):
-        keyword_response(sender_id, message_text)
-        return
     response = APIAI.Instance().response(
         message_text, sender_id)
     intent = response[RESULT][METADATA][INTENT_NAME]

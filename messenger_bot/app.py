@@ -5,6 +5,7 @@ from database.insert import insert_user_request, insert_user_answer
 from messenger_bot.logger import log
 from messenger_bot.responder import response
 from messenger_bot.postback_handler import handle
+from messenger_bot.keyword_bot import is_keyword_query, keyword_response
 
 app = Flask(__name__)
 
@@ -42,8 +43,10 @@ def webhook():
                         sender_id = messaging_event["sender"]["id"]
                         # recipient_id = messaging_event["recipient"]["id"]
                         message_text = messaging_event["message"]["text"]
-
-                        response(message_text, sender_id, request_id)
+                        if is_keyword_query(message_text):
+                            keyword_response(sender_id, message_text)
+                        else:
+                            response(message_text, sender_id, request_id)
                     if messaging_event.get("delivery"):  # delivery confirmation
                         pass
 
