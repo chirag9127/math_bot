@@ -17,3 +17,8 @@ def keyword_response(sender_id, message_text):
         for gif in solution_gifs:
             send_image(
                 sender_id, gif)
+    else:
+        send_text_message(
+            sender_id,
+            "Sorry! Can't understand this."
+            "Will get back to you in a few days.")

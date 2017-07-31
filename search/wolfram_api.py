@@ -13,4 +13,5 @@ def get_solution_gifs(question):
     API = get_wolfram_key()
     client = wolframalpha.Client(API)
     result = client.query(question)
-    return [pod['subpod']['img']['@src'] for pod in result.pods]
+    if result and result.pods:
+        return [pod['subpod']['img']['@src'] for pod in result.pods]
