@@ -1,6 +1,5 @@
 from database.db_connection import DBConnection
 from collections import namedtuple
-from messenger_bot.logger import log
 import ast
 
 db_connection = DBConnection.Instance().get_connection()

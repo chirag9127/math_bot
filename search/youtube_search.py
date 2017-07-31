@@ -39,7 +39,7 @@ if __name__ == '__main__':
     queries = [
         'Algebra videos',
         'What are some SAT math hacks?',
-        'I want to learn to solve complicated questions',
+        'I want to learn to solve complicated equations',
         'What do I need to know about geometry for SAT Math?',
         'Tutorial on slope intercept form of a line',
         'Can you show me a video on how to solve basic equations?',
@@ -47,6 +47,7 @@ if __name__ == '__main__':
         'Video on solving quadratic equations',
         "Let's study about polygons",
         "How to solve linear equations in two variables?",
+        'How to solve complicated SAT Math questions?',
     ]
     with open('dataset.tsv', 'w') as fo:
         fo.write('query\ttitle\tdescription\tid\n')
