@@ -4,7 +4,7 @@ config = {
     'include_package_data': True,
     'description': 'math bot for SAT',
     'version': '0.0.1',
-    'packages': ['database', 'helper_scripts'],
+    'packages': ['database', 'helper_scripts', 'wolfram_alpha'],
     'zip_safe': False,
     'setup_requires': [],
     'install_requires': [

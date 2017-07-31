@@ -7,6 +7,8 @@ CREATE TABLE user_request(
 	PRIMARY KEY (id)
 );
 
+
+
 CREATE TABLE user_response(
 	id varchar(36),
 	sender_id varchar(20) NOT NULL,
@@ -14,6 +16,8 @@ CREATE TABLE user_response(
 	action varchar(1024),
 	FOREIGN KEY (id) REFERENCES user_request(id)
 );
+
+ALTER TABLE user_response ADD UNIQUE(id);
 
 ALTER TABLE questions_question
   ADD COLUMN correct BOOLEAN DEFAULT FALSE;
@@ -25,6 +29,7 @@ CREATE TABLE questions_given(
 	time_asked timestamp DEFAULT CURRENT_TIMESTAMP,
 	FOREIGN KEY (id) REFERENCES user_request(id)
 	);
+ALTER TABLE questions_given ADD UNIQUE(id);
 
 CREATE TABLE answer_provided(
 	id varchar(36),
@@ -35,3 +40,5 @@ CREATE TABLE answer_provided(
 	is_correct BOOLEAN NOT NULL,
 	FOREIGN KEY (id) REFERENCES user_request(id)
 	);
+
+ALTER TABLE answer_provided ADD UNIQUE(id);
