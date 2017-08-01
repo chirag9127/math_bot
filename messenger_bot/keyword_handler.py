@@ -1,5 +1,6 @@
 from search.wolfram_api import get_solution_gifs
-from messenger_bot.sender import send_image, send_text_message
+from messenger_bot.sender import send_image, send_text_message, \
+    send_helper_messages
 
 
 def is_keyword_query(message_text):
@@ -17,8 +18,10 @@ def handle_keyword(sender_id, message_text):
         for gif in solution_gifs:
             send_image(
                 sender_id, gif)
+        send_helper_messages(sender_id)
     else:
         send_text_message(
             sender_id,
-            "Sorry! Can't understand this."
+            "Sorry! We can't understand this question."
             "Will get back to you in a few days.")
+        send_helper_messages(sender_id)
