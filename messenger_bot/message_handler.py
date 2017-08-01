@@ -3,6 +3,7 @@ from database.db_api import question_from_topic, options_and_answer
 from messenger_bot.api_ai import APIAI
 from messenger_bot.logger import log
 from database.insert import insert_user_response
+from messenger_bot.sender import send_text_message, send_question
 
 
 def handle_message(message_text, sender_id, request_id):
@@ -46,3 +47,9 @@ def greeting_flow(sender_id, response):
     send_text_message(sender_id, 'Hi! How are you doing today?')
 
 
+def study_flow(sender_id, response, request_id):
+    send_text_message(sender_id, response[RESULT][FULFILLMENT][SPEECH])
+    topic = response[RESULT][PARAMETERS][TOPICS]
+    question = question_from_topic(topic)
+    options = options_and_answer(question[ID])
+    send_question(sender_id, request_id, question, options, topic=topic)

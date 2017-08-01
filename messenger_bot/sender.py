@@ -51,14 +51,6 @@ def send_video(recipient_id, video_link):
     send(data)
 
 
-def study_flow(sender_id, response, request_id):
-    send_text_message(sender_id, response[RESULT][FULFILLMENT][SPEECH])
-    topic = response[RESULT][PARAMETERS][TOPICS]
-    question = question_from_topic(topic)
-    options = options_and_answer(question[ID])
-    send_question(sender_id, request_id, question, options, topic=topic)
-
-
 def send(data):
     params = {
         "access_token": os.environ["PAGE_ACCESS_TOKEN"]
