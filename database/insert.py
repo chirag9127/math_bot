@@ -1,4 +1,4 @@
-from messenger.logger import log
+from messenger_bot.logger import log
 from database.db_connection import DBConnection
 from collections import namedtuple
 import ast
