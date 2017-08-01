@@ -6,6 +6,7 @@ from messenger_bot.consts import *
 from messenger_bot.logger import log
 from messenger_bot.sender import send_text_message, send_image, \
     send_question, send_video, send_happy_gif
+from messenger_bot.api_ai import APIAI
 from database.db_api import question_from_topic, options_and_answer, \
     has_video, video
 
