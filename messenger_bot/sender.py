@@ -102,6 +102,14 @@ def send_question(recipient_id, request_id, question, options, **kwargs):
     send(data)
 
 
+def send_helper_messages(sender_id):
+    send_text_message(sender_id, "You can Practice questions by typing "
+                                 "something like "
+                                 "'I want to do a question on Algebra'")
+    send_text_message(sender_id, "If you have a question you want the solution "
+                                 "you can type 'Solve: x^2 - 1 = 0'")
+
+
 def send_text_message(recipient_id, message_text):
     data = json.dumps({
         "recipient": {

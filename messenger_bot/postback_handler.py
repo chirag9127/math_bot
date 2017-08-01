@@ -5,7 +5,7 @@ import random
 from messenger_bot.consts import *
 from messenger_bot.logger import log
 from messenger_bot.sender import send_text_message, send_image, \
-    send_question, send_video, send_happy_gif
+    send_question, send_video, send_happy_gif, send_helper_messages
 from messenger_bot.api_ai import APIAI
 from database.db_api import question_from_topic, options_and_answer, \
     has_video, video
@@ -44,7 +44,7 @@ def handle_first_message(sender_id):
     send_happy_gif(sender_id)
     send_text_message(sender_id, 'To begin with, we would do a quick '
                       'assessment of your SAT Math concepts by asking you '
-                      '4 questions to understand your strengths '
+                      '5 questions to understand your strengths '
                       'and weaknesses :)')
     send_text_message(sender_id, "Type 'Yes' to go ahead with the test.")
 
@@ -65,6 +65,7 @@ def handle_test(payload, sender_id, request_id):
         send_text_message(sender_id, "You got {0} out of {1}".format(
             count_correct, count_total
         ))
+        send_helper_messages(sender_id)
     else:
         topics = payload['topics']
         question = question_from_topic(topics.pop())
