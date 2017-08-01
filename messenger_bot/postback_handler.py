@@ -38,14 +38,14 @@ def handle_postback(event):
 
 
 def handle_first_message(sender_id):
-    send_text_message(sender_id, 'My name is Noah, and I will be your '
+    send_text_message(sender_id, 'Hi! My name is Noah, and I will be your '
                       'SAT Buddy to help you get your desired score!')
     send_happy_gif(sender_id)
     send_text_message(sender_id, 'To begin with, we would do a quick '
-                      'assessment of your SAT concepts by asking you '
-                      '4 questions at a time and then coach you on your '
-                      'weak areas. :)')
-    send_text_message(sender_id, 'Let me know when you are ready to start.')
+                      'assessment of your SAT Math concepts by asking you '
+                      '4 questions to understand your strengths '
+                      'and weaknesses :)')
+    send_text_message(sender_id, "Type 'Yes' to go ahead with the test.")
 
 
 def handle_test(payload, sender_id):
