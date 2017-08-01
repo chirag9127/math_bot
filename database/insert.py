@@ -103,8 +103,7 @@ def is_answer_there(response_id):
     with db_connection.cursor() as cursor:
         sql = 'SELECT id FROM answer_provided WHERE id = %s LIMIT 1'
         cursor.execute(sql, (response_id))
-        result = cursor.fetchone()
-        return result['id'] == response_id
+        return cursor.fetchone() is not None
 
 
 def insert_user_answer(answer):
