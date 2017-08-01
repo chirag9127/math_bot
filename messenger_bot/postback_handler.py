@@ -24,14 +24,13 @@ wrong_gifs = [
 S3_LINK = os.environ['S3_LINK']
 
 
-def handle_postback(event):
+def handle_postback(event, sender_id, request_id):
     log(event)
-    sender_id = event['sender']['id']
     if 'postback' in event and 'payload' in event['postback']:
         payload = event['postback']['payload']
         payload = ast.literal_eval(payload)
         if 'test' in payload and payload['test'] is True:
-            handle_test(payload, sender_id)
+            handle_test(payload, sender_id, request_id)
         elif 'first_message' in payload:
             handle_first_message(sender_id)
         else:
@@ -50,7 +49,7 @@ def handle_first_message(sender_id):
     send_text_message(sender_id, "Type 'Yes' to go ahead with the test.")
 
 
-def handle_test(payload, sender_id):
+def handle_test(payload, sender_id, request_id):
     if 'result' in payload:
         result = payload['result']
     else:
@@ -70,7 +69,7 @@ def handle_test(payload, sender_id):
         topics = payload['topics']
         question = question_from_topic(topics.pop())
         options = options_and_answer(question[ID])
-        send_question(sender_id, question, options,
+        send_question(sender_id, request_id, question, options,
                       remaining=payload['remaining'] - 1,
                       topics=topics, diagnostic=True, test=True, result=result)
 

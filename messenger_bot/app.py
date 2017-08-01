@@ -2,7 +2,6 @@ import os
 from uuid import uuid4
 from flask import Flask, request
 from database.insert import insert_user_request, insert_user_answer
-from messenger_bot.logger import log
 from messenger_bot.message_handler import handle_message
 from messenger_bot.postback_handler import handle_postback
 from messenger_bot.keyword_handler import is_keyword_query, handle_keyword
@@ -29,10 +28,6 @@ def webhook():
     data = request.get_json()
     request_id = str(uuid4())
     insert_user_request(request_id, str(data))
-    """
-    you may not want to log every incoming message in production,
-    but it's good for testing
-    """
 
     if data["object"] == "page":
 
@@ -54,9 +49,9 @@ def webhook():
                         pass
 
                     if messaging_event.get("postback"):
+                        sender_id = messaging_event["sender"]["id"]
                         insert_user_answer(str(messaging_event))
-                        handle_postback(messaging_event)
-                        log(messaging_event)
+                        handle_postback(messaging_event, sender_id, request_id)
 
     return "ok", 200
 
