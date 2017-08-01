@@ -18,10 +18,9 @@ def handle_keyword(sender_id, message_text):
         for gif in solution_gifs:
             send_image(
                 sender_id, gif)
-        send_helper_messages(sender_id)
     else:
         send_text_message(
             sender_id,
             "Sorry! We can't understand this question."
             "Will get back to you in a few days.")
-        send_helper_messages(sender_id)
+    send_helper_messages(sender_id)
