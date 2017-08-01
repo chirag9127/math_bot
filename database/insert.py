@@ -92,7 +92,7 @@ def insert_answer(response_id, values):
 def update_answer(response_id, values):
     try:
         with db_connection.cursor() as cursor:
-            sql = 'UPDATE answer_provided SET answer = %s AND is_correct = %s WHERE id = %s'
+            sql = 'UPDATE answer_provided SET answer = %s, is_correct = %s WHERE id = %s'
             cursor.execute(sql, (values.answer, values.is_correct, response_id))
             log('updating {}-----{}'.format(values, response_id))
         db_connection.commit()
