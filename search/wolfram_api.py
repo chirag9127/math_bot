@@ -12,9 +12,11 @@ def get_wolfram_key():
 def get_solution_gifs(question):
     API = get_wolfram_key()
     client = wolframalpha.Client(API)
-    try:
-        result = client.query(question)
-        if result and result.pods:
-            return [pod['subpod']['img']['@src'] for pod in result.pods]
-    except:
-        return []
+    result = client.query(question)
+    print (result)
+    if result and result.pods:
+        return [pod['subpod']['img']['@src'] for pod in result.pods]
+
+
+if __name__ == "__main__":
+    get_solution_gifs('x^3 + 1 = 0, find x')

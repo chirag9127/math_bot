@@ -49,10 +49,9 @@ def diagnostic_no_flow(sender_id, response):
 
 
 def greeting_flow(sender_id, response):
-    send_text_message(sender_id, response[RESULT][FULFILLMENT][SPEECH])
-    send_happy_gif(sender_id)
     send_text_message(sender_id, 'My name is Noah, and I will be your '
                       'SAT Buddy to help you get your desired score!')
+    send_happy_gif(sender_id)
     send_text_message(sender_id, 'To begin with, we would do a quick '
                       'assessment of your SAT concepts by asking you '
                       '4 questions at a time and then coach you on your '
