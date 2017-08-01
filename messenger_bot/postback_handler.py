@@ -23,7 +23,7 @@ wrong_gifs = [
 S3_LINK = os.environ['S3_LINK']
 
 
-def postback_handler(event):
+def handle_postback(event):
     log(event)
     sender_id = event['sender']['id']
     if 'postback' in event and 'payload' in event['postback']:

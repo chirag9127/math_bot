@@ -8,7 +8,7 @@ def is_keyword_query(message_text):
     return False
 
 
-def keyword_response(sender_id, message_text):
+def handle_keyword(sender_id, message_text):
     question = message_text[6:]
     solution_gifs = get_solution_gifs(question)
     if solution_gifs:
