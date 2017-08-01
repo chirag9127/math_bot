@@ -4,7 +4,7 @@ import random
 
 from messenger_bot.consts import *
 from messenger_bot.logger import log
-from messenger_bot.responder import send_text_message, send_image, \
+from messenger_bot.sender import send_text_message, send_image, \
     send_question, send_video
 from database.db_api import question_from_topic, options_and_answer, \
     has_video, video
@@ -23,7 +23,7 @@ wrong_gifs = [
 S3_LINK = os.environ['S3_LINK']
 
 
-def handle(event):
+def postback_handler(event):
     log(event)
     sender_id = event['sender']['id']
     if 'postback' in event and 'payload' in event['postback']:
@@ -31,8 +31,21 @@ def handle(event):
         payload = ast.literal_eval(payload)
         if 'test' in payload and payload['test'] is True:
             handle_test(payload, sender_id)
+        elif 'first_message' in payload:
+            handle_first_message(sender_id)
         else:
             handle_question(payload, sender_id)
+
+
+def handle_first_message(sender_id):
+    send_text_message(sender_id, 'My name is Noah, and I will be your '
+                      'SAT Buddy to help you get your desired score!')
+    send_happy_gif(sender_id)
+    send_text_message(sender_id, 'To begin with, we would do a quick '
+                      'assessment of your SAT concepts by asking you '
+                      '4 questions at a time and then coach you on your '
+                      'weak areas. :)')
+    send_text_message(sender_id, 'Let me know when you are ready to start.')
 
 
 def handle_test(payload, sender_id):

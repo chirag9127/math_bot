@@ -4,12 +4,6 @@ import requests
 
 
 def set_greeting():
-    params = {
-        "access_token": os.environ["PAGE_ACCESS_TOKEN"]
-    }
-    headers = {
-        "Content-Type": "application/json"
-    }
     data = json.dumps({
         "greeting": [
                 {
@@ -18,12 +12,31 @@ def set_greeting():
                 }
         ]
     })
+    send(data)
+
+
+def set_getting_started():
+    data = json.dumps({
+        "get_started": {
+            "payload": str({"first_message": "first_message"}),
+        }
+    })
+    send(data)
+
+
+def send(data):
+    params = {
+        "access_token": os.environ["PAGE_ACCESS_TOKEN"]
+    }
+    headers = {
+        "Content-Type": "application/json"
+    }
     r = requests.post("https://graph.facebook.com/v2.6/me/messenger_profile",
                       params=params, headers=headers, data=data)
-    print (r.status_code)
-    print (r.text)
-    print (r)
+    if r.status_code != 200:
+        print (r.status_code)
+        print (r.text)
 
 
 if __name__ == "__main__":
-    set_greeting()
+    set_getting_started()

@@ -1,5 +1,5 @@
 from search.wolfram_api import get_solution_gifs
-from messenger_bot.responder import send_image, send_text_message
+from messenger_bot.sender import send_image, send_text_message
 
 
 def is_keyword_query(message_text):
