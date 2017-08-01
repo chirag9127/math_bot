@@ -4,7 +4,7 @@ config = {
     'include_package_data': True,
     'description': 'math bot for SAT',
     'version': '0.0.1',
-    'packages': ['database', 'helper_scripts', 'wolfram_alpha'],
+    'packages': ['database', 'helper_scripts', 'search', 'messenger_bot'],
     'zip_safe': False,
     'setup_requires': [],
     'install_requires': [
@@ -22,6 +22,7 @@ config = {
         'requests==2.10.0',
         'apiai',
         'google-api-python-client',
+        'keras==2.0.6',
     ],
     'name': 'math_bot'
 }
