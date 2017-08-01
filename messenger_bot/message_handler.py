@@ -7,7 +7,7 @@ from messenger_bot.sender import send_text_message, send_question
 
 
 def handle_message(message_text, sender_id, request_id):
-    response = APIAI.Instance().response(
+    response = APIAI.Instance().message_response(
         message_text, sender_id)
     intent = response[RESULT][METADATA][INTENT_NAME]
     insert_user_response(request_id, str(response))
@@ -20,9 +20,10 @@ def handle_message(message_text, sender_id, request_id):
         diagnostic_no_flow(sender_id, response)
     elif intent == DIAGNOSTIC_YES:
         diagnostic_yes_flow(sender_id, response, request_id)
-    else:
+    elif intent == DEFAULT:
         send_text_message(sender_id,
                           response[RESULT][FULFILLMENT][SPEECH])
+        send_helper_messages(sender_id)
 
 
 def diagnostic_yes_flow(sender_id, response, request_id):
@@ -37,14 +38,21 @@ def diagnostic_yes_flow(sender_id, response, request_id):
 
 def diagnostic_no_flow(sender_id, response):
     send_text_message(sender_id, response[RESULT][FULFILLMENT][SPEECH])
-    send_text_message(sender_id, 'Practice questions')
-    send_text_message(sender_id, 'Do tests')
-    send_text_message(sender_id, 'Watch Youtube Video explaining concept')
-    send_text_message(sender_id, 'Ask us to solve a question')
+    send_helper_messages(sender_id)
 
 
 def greeting_flow(sender_id, response):
-    send_text_message(sender_id, 'Hi! How are you doing today?')
+    send_text_message(sender_id, 'Hi! How are you doing today? '
+                                 'Here is what we can help you with:')
+    send_helper_messages(sender_id)
+
+
+def send_helper_messages(sender_id):
+    send_text_message(sender_id, "You can Practice questions by typing "
+                                 "something like "
+                                 "'I want to do a question on Algebra'")
+    send_text_message(sender_id, "If you have a question you want the solution "
+                                 "you can type 'Solve: x^2 - 1 = 0'")
 
 
 def study_flow(sender_id, response, request_id):

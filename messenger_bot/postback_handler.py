@@ -38,6 +38,7 @@ def handle_postback(event):
 
 
 def handle_first_message(sender_id):
+    APIAI.Instance().event_response("getting_started_event", sender_id)
     send_text_message(sender_id, 'Hi! My name is Noah, and I will be your '
                       'SAT Buddy to help you get your desired score!')
     send_happy_gif(sender_id)
