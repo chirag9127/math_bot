@@ -5,6 +5,7 @@ import requests
 
 from helper_scripts.utility import filter_question
 from messenger_bot.consts import *
+from messenger_bot.logger import log
 from database.insert import insert_user_question
 
 
