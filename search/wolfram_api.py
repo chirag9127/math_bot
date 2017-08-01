@@ -1,5 +1,6 @@
 import os
 import wolframalpha
+from messenger_bot.logger import log
 from configparser import ConfigParser
 
 
@@ -12,11 +13,17 @@ def get_wolfram_key():
 def get_solution_gifs(question):
     API = get_wolfram_key()
     client = wolframalpha.Client(API)
-    result = client.query(question)
-    print (result)
-    if result and result.pods:
-        return [pod['subpod']['img']['@src'] for pod in result.pods]
-
-
-if __name__ == "__main__":
-    get_solution_gifs('x^3 + 1 = 0, find x')
+    gifs = []
+    try:
+        result = client.query(question)
+        if not result or not result.pods:
+            return None
+        for item in result.pods:
+            if 'subpod' in item and isinstance(item['subpod'], list):
+                for i in item['subpod']:
+                    gifs.append(i['img']['@src'])
+            elif 'subpod' in item and isinstance(item['subpod'], dict):
+                gifs.append(item['subpod']['img']['@src'])
+        return gifs
+    except:
+        log('unable to parse wolfram result')

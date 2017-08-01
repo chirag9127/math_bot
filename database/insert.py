@@ -1,6 +1,6 @@
+from messenger_bot.logger import log
 from database.db_connection import DBConnection
 from collections import namedtuple
-from messenger_bot.logger import log
 import ast
 
 db_connection = DBConnection.Instance().get_connection()
@@ -13,12 +13,15 @@ user_answer = namedtuple('user_answer', 'sender_id, question_id, answer, is_corr
 
 
 def insert_user_request(request_id, request):
-    with db_connection.cursor() as cursor:
-        sql = 'INSERT INTO user_request (id, sender_id, query) VALUES (%s, %s, %s)'
-        values = parse_request_data(request)
-        if values:
-            cursor.execute(sql, (request_id, values.id, values.query))
-            db_connection.commit()
+    try:
+        with db_connection.cursor() as cursor:
+            sql = 'INSERT INTO user_request (id, sender_id, query) VALUES (%s, %s, %s)'
+            values = parse_request_data(request)
+            if values:
+                cursor.execute(sql, (request_id, values.id, values.query))
+                db_connection.commit()
+    except:
+        log('Error! insert user request {}'.format(request))
 
 
 def parse_request_data(request):
@@ -31,13 +34,16 @@ def parse_request_data(request):
 
 
 def insert_user_response(response_id, response):
-    with db_connection.cursor() as cursor:
-        sql_to_request = 'UPDATE user_request SET intent = %s, entities = %s WHERE id=%s'
-        values = parse_response_data(response)
-        cursor.execute(sql_to_request, (values.intent, values.entities, response_id))
-        sql_to_response = 'INSERT INTO user_response (id, sender_id, response) VALUES (%s, %s, %s)'
-        cursor.execute(sql_to_response, (response_id, values.sender_id, values.response))
-    db_connection.commit()
+    try:
+        with db_connection.cursor() as cursor:
+            sql_to_request = 'UPDATE user_request SET intent = %s, entities = %s WHERE id=%s'
+            values = parse_response_data(response)
+            cursor.execute(sql_to_request, (values.intent, values.entities, response_id))
+            sql_to_response = 'INSERT INTO user_response (id, sender_id, response) VALUES (%s, %s, %s)'
+            cursor.execute(sql_to_response, (response_id, values.sender_id, values.response))
+        db_connection.commit()
+    except:
+        log('Error! insert user response {}'.format(response))
 
 
 def parse_response_data(response):
@@ -51,11 +57,14 @@ def parse_response_data(response):
 
 
 def insert_user_question(response_id, sender_id, question):
-    with db_connection.cursor() as cursor:
-        sql = 'INSERT INTO questions_given (id, sender_id, question_id) VALUES (%s, %s, %s)'
-        question_id = parse_question(question)
-        cursor.execute(sql, (response_id, sender_id, question_id))
-    db_connection.commit()
+    try:
+        with db_connection.cursor() as cursor:
+            sql = 'INSERT INTO questions_given (id, sender_id, question_id) VALUES (%s, %s, %s)'
+            question_id = parse_question(question)
+            cursor.execute(sql, (response_id, sender_id, question_id))
+        db_connection.commit()
+    except:
+        log('Error! insert user question {}'.format(question))
 
 
 def parse_question(question):
@@ -70,13 +79,44 @@ def get_response_id(question_id, sender_id):
         return cursor.fetchone()['id']
 
 
-def insert_user_answer(answer):
+def insert_answer(response_id, values):
+    try:
+        with db_connection.cursor() as cursor:
+            sql = 'INSERT INTO answer_provided (id, sender_id, question_id, answer, is_correct) VALUES (%s, %s, %s, %s, %s)'
+            cursor.execute(sql, (response_id, values.sender_id, values.question_id, values.answer, values.is_correct))
+        db_connection.commit()
+    except:
+        log('Error! insert user answer {}'.format(response_id))
+
+
+def update_answer(response_id, values):
+    try:
+        with db_connection.cursor() as cursor:
+            sql = 'UPDATE answer_provided SET answer = %s AND is_correct = %s WHERE id = %s'
+            cursor.execute(sql, (values.answer, values.is_correct, response_id))
+        db_connection.commit()
+    except:
+        log('Error! update user answer {}'.format(response_id))
+
+
+def is_answer_there(response_id):
     with db_connection.cursor() as cursor:
-        sql = 'INSERT INTO answer_provided (id, sender_id, question_id, answer, is_correct) VALUES (%s, %s, %s, %s, %s)'
+        sql = 'SELECT id FROM answer_provided WHERE id = %s LIMIT 1'
+        cursor.execute(sql, (response_id))
+        result = cursor.fetchone()
+        return result['id'] == response_id
+
+
+def insert_user_answer(answer):
+    try:
         values = parse_answer(answer)
         response_id = get_response_id(values.question_id, values.sender_id)
-        cursor.execute(sql, (response_id, values.sender_id, values.question_id, values.answer, values.is_correct))
-    db_connection.commit()
+        if is_answer_there(response_id):
+            update_answer(response_id, values)
+        else:
+            insert_answer(response_id, values)
+    except:
+        log('Error! insert user answer {}'.format(answer))
 
 
 def parse_answer(answer):
