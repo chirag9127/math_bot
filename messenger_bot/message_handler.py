@@ -4,6 +4,7 @@ from messenger_bot.api_ai import APIAI
 from messenger_bot.logger import log
 from messenger_bot.sender import send_text_message, send_question, \
     send_helper_messages
+from search.youtube_search import get_most_relevant_video
 from uuid import uuid4
 
 
@@ -21,10 +22,21 @@ def handle_message(message_text, sender_id, request_id):
         diagnostic_no_flow(sender_id, response)
     elif intent == DIAGNOSTIC_YES:
         diagnostic_yes_flow(sender_id, response, request_id)
+    elif intent == VIDEO_SEARCH:
+        video_flow(sender_id, message_text)
     elif intent == DEFAULT:
         send_text_message(sender_id,
                           response[RESULT][FULFILLMENT][SPEECH])
         send_helper_messages(sender_id)
+
+
+def video_flow(sender_id, message_text):
+    most_relevant_video = get_most_relevant_video(message_text)
+    video_link = 'https://www.youtube.com/watch?v={}'.format(
+        most_relevant_video)
+    send_text_message(sender_id, 'Here is a video on this:')
+    send_video(sender_id, video_link)
+    send_helper_messages(sender_id)
 
 
 def diagnostic_yes_flow(sender_id, response, request_id):

@@ -10,3 +10,5 @@ apiai
 PyMySQL==0.7.9
 google-api-python-client
 wolframalpha==3.0
+Keras==2.0.6
+h5py==2.7.0

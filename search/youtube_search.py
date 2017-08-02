@@ -1,6 +1,7 @@
 import os
 
 from apiclient.discovery import build
+from ml.youtube_relevance_model import YoutubeRelevanceModel
 
 
 DEVELOPER_KEY = os.environ['YOUTUBE_DEVELOPER_KEY']
@@ -35,29 +36,19 @@ class YouTubeSearcher:
         return videos
 
 
-if __name__ == '__main__':
-    """
-    queries = [
-        'Algebra videos',
-        'What are some SAT math hacks?',
-        'I want to learn to solve complicated equations',
-        'What do I need to know about geometry for SAT Math?',
-        'Tutorial on slope intercept form of a line',
-        'Can you show me a video on how to solve basic equations?',
-        'circles videos',
-        'Video on solving quadratic equations',
-        "Let's study about polygons",
-        "How to solve linear equations in two variables?",
-        'How to solve complicated SAT Math questions?',
-    ]"""
-    queries = []
-    with open('../misc/queries.txt') as f:
-        for line in f:
-            queries.append(line.strip())
-    with open('../misc/dataset_2.tsv', 'w') as fo:
-        fo.write('query\ttitle\tdescription\tid\n')
-        for query in queries:
-            search_results = YouTubeSearcher().search_for_videos(query)
-            for res in search_results:
-                fo.write('{0}\t{1}\t{2}\t{3}\n'.format(
-                    query, res['title'], res['description'], res['video_id']))
+def get_most_relevant_video(query):
+    videos = YouTubeSearcher().search_for_videos(query)
+    data = {
+        'query': [],
+        'title': [],
+        'description': [],
+        'video_id': [],
+    }
+    for video in videos:
+        data['query'].append(query)
+        data['title'].append(video['title'])
+        data['description'].append(video['description'])
+        data['video_id'].append(video['video_id'])
+    preds = YoutubeRelevanceModel.Instance().predict(data)
+    preds_out = [p[0] for p in preds]
+    return data['video_id'][preds_out.index(max(preds_out))]
