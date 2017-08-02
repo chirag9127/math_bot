@@ -3,7 +3,7 @@ from database.db_api import question_from_topic, options_and_answer
 from messenger_bot.api_ai import APIAI
 from messenger_bot.logger import log
 from messenger_bot.sender import send_text_message, send_question, \
-    send_helper_messages, send_video
+    send_helper_messages, send_video, send_open_graph_video
 from search.youtube_search import get_most_relevant_video
 from uuid import uuid4
 
@@ -12,7 +12,7 @@ def handle_message(message_text, sender_id, request_id):
     response = APIAI.Instance().message_response(
         message_text, sender_id)
     intent = response[RESULT][METADATA][INTENT_NAME]
-    #insert_user_response(request_id, str(response))
+    # insert_user_response(request_id, str(response))
     log(response)
     if intent == STUDY:
         study_flow(sender_id, response, request_id)
@@ -35,7 +35,7 @@ def video_flow(sender_id, message_text):
     video_link = 'https://www.youtube.com/watch?v={}'.format(
         most_relevant_video)
     send_text_message(sender_id, 'Here is a video on this:')
-    send_video(sender_id, video_link)
+    send_open_graph_video(sender_id, video_link)
     send_helper_messages(sender_id)
 
 

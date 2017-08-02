@@ -52,6 +52,28 @@ def send_video(recipient_id, video_link):
     send(data)
 
 
+def send_open_graph_video(recipient_id, video_link):
+    data = json.dumps({
+        "recipient": {
+            "id": recipient_id
+        },
+        "message": {
+            "attachment": {
+                "type": "template",
+                "payload": {
+                    "template_type": "open_graph",
+                    "elements": [
+                        {
+                            "url": video_link,
+                        }
+                    ]
+                }
+            }
+        }
+    })
+    send(data)
+
+
 def send(data):
     params = {
         "access_token": os.environ["PAGE_ACCESS_TOKEN"]
