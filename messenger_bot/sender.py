@@ -127,11 +127,15 @@ def send_question(recipient_id, request_id, question, options, **kwargs):
 
 
 def send_helper_messages(sender_id):
-    send_text_message(sender_id, "You can Practice questions by typing "
-                                 "something like "
-                                 "'I want to do a question on Algebra'")
-    send_text_message(sender_id, "If you have a question you want the solution "
-                                 "you can type 'Solve: x^2 - 1 = 0'")
+    messages = [
+        "You can Practice questions by typing something like "
+        "'I want to do a question on Algebra'",
+        "You can also ask me a question like 'Solve: x^2 - 1 = 0' "
+        "and I'll help you solve it :)",
+        "You can request video tutorial  by typing "
+        "'How to solve linear equations?'"
+    ]
+    send_text_message(sender_id, random.choice(messages))
 
 
 def send_text_message(recipient_id, message_text):
