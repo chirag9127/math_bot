@@ -9,7 +9,7 @@ user_request = namedtuple('user_request', 'id, query')
 
 user_response = namedtuple('user_response', 'intent, entities, response, sender_id')
 
-user_answer = namedtuple('user_answer', 'sender_id, question_id, answer_id, is_correct')
+user_answer = namedtuple('user_answer', 'sender_id, question_id, answer_id, is_correct, test_id')
 
 
 def insert_user_request(request_id, request):
@@ -82,8 +82,11 @@ def get_response_id(question_id, sender_id):
 def insert_answer(response_id, values):
     try:
         with db_connection.cursor() as cursor:
-            sql = 'INSERT INTO answer_provided (id, sender_id, question_id, answer_id, is_correct) VALUES (%s, %s, %s, %s, %s)'
-            cursor.execute(sql, (response_id, values.sender_id, values.question_id, values.answer_id, values.is_correct))
+            sql = 'INSERT INTO answer_provided (id, sender_id, question_id, answer_id, is_correct, test_id) VALUES (%s, %s, %s, %s, %s, %s)'
+            cursor.execute(sql, (
+                response_id, values.sender_id,
+                values.question_id, values.answer_id,
+                values.is_correct, values.test_id))
         db_connection.commit()
     except:
         log('Error! insert user answer {}'.format(response_id))
@@ -121,9 +124,12 @@ def insert_user_answer(answer):
 
 def parse_answer(answer):
     data = ast.literal_eval(answer)
-    return user_answer(
-        sender_id=data['sender']['id'],
-        question_id=ast.literal_eval(data['postback']['payload'])['qid'],
-        answer_id=ast.literal_eval(data['postback']['payload'])['id'],
-        is_correct=True if ast.literal_eval(data['postback']['payload'])['correct'] == ast.literal_eval(data['postback']['payload'])['id'] else False
-        )
+    if data and 'postback' in data:
+        payload = ast.literal_eval(data['postback']['payload'])
+        return user_answer(
+            sender_id=data['sender']['id'],
+            question_id=payload['qid'],
+            answer_id=payload['id'],
+            is_correct=True if payload['correct'] == payload['id'] else False,
+            test_id=payload['test_id'] if 'diagnostic' in payload.keys() and payload['diagnostic'] else None
+            )
