@@ -3,7 +3,7 @@ from database.db_api import question_from_topic, options_and_answer
 from messenger_bot.api_ai import APIAI
 from messenger_bot.logger import log
 from messenger_bot.sender import send_text_message, send_question, \
-    send_helper_messages, send_video, send_open_graph_video
+    send_helper_messages, send_open_graph_video
 from search.youtube_search import get_most_relevant_video
 from uuid import uuid4
 
@@ -65,6 +65,7 @@ def greeting_flow(sender_id, response):
 def study_flow(sender_id, response, request_id):
     send_text_message(sender_id, response[RESULT][FULFILLMENT][SPEECH])
     topic = response[RESULT][PARAMETERS][TOPICS]
+    log("TOPIC: {}".format(topic))
     question = question_from_topic(topic)
     options = options_and_answer(question[ID])
     send_question(sender_id, request_id, question, options, topic=topic)
