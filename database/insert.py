@@ -82,11 +82,12 @@ def get_response_id(question_request_id):
 def insert_answer(response_id, values):
     try:
         with db_connection.cursor() as cursor:
-            sql = 'INSERT INTO answer_provided (id, sender_id, question_id, answer_id, is_correct, test_id) VALUES (%s, %s, %s, %s, %s, %s)'
+            sql = 'INSERT INTO answer_provided (id, sender_id, question_id, answer_id, is_correct, test_id, question_request_id) VALUES (%s, %s, %s, %s, %s, %s, %s)'
             cursor.execute(sql, (
                 response_id, values.sender_id,
                 values.question_id, values.answer_id,
-                values.is_correct, values.test_id))
+                values.is_correct, values.test_id,
+                values.question_request_id))
         db_connection.commit()
     except:
         log('Error! insert user answer {}'.format(response_id))
