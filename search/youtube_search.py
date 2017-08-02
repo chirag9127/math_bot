@@ -1,7 +1,6 @@
 import os
 
 from apiclient.discovery import build
-from ml.youtube_relevance_model import YoutubeRelevanceModel
 
 
 DEVELOPER_KEY = os.environ['YOUTUBE_DEVELOPER_KEY']
@@ -38,17 +37,5 @@ class YouTubeSearcher:
 
 def get_most_relevant_video(query):
     videos = YouTubeSearcher().search_for_videos(query)
-    data = {
-        'query': [],
-        'title': [],
-        'description': [],
-        'video_id': [],
-    }
-    for video in videos:
-        data['query'].append(query)
-        data['title'].append(video['title'])
-        data['description'].append(video['description'])
-        data['video_id'].append(video['video_id'])
-    preds = YoutubeRelevanceModel.Instance().predict(data)
-    preds_out = [p[0] for p in preds]
-    return data['video_id'][preds_out.index(max(preds_out))]
+    if videos:
+        return videos[0]['video_id']

@@ -7,8 +7,3 @@ __pycache__
 config.sh
 env_vars.sh
 *.pyc
-
-# Elastic Beanstalk Files
-.elasticbeanstalk/*
-!.elasticbeanstalk/*.cfg.yml
-!.elasticbeanstalk/*.global.yml
