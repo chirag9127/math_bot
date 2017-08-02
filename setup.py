@@ -4,7 +4,8 @@ config = {
     'include_package_data': True,
     'description': 'math bot for SAT',
     'version': '0.0.1',
-    'packages': ['database', 'helper_scripts', 'search', 'messenger_bot'],
+    'packages': ['database', 'helper_scripts', 'search', 'messenger_bot',
+                 'ml'],
     'zip_safe': False,
     'setup_requires': [],
     'install_requires': [
