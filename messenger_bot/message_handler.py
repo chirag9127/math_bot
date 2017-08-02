@@ -32,10 +32,11 @@ def diagnostic_yes_flow(sender_id, response, request_id):
     send_text_message(sender_id, response[RESULT][FULFILLMENT][SPEECH])
     question = question_from_topic('Arithmetic')
     options = options_and_answer(question[ID])
-    send_question(sender_id, request_id, test_id, question, options,
+    send_question(sender_id, request_id, question, options,
                   remaining=3, topics=['Algebra', 'Geometry',
                                        'Word Problems', 'Statistics'],
-                  diagnostic=True, test=True, topic='Arithmetic')
+                  diagnostic=True, test=True, topic='Arithmetic',
+                  test_id=test_id)
 
 
 def diagnostic_no_flow(sender_id, response):
@@ -54,4 +55,4 @@ def study_flow(sender_id, response, request_id):
     topic = response[RESULT][PARAMETERS][TOPICS]
     question = question_from_topic(topic)
     options = options_and_answer(question[ID])
-    send_question(sender_id, request_id, None, question, options, topic=topic)
+    send_question(sender_id, request_id, question, options, topic=topic)

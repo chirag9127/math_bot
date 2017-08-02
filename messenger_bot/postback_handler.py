@@ -71,7 +71,7 @@ def handle_test(payload, sender_id, request_id):
         topics = payload['topics']
         question = question_from_topic(topics.pop())
         options = options_and_answer(question[ID])
-        send_question(sender_id, request_id, test_id, question, options,
+        send_question(sender_id, request_id, question, options,
                       remaining=payload['remaining'] - 1,
                       topics=topics, diagnostic=True, test=True, result=result,
                       test_id=test_id)
