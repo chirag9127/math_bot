@@ -9,7 +9,7 @@ user_request = namedtuple('user_request', 'id, query')
 
 user_response = namedtuple('user_response', 'intent, entities, response, sender_id')
 
-user_answer = namedtuple('user_answer', 'sender_id, question_id, answer, is_correct')
+user_answer = namedtuple('user_answer', 'sender_id, question_id, answer_id, is_correct')
 
 
 def insert_user_request(request_id, request):
@@ -82,8 +82,8 @@ def get_response_id(question_id, sender_id):
 def insert_answer(response_id, values):
     try:
         with db_connection.cursor() as cursor:
-            sql = 'INSERT INTO answer_provided (id, sender_id, question_id, answer, is_correct) VALUES (%s, %s, %s, %s, %s)'
-            cursor.execute(sql, (response_id, values.sender_id, values.question_id, values.answer, values.is_correct))
+            sql = 'INSERT INTO answer_provided (id, sender_id, question_id, answer_id, is_correct) VALUES (%s, %s, %s, %s, %s)'
+            cursor.execute(sql, (response_id, values.sender_id, values.question_id, values.answer_id, values.is_correct))
         db_connection.commit()
     except:
         log('Error! insert user answer {}'.format(response_id))
@@ -92,8 +92,8 @@ def insert_answer(response_id, values):
 def update_answer(response_id, values):
     try:
         with db_connection.cursor() as cursor:
-            sql = 'UPDATE answer_provided SET answer = %s, is_correct = %s WHERE id = %s'
-            cursor.execute(sql, (values.answer, values.is_correct, response_id))
+            sql = 'UPDATE answer_provided SET answer_id = %s, is_correct = %s WHERE id = %s'
+            cursor.execute(sql, (values.answer_id, values.is_correct, response_id))
         db_connection.commit()
     except:
         log('Error! update user answer {}'.format(response_id))
@@ -123,6 +123,6 @@ def parse_answer(answer):
     return user_answer(
         sender_id=data['sender']['id'],
         question_id=ast.literal_eval(data['postback']['payload'])['qid'],
-        answer=data['postback']['title'],
+        answer_id=ast.literal_eval(data['postback']['payload'])['id'],
         is_correct=True if ast.literal_eval(data['postback']['payload'])['correct'] == ast.literal_eval(data['postback']['payload'])['id'] else False
         )

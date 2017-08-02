@@ -58,6 +58,7 @@ def handle_test(payload, sender_id, request_id):
         result.append({'qid': payload['qid'], 'correct': True})
     else:
         result.append({'qid': payload['qid'], 'correct': False})
+    test_id = payload['test_id']
     remaining = payload['remaining']
     if remaining < 0:
         count_correct = sum([1 if res['correct'] else 0 for res in result])
@@ -70,9 +71,10 @@ def handle_test(payload, sender_id, request_id):
         topics = payload['topics']
         question = question_from_topic(topics.pop())
         options = options_and_answer(question[ID])
-        send_question(sender_id, request_id, question, options,
+        send_question(sender_id, request_id, test_id, question, options,
                       remaining=payload['remaining'] - 1,
-                      topics=topics, diagnostic=True, test=True, result=result)
+                      topics=topics, diagnostic=True, test=True, result=result,
+                      test_id=test_id)
 
 
 def handle_question(payload, sender_id):
