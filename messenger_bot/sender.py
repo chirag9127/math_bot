@@ -2,7 +2,7 @@ import json
 import os
 import random
 import requests
-
+from uuid import uuid4
 from helper_scripts.utility import filter_question
 from messenger_bot.consts import *
 from messenger_bot.logger import log
@@ -70,11 +70,13 @@ def send_question(recipient_id, request_id, question, options, **kwargs):
     log(question)
     #insert_user_question(request_id, recipient_id, str(question))
     buttons = []
+    question_request_id = str(uuid4())
     for option in options.options:
         payload = {
             'id': option['id'],
             'correct': options.correct,
-            'qid': question['id']
+            'qid': question['id'],
+            'question_request_id': question_request_id,
         }
         payload.update(kwargs)
         payload = str(payload)

@@ -49,7 +49,8 @@ CREATE TABLE answer_provided(
 	question_id varchar(20) NOT NULL,
 	time_asked timestamp DEFAULT CURRENT_TIMESTAMP,
 	answer_id varchar(20) NOT NULL,
-	test_id varchar(20),
+	test_id varchar(36),
 	is_correct BOOLEAN NOT NULL,
-	FOREIGN KEY (id) REFERENCES user_request(id)
+	question_request_id varchar(36) NOT NULL
 	);
+ALTER TABLE answer_provided ALTER COLUMN test_id varchar (36);

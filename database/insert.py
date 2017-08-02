@@ -9,7 +9,7 @@ user_request = namedtuple('user_request', 'id, query')
 
 user_response = namedtuple('user_response', 'intent, entities, response, sender_id')
 
-user_answer = namedtuple('user_answer', 'sender_id, question_id, answer_id, is_correct, test_id')
+user_answer = namedtuple('user_answer', 'sender_id, question_id, answer_id, is_correct, test_id, question_request_id')
 
 
 def insert_user_request(request_id, request):
@@ -72,10 +72,10 @@ def parse_question(question):
     return data['id']
 
 
-def get_response_id(question_id, sender_id):
+def get_response_id(question_request_id):
     with db_connection.cursor() as cursor:
-        sql = 'SELECT id from questions_given WHERE sender_id = %s AND question_id = %s ORDER BY time_asked LIMIT 1'
-        cursor.execute(sql, (sender_id, question_id))
+        sql = 'SELECT id from answer_provided WHERE question_request_id = %s'
+        cursor.execute(sql, (question_request_id))
         return cursor.fetchone()['id']
 
 
@@ -102,10 +102,10 @@ def update_answer(response_id, values):
         log('Error! update user answer {}'.format(response_id))
 
 
-def is_answer_there(response_id):
+def is_answer_there(question_request_id):
     with db_connection.cursor() as cursor:
-        sql = 'SELECT id FROM answer_provided WHERE id = %s LIMIT 1'
-        cursor.execute(sql, (response_id))
+        sql = 'SELECT id FROM answer_provided WHERE question_request_id = %s LIMIT 1'
+        cursor.execute(sql, (question_request_id))
         return cursor.fetchone() is not None
 
 
@@ -113,8 +113,8 @@ def insert_user_answer(response_id, answer):
     try:
         log('insert user {}'.format(answer))
         values = parse_answer(answer)
-        if is_answer_there(response_id):
-            update_answer(response_id, values)
+        if is_answer_there(values.question_request_id):
+            update_answer(get_response_id(values.question_request_id), values)
         else:
             insert_answer(response_id, values)
     except:
@@ -130,5 +130,6 @@ def parse_answer(answer):
             question_id=payload['qid'],
             answer_id=payload['id'],
             is_correct=True if payload['correct'] == payload['id'] else False,
-            test_id=payload['test_id'] if 'diagnostic' in payload.keys() and payload['diagnostic'] else None
+            test_id=payload['test_id'] if 'diagnostic' in payload.keys() and payload['diagnostic'] else None,
+            question_request_id=payload['question_request_id']
             )
