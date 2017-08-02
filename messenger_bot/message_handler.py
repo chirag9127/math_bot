@@ -63,8 +63,12 @@ def greeting_flow(sender_id, response):
 
 
 def study_flow(sender_id, response, request_id):
-    send_text_message(sender_id, response[RESULT][FULFILLMENT][SPEECH])
     topic = response[RESULT][PARAMETERS][TOPICS]
+    if topic != 'default_topic':
+        send_text_message(sender_id, response[RESULT][FULFILLMENT][SPEECH])
+    else:
+        topic = ''
+        send_text_message(sender_id, "Sure! Let's start with this:")
     log("TOPIC: {}".format(topic))
     question = question_from_topic(topic)
     options = options_and_answer(question[ID])
