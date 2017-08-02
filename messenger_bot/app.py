@@ -50,7 +50,7 @@ def webhook():
 
                     if messaging_event.get("postback"):
                         sender_id = messaging_event["sender"]["id"]
-                        insert_user_answer(str(messaging_event))
+                        insert_user_answer(request_id, str(messaging_event))
                         handle_postback(messaging_event, sender_id, request_id)
 
     return "ok", 200

@@ -109,11 +109,10 @@ def is_answer_there(response_id):
         return cursor.fetchone() is not None
 
 
-def insert_user_answer(answer):
+def insert_user_answer(response_id, answer):
     try:
         log('insert user {}'.format(answer))
         values = parse_answer(answer)
-        response_id = get_response_id(values.question_id, values.sender_id)
         if is_answer_there(response_id):
             update_answer(response_id, values)
         else:
