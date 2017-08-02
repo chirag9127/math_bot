@@ -42,3 +42,14 @@ CREATE TABLE answer_provided(
 	);
 
 ALTER TABLE answer_provided ADD UNIQUE(id);
+
+CREATE TABLE answer_provided(
+	id varchar(36),
+	sender_id varchar(20) NOT NULL,
+	question_id varchar(20) NOT NULL,
+	time_asked timestamp DEFAULT CURRENT_TIMESTAMP,
+	answer_id varchar(20) NOT NULL,
+	test_id varchar(20),
+	is_correct BOOLEAN NOT NULL,
+	FOREIGN KEY (id) REFERENCES user_request(id)
+	);

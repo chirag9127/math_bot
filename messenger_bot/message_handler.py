@@ -2,17 +2,17 @@ from messenger_bot.consts import *
 from database.db_api import question_from_topic, options_and_answer
 from messenger_bot.api_ai import APIAI
 from messenger_bot.logger import log
-from database.insert import insert_user_response
 from messenger_bot.sender import send_text_message, send_question, \
     send_helper_messages
 from search.youtube_search import get_most_relevant_video
+from uuid import uuid4
 
 
 def handle_message(message_text, sender_id, request_id):
     response = APIAI.Instance().message_response(
         message_text, sender_id)
     intent = response[RESULT][METADATA][INTENT_NAME]
-    insert_user_response(request_id, str(response))
+    #insert_user_response(request_id, str(response))
     log(response)
     if intent == STUDY:
         study_flow(sender_id, response, request_id)
@@ -40,13 +40,15 @@ def video_flow(sender_id, message_text):
 
 
 def diagnostic_yes_flow(sender_id, response, request_id):
+    test_id = str(uuid4())
     send_text_message(sender_id, response[RESULT][FULFILLMENT][SPEECH])
     question = question_from_topic('Arithmetic')
     options = options_and_answer(question[ID])
     send_question(sender_id, request_id, question, options,
                   remaining=3, topics=['Algebra', 'Geometry',
                                        'Word Problems', 'Statistics'],
-                  diagnostic=True, test=True, topic='Arithmetic')
+                  diagnostic=True, test=True, topic='Arithmetic',
+                  test_id=test_id)
 
 
 def diagnostic_no_flow(sender_id, response):
