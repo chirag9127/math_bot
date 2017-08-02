@@ -2,7 +2,6 @@ from messenger_bot.consts import *
 from database.db_api import question_from_topic, options_and_answer
 from messenger_bot.api_ai import APIAI
 from messenger_bot.logger import log
-from database.insert import insert_user_response
 from messenger_bot.sender import send_text_message, send_question, \
     send_helper_messages
 from uuid import uuid4
@@ -12,7 +11,7 @@ def handle_message(message_text, sender_id, request_id):
     response = APIAI.Instance().message_response(
         message_text, sender_id)
     intent = response[RESULT][METADATA][INTENT_NAME]
-    insert_user_response(request_id, str(response))
+    #insert_user_response(request_id, str(response))
     log(response)
     if intent == STUDY:
         study_flow(sender_id, response, request_id)

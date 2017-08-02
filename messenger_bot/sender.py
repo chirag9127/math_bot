@@ -68,7 +68,7 @@ def send(data):
 
 def send_question(recipient_id, request_id, test_id, question, options, **kwargs):
     log(question)
-    insert_user_question(request_id, recipient_id, str(question))
+    #insert_user_question(request_id, recipient_id, str(question))
     buttons = []
     for option in options.options:
         payload = {

@@ -27,7 +27,7 @@ def verify():
 def webhook():
     data = request.get_json()
     request_id = str(uuid4())
-    insert_user_request(request_id, str(data))
+    #insert_user_request(request_id, str(data))
 
     if data["object"] == "page":
 
