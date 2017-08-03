@@ -3,7 +3,7 @@ from database.db_api import question_from_topic, options_and_answer
 from messenger_bot.api_ai import APIAI
 from messenger_bot.logger import log
 from messenger_bot.sender import send_text_message, send_question, \
-    send_helper_messages, send_open_graph_video
+    send_helper_messages, send_open_graph_video, send_num_questions
 from search.youtube_search import get_most_relevant_video
 from uuid import uuid4
 
