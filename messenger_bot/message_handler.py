@@ -25,20 +25,20 @@ def handle_message(message_text, sender_id, request_id):
     elif intent == VIDEO_SEARCH:
         video_flow(sender_id, message_text)
     elif intent == TEST:
-        test_start_flow(sender_id, message_text)
+        test_start_flow(sender_id, response)
     elif intent == NUM_QUESTIONS:
-        num_questions_flow(sender_id, message_text)
+        num_questions_flow(sender_id, response)
     elif intent == DEFAULT:
         send_text_message(sender_id,
                           response[RESULT][FULFILLMENT][SPEECH])
         send_helper_messages(sender_id)
 
 
-def num_questions_flow(sender_id, message_text):
+def num_questions_flow(sender_id, response):
     send_text_message(sender_id, response[RESULT][FULFILLMENT][SPEECH])
 
 
-def test_start_flow(sender_id, message_text):
+def test_start_flow(sender_id, response):
     send_text_message(sender_id, response[RESULT][FULFILLMENT][SPEECH])
 
 
