@@ -1,6 +1,7 @@
 import ast
 import os
 import random
+from uuid import uuid4
 
 from messenger_bot.consts import *
 from messenger_bot.logger import log
@@ -30,13 +31,36 @@ def handle_postback(event, sender_id, request_id):
         payload = event['postback']['payload']
         payload = ast.literal_eval(payload)
         if 'type' in payload and payload['type'] == 'num_questions':
-            pass
+            handle_new_test(payload, sender_id, request_id)
         elif 'test' in payload and payload['test'] is True:
             handle_test(payload, sender_id, request_id)
         elif 'first_message' in payload:
             handle_first_message(sender_id)
         else:
             handle_question(payload, sender_id)
+
+
+def handle_new_test(payload, sender_id, request_id):
+    test_id = str(uuid4())
+    topic = payload['topic']
+    num = int(payload['num'])
+    if topic.strip() == '':
+        question = question_from_topic('Arithmetic')
+        options = options_and_answer(question[ID])
+        send_question(sender_id, request_id, question, options,
+                      remaining=num - 2,
+                      topics=['Algebra', 'Geometry',
+                              'Word Problems', 'Statistics'],
+                      diagnostic=False, test=True, topic='Arithmetic',
+                      test_id=test_id)
+    else:
+        question = question_from_topic(topic)
+        options = options_and_answer(question[ID])
+        send_question(sender_id, request_id, question, options,
+                      remaining=num - 2,
+                      topics=[topic] * 4,
+                      diagnostic=False, test=True, topic=topic,
+                      test_id=test_id)
 
 
 def handle_first_message(sender_id):
