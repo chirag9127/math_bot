@@ -3,7 +3,7 @@ from database.db_api import question_from_topic, options_and_answer
 from messenger_bot.api_ai import APIAI
 from messenger_bot.logger import log
 from messenger_bot.sender import send_text_message, send_question, \
-    send_helper_messages
+    send_helper_messages, send_open_graph_video, send_num_questions
 from search.youtube_search import get_most_relevant_video
 from uuid import uuid4
 
@@ -12,7 +12,7 @@ def handle_message(message_text, sender_id, request_id):
     response = APIAI.Instance().message_response(
         message_text, sender_id)
     intent = response[RESULT][METADATA][INTENT_NAME]
-    #insert_user_response(request_id, str(response))
+    # insert_user_response(request_id, str(response))
     log(response)
     if intent == STUDY:
         study_flow(sender_id, response, request_id)
@@ -24,10 +24,18 @@ def handle_message(message_text, sender_id, request_id):
         diagnostic_yes_flow(sender_id, response, request_id)
     elif intent == VIDEO_SEARCH:
         video_flow(sender_id, message_text)
+    elif intent == TEST:
+        test_start_flow(sender_id, response)
     elif intent == DEFAULT:
         send_text_message(sender_id,
                           response[RESULT][FULFILLMENT][SPEECH])
         send_helper_messages(sender_id)
+
+
+def test_start_flow(sender_id, response):
+    topic = response[RESULT][PARAMETERS][TOPICS]
+    send_num_questions(
+        sender_id, response[RESULT][FULFILLMENT][SPEECH], topic)
 
 
 def video_flow(sender_id, message_text):
@@ -35,7 +43,7 @@ def video_flow(sender_id, message_text):
     video_link = 'https://www.youtube.com/watch?v={}'.format(
         most_relevant_video)
     send_text_message(sender_id, 'Here is a video on this:')
-    send_video(sender_id, video_link)
+    send_open_graph_video(sender_id, video_link)
     send_helper_messages(sender_id)
 
 
@@ -63,8 +71,13 @@ def greeting_flow(sender_id, response):
 
 
 def study_flow(sender_id, response, request_id):
-    send_text_message(sender_id, response[RESULT][FULFILLMENT][SPEECH])
     topic = response[RESULT][PARAMETERS][TOPICS]
+    if topic != 'default_topic':
+        send_text_message(sender_id, response[RESULT][FULFILLMENT][SPEECH])
+    else:
+        topic = ''
+        send_text_message(sender_id, "Sure! Let's start with this:")
+    log("TOPIC: {}".format(topic))
     question = question_from_topic(topic)
     options = options_and_answer(question[ID])
     send_question(sender_id, request_id, question, options, topic=topic)

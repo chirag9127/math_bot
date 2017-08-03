@@ -52,6 +52,28 @@ def send_video(recipient_id, video_link):
     send(data)
 
 
+def send_open_graph_video(recipient_id, video_link):
+    data = json.dumps({
+        "recipient": {
+            "id": recipient_id
+        },
+        "message": {
+            "attachment": {
+                "type": "template",
+                "payload": {
+                    "template_type": "open_graph",
+                    "elements": [
+                        {
+                            "url": video_link,
+                        }
+                    ]
+                }
+            }
+        }
+    })
+    send(data)
+
+
 def send(data):
     params = {
         "access_token": os.environ["PAGE_ACCESS_TOKEN"]
@@ -68,7 +90,7 @@ def send(data):
 
 def send_question(recipient_id, request_id, question, options, **kwargs):
     log(question)
-    #insert_user_question(request_id, recipient_id, str(question))
+    # insert_user_question(request_id, recipient_id, str(question))
     buttons = []
     question_request_id = str(uuid4())
     for option in options.options:
@@ -104,12 +126,43 @@ def send_question(recipient_id, request_id, question, options, **kwargs):
     send(data)
 
 
+def send_num_questions(recipient_id, response_message, topic):
+    buttons = []
+    for num in ['3', '4', '5']:
+        button = {
+            "type": "postback",
+            "title": num,
+            "payload": str({'topic': topic}),
+        }
+        buttons.append(button)
+    data = json.dumps({
+        "recipient": {
+            "id": recipient_id
+        },
+        "message": {
+            "attachment": {
+                "type": "template",
+                "payload": {
+                    "template_type": "button",
+                    "text": response_message,
+                    "buttons": buttons,
+                }
+            }
+        }
+    })
+    send(data)
+
+
 def send_helper_messages(sender_id):
-    send_text_message(sender_id, "You can Practice questions by typing "
-                                 "something like "
-                                 "'I want to do a question on Algebra'")
-    send_text_message(sender_id, "If you have a question you want the solution "
-                                 "you can type 'Solve: x^2 - 1 = 0'")
+    messages = [
+        "You can Practice questions by typing something like "
+        "'I want to do a question on Algebra'",
+        "You can also ask me a question like 'Solve: x^2 - 1 = 0' "
+        "and I'll help you solve it :)",
+        "You can request video tutorial  by typing "
+        "'How to solve linear equations?'"
+    ]
+    send_text_message(sender_id, random.choice(messages))
 
 
 def send_text_message(recipient_id, message_text):
