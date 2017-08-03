@@ -90,7 +90,7 @@ def send(data):
 
 def send_question(recipient_id, request_id, question, options, **kwargs):
     log(question)
-    #insert_user_question(request_id, recipient_id, str(question))
+    # insert_user_question(request_id, recipient_id, str(question))
     buttons = []
     question_request_id = str(uuid4())
     for option in options.options:
@@ -118,6 +118,33 @@ def send_question(recipient_id, request_id, question, options, **kwargs):
                 "payload": {
                     "template_type": "button",
                     "text": filter_question(question['question_text']),
+                    "buttons": buttons,
+                }
+            }
+        }
+    })
+    send(data)
+
+
+def send_num_questions(recipient_id, response_message, topic):
+    buttons = []
+    for num in ['3', '4', '5']:
+        button = {
+            "type": "postback",
+            "title": num,
+            "payload": {'topic': topic},
+        }
+        buttons.append(button)
+    data = json.dumps({
+        "recipient": {
+            "id": recipient_id
+        },
+        "message": {
+            "attachment": {
+                "type": "template",
+                "payload": {
+                    "template_type": "button",
+                    "text": response_message,
                     "buttons": buttons,
                 }
             }
