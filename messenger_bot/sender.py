@@ -132,7 +132,7 @@ def send_num_questions(recipient_id, response_message, topic):
         button = {
             "type": "postback",
             "title": num,
-            "payload": str({'topic': topic}),
+            "payload": str({'topic': topic, 'type': 'num_questions'}),
         }
         buttons.append(button)
     data = json.dumps({

@@ -29,7 +29,9 @@ def handle_postback(event, sender_id, request_id):
     if 'postback' in event and 'payload' in event['postback']:
         payload = event['postback']['payload']
         payload = ast.literal_eval(payload)
-        if 'test' in payload and payload['test'] is True:
+        if 'type' in payload and payload['type'] == 'num_questions':
+            pass
+        elif 'test' in payload and payload['test'] is True:
             handle_test(payload, sender_id, request_id)
         elif 'first_message' in payload:
             handle_first_message(sender_id)
