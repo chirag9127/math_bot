@@ -54,3 +54,54 @@ CREATE TABLE answer_provided(
 	question_request_id varchar(36) NOT NULL
 	);
 ALTER TABLE answer_provided ALTER COLUMN test_id varchar (36);
+
+
+# how many questions did I answer today, this week, this month
+
+
+select count(*) from answer_provided where time_asked 
+BETWEEN (select CURRENT_TIMESTAMP + interval '-1' day) 
+AND (select CURRENT_TIMESTAMP) 
+AND is_correct = 1 
+AND sender_id = '1384341615018517';
+;
+
+# how many questions did I get right today, this week, this month
+
+select count(*) from answer_provided where time_asked 
+BETWEEN (select CURRENT_TIMESTAMP + interval '-7' day) 
+AND (select CURRENT_TIMESTAMP)
+AND is_correct = 1 AND sender_id = x;
+
+select count(*) from answer_provided where time_asked 
+BETWEEN (select CURRENT_TIMESTAMP + interval '-30' day) 
+AND (select CURRENT_TIMESTAMP) 
+AND is_correct = 1 
+AND sender_id = x;
+
+# score in given topic - sum over eternity
+
+
+select count(*)
+from answer_provided a join questions_question q 
+on q.id = a.question_id
+where a.is_correct = 1 
+AND q.topic = 'Arithmetic' ANDAND a.sender_id = '1384341615018517';
+
+# top two areas , bottom two areas - based on correct answers
+
+# top 2
+select count(*), q.topic
+from answer_provided a join questions_question q 
+on q.id = a.question_id
+where a.is_correct = 1 AND a.sender_id = '1384341615018517'
+GROUP BY q.topic DESC 
+LIMIT 2;
+
+# bottom 2
+select count(*), q.topic
+from answer_provided a join questions_question q 
+on q.id = a.question_id
+where a.is_correct = 1 AND a.sender_id = '1384341615018517'
+GROUP BY q.topic 
+LIMIT 2;
