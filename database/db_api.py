@@ -20,52 +20,53 @@ topic = enum(
     COORDINATE_GEO='Coordinate Geometry'
 )
 
-db_connection = DBConnection.Instance().get_connection()
-
 
 def question_from_topic(topic):
-    cursor = db_connection.cursor()
-    sql = 'SELECT question_text, id from questions_question where topic = %s and deleted = 0 '\
-        'and correct = TRUE order by rand() limit 1'
-    cursor.execute(sql, (topic))
+    sql = 'SELECT question_text, id from questions_question where topic = {} ' \
+        'and deleted = 0 and correct = TRUE order by rand() limit 1'.format(
+            topic)
+    cursor = execute_sql(sql)
     response = cursor.fetchone()
     cursor.close()
     return response
 
 
 def question_from_sub_topic(sub_topic):
-    cursor = db_connection.cursor()
-    sql = 'SELECT * from questions_question where sub_topic = %s and ' \
-        'correct = TRUE limit 1'
-    cursor.execute(sql, (sub_topic))
+    sql = 'SELECT * from questions_question where sub_topic = {} and ' \
+        'correct = TRUE limit 1'.format(sub_topic)
+    cursor = execute_sql(sql)
     response = cursor.fetchone()
     cursor.close()
     return response
 
 
 def has_video(question_id):
-    cursor = db_connection.cursor()
-    sql = 'select video_added from questions_question where id = %s'
-    cursor.execute(sql, question_id)
+    sql = 'select video_added from questions_question where id = {}'.format(
+        question_id)
+    cursor = execute_sql(sql)
     val = cursor.fetchone()['video_added']
+    cursor.close()
     if val == 1:
         return True
     return False
 
 
 def video(question_id):
-    cursor = db_connection.cursor()
-    sql = 'SELECT video from questions_question where id = %s'
-    cursor.execute(sql, (question_id))
-    return cursor.fetchone()['video']
+    sql = 'SELECT video from questions_question where id = {}'.format(
+        question_id)
+    cursor = execute_sql(sql)
+    video = cursor.fetchone()['video']
+    cursor.close()
+    return video
 
 
 def options_and_answer(question_id):
-    cursor = db_connection.cursor()
     sql = 'SELECT o.id, o.option_text, o.correct from questions_option ' \
-        'o join questions_question q on o.qid_id = q.id where q.id = %s'
-    cursor.execute(sql, (question_id))
+        'o join questions_question q on o.qid_id = q.id ' \
+        'where q.id = {}'.format(question_id)
+    cursor = execute_sql(sql)
     options = cursor.fetchall()
+    cursor.close()
     while len(options) > 3:
         item = random.choice(options)
         if item['correct'] == 1:
@@ -84,12 +85,23 @@ def correct_answer(options):
 
 
 def subtopics():
-    cursor = db_connection.cursor()
     sql = 'select distinct sub_topic from questions_question'
-    cursor.execute(sql)
+    cursor = execute_sql(sql)
     response = cursor.fetchall()
     cursor.close()
     return response
+
+
+def execute_sql(query):
+    db_connection = DBConnection.Instance().get_connection()
+    try:
+        cursor = db_connection.cursor()
+        cursor.execute(query)
+    except:
+        db_connection.close()
+        cursor = db_connection.cursor()
+        cursor.execute(query)
+    return cursor
 
 
 if __name__ == "__main__":
