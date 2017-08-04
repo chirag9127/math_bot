@@ -22,7 +22,8 @@ topic = enum(
 
 
 def question_from_topic(topic):
-    sql = 'SELECT question_text, id from questions_question where topic = {} ' \
+    sql = 'SELECT question_text, id from questions_question where ' \
+        'topic = "{}" ' \
         'and deleted = 0 and correct = TRUE order by rand() limit 1'.format(
             topic)
     cursor = execute_sql(sql)
@@ -32,7 +33,7 @@ def question_from_topic(topic):
 
 
 def question_from_sub_topic(sub_topic):
-    sql = 'SELECT * from questions_question where sub_topic = {} and ' \
+    sql = 'SELECT * from questions_question where sub_topic = "{}" and ' \
         'correct = TRUE limit 1'.format(sub_topic)
     cursor = execute_sql(sql)
     response = cursor.fetchone()
