@@ -95,7 +95,8 @@ select count(*), q.topic
 from answer_provided a join questions_question q 
 on q.id = a.question_id
 where a.is_correct = 1 AND a.sender_id = '1384341615018517'
-GROUP BY q.topic DESC 
+GROUP BY q.topic
+ORDER BY count(*) DESC
 LIMIT 2;
 
 # bottom 2

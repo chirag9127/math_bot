@@ -6,7 +6,6 @@ from uuid import uuid4
 from helper_scripts.utility import filter_question
 from messenger_bot.consts import *
 from messenger_bot.logger import log
-from database.insert import insert_user_question
 
 
 def send_happy_gif(sender_id):
@@ -132,7 +131,8 @@ def send_num_questions(recipient_id, response_message, topic):
         button = {
             "type": "postback",
             "title": num,
-            "payload": str({'topic': topic}),
+            "payload": str({'topic': topic, 'type': 'num_questions',
+                            'num': num}),
         }
         buttons.append(button)
     data = json.dumps({
@@ -155,12 +155,13 @@ def send_num_questions(recipient_id, response_message, topic):
 
 def send_helper_messages(sender_id):
     messages = [
-        "You can Practice questions by typing something like "
+        "You can practice questions by typing something like "
         "'I want to do a question on Algebra'",
         "You can also ask me a question like 'Solve: x^2 - 1 = 0' "
         "and I'll help you solve it :)",
         "You can request video tutorial  by typing "
-        "'How to solve linear equations?'"
+        "'How to solve linear equations?'",
+        "Start a test by typing 'Let's do a test in Geometry'"
     ]
     send_text_message(sender_id, random.choice(messages))
 
