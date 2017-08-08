@@ -4,6 +4,7 @@ import random
 
 from helper_scripts.utility import enum
 from database.db_connection import DBConnection
+from messender_bot.logger import log
 
 answer = namedtuple('answer', 'options, correct')
 
@@ -24,23 +25,29 @@ db_connection = DBConnection.Instance().get_connection()
 
 
 def question_from_topic(topic):
-    cursor = db_connection.cursor()
-    sql = 'SELECT question_text, id from questions_question where topic = %s and deleted = 0 '\
-        'and correct = TRUE order by rand() limit 1'
-    cursor.execute(sql, (topic))
-    response = cursor.fetchone()
-    cursor.close()
-    return response
+    try:
+        with db_connection.cursor() as cursor:
+            sql = 'SELECT question_text, id from questions_question where topic = %s and deleted = 0 '\
+                'and correct = TRUE order by rand() limit 1'
+            cursor.execute(sql, (topic))
+            response = cursor.fetchone()
+            cursor.close()
+            return response
+    except:
+        log('not able to retrieve questions')
 
 
 def question_from_sub_topic(sub_topic):
-    cursor = db_connection.cursor()
-    sql = 'SELECT * from questions_question where sub_topic = %s and ' \
-        'correct = TRUE limit 1'
-    cursor.execute(sql, (sub_topic))
-    response = cursor.fetchone()
-    cursor.close()
-    return response
+    try: 
+        with db_connection.cursor() as cursor:
+            sql = 'SELECT * from questions_question where sub_topic = %s and ' \
+                'correct = TRUE limit 1'
+            cursor.execute(sql, (sub_topic))
+            response = cursor.fetchone()
+            cursor.close()
+            return response
+    except:
+        log('not able to retrieve questions')
 
 
 def has_video(question_id):
