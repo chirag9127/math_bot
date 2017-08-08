@@ -160,7 +160,7 @@ def send_helper_messages(sender_id):
         "You can also ask me a question like 'Solve: x^2 - 1 = 0' "
         "and I'll help you solve it :)",
         "You can request video tutorial  by typing "
-        "'How to solve linear equations?'",
+        "'Video Search: How to solve linear equations?'",
         "Start a test by typing 'Let's do a test in Geometry'"
     ]
     send_text_message(sender_id, random.choice(messages))
