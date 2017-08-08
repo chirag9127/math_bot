@@ -1,15 +1,35 @@
 from search.wolfram_api import get_solution_gifs
 from messenger_bot.sender import send_image, send_text_message, \
-    send_helper_messages
+    send_helper_messages, send_open_graph_video
+from search.youtube_search import get_most_relevant_video
 
 
 def is_keyword_query(message_text):
     if message_text.startswith('Solve:'):
         return True
+    elif message_text.startswith('Video Search:'):
+        return True
     return False
 
 
 def handle_keyword(sender_id, message_text):
+    if message_text.startswith('Solve:'):
+        handle_solver(sender_id, message_text)
+    elif message_text.startswith('Video Search:'):
+        handle_video_search(sender_id, message_text)
+
+
+def handle_video_search(sender_id, message_text):
+    message_text = message_text[13:]
+    most_relevant_video = get_most_relevant_video(message_text)
+    video_link = 'https://www.youtube.com/watch?v={}'.format(
+        most_relevant_video)
+    send_text_message(sender_id, 'Here is a video on this:')
+    send_open_graph_video(sender_id, video_link)
+    send_helper_messages(sender_id)
+
+
+def handle_solver(sender_id, message_text):
     question = message_text[6:]
     solution_gifs = get_solution_gifs(question)
     if solution_gifs:
