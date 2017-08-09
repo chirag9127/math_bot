@@ -34,6 +34,23 @@ def send_image(recipient_id, image_link):
     send(data)
 
 
+def send_image_local(recipient_id, image_path, f):
+    data = json.dumps({
+        "recipient": {
+            "id": recipient_id
+        },
+        "message": {
+            "attachment": {
+                "type": "image",
+                "payload": {
+                }
+            }
+        },
+        'filedata': (get_file_name(image_id), f)
+    })
+    send(data)
+
+
 def send_video(recipient_id, video_link):
     data = json.dumps({
         "recipient": {
@@ -165,6 +182,8 @@ def send_helper_messages(sender_id):
         "You can check how many questions you have done correctly in the "
         "last month by 'Questions done correctly last month'",
         "Get questions done today by 'Questions done today'",
+        "You can check your strengths and weaknesses here.",
+        "Try 'Plot scores for last week'",
     ]
     send_text_message(sender_id, random.choice(messages))
 

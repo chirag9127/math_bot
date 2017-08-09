@@ -6,10 +6,12 @@ from database.diagnostic import questions_answered_today, \
     questions_answered_correctly_last_week, \
     questions_answered_correctly_last_month, top_two_scoring_topics, \
     bottom_two_scoring_topics
+from database.plot import plot_scores_for_last_week, delete_img, get_file_name
 from messenger_bot.api_ai import APIAI
 from messenger_bot.logger import log
 from messenger_bot.sender import send_text_message, send_question, \
-    send_helper_messages, send_open_graph_video, send_num_questions
+    send_helper_messages, send_open_graph_video, send_num_questions, \
+    send_image_local
 from search.youtube_search import get_most_relevant_video
 from uuid import uuid4
 
@@ -40,10 +42,21 @@ def handle_message(message_text, sender_id, request_id):
         top_topics_flow(sender_id)
     elif intent == BOTTOM_TOPICS:
         bottom_topics_flow(sender_id)
+    elif intent == PLOT_SCORES:
+        plot_scores_flow(sender_id)
     elif intent == DEFAULT:
         send_text_message(sender_id,
                           response[RESULT][FULFILLMENT][SPEECH])
         send_helper_messages(sender_id)
+
+
+def plot_scores_flow(sender_id):
+    img_id = str(uuid4())
+    plot_scores_for_last_week(sender_id, img_id)
+    image_path = get_file_name(img_id)
+    with open(image_path, 'rb') as f:
+        send_image_local(sender_id, image_path, f)
+    delete_img(img_id)
 
 
 def top_topics_flow(sender_id):
