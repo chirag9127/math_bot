@@ -85,3 +85,36 @@ def bottom_two_scoring_topics(sender_id):
             LIMIT 2"
         cursor.execute(sql, (sender_id))
         return cursor.fetchall()
+
+
+def questions_grouped_by_date_last_week(sender_id):
+    try:
+        with db_connection.cursor() as cursor:
+            sql = "select DATE(time_asked) AS ForDate, count(*) \
+                    from answer_provided \
+                    where time_asked \
+                    BETWEEN (select CURRENT_TIMESTAMP + interval '-7' day) \
+                    AND (select CURRENT_TIMESTAMP) AND \
+                    sender_id = %s \
+                    GROUP BY ForDate"
+            cursor.execute(sql, (sender_id))
+            return cursor.fetchall()
+    except:
+        log('error! questions group by date')
+
+
+def correct_questions_grouped_by_date_last_week(sender_id):
+    try:
+        with db_connection.cursor() as cursor:
+            sql = "select DATE(time_asked) AS ForDate, count(*) \
+                    from answer_provided \
+                    where time_asked \
+                    BETWEEN (select CURRENT_TIMESTAMP + interval '-7' day) \
+                    AND (select CURRENT_TIMESTAMP) AND is_correct = 1 AND \
+                    sender_id = %s\
+                    GROUP BY ForDate"
+            cursor.execute(sql, (sender_id))
+            return cursor.fetchall()
+    except:
+
+        log('error! correct questions group by date')
