@@ -4,7 +4,7 @@ from database.diagnostic import questions_answered_today, \
     questions_answered_last_week, questions_answered_last_month, \
     questions_answered_correctly_today, \
     questions_answered_correctly_last_week, \
-    questions_answered_correctly_last_month
+    questions_answered_correctly_last_month, top_two_scoring_topics
 from messenger_bot.api_ai import APIAI
 from messenger_bot.logger import log
 from messenger_bot.sender import send_text_message, send_question, \
