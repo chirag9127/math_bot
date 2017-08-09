@@ -52,7 +52,7 @@ def top_topics_flow(sender_id):
         sender_id, 'Your strengths are {}'.format(', '.join(top_topics)))
 
 
-def botton_topics_flow(sender_id):
+def bottom_topics_flow(sender_id):
     bottom_topics = bottom_two_scoring_topics(sender_id)
     send_text_message(
         sender_id, 'Your weaknesses are {}'.format(', '.join(bottom_topics)))
