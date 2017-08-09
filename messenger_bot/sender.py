@@ -6,7 +6,6 @@ from uuid import uuid4
 from helper_scripts.utility import filter_question
 from messenger_bot.consts import *
 from messenger_bot.logger import log
-from database.plot import get_file_name
 
 
 def send_happy_gif(sender_id):
@@ -47,7 +46,7 @@ def send_image_local(recipient_id, image_path, f):
                 }
             }
         },
-        'filedata': (get_file_name(image_id), f)
+        'filedata': (image_path, f)
     })
     send(data)
 
