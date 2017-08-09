@@ -4,7 +4,8 @@ from database.diagnostic import questions_answered_today, \
     questions_answered_last_week, questions_answered_last_month, \
     questions_answered_correctly_today, \
     questions_answered_correctly_last_week, \
-    questions_answered_correctly_last_month, top_two_scoring_topics
+    questions_answered_correctly_last_month, top_two_scoring_topics, \
+    bottom_two_scoring_topics
 from messenger_bot.api_ai import APIAI
 from messenger_bot.logger import log
 from messenger_bot.sender import send_text_message, send_question, \
@@ -37,6 +38,8 @@ def handle_message(message_text, sender_id, request_id):
         questions_answered_correctly_flow(sender_id, response)
     elif intent == TOP_TOPICS:
         top_topics_flow(sender_id)
+    elif intent == BOTTOM_TOPICS:
+        bottom_topics_flow(sender_id)
     elif intent == DEFAULT:
         send_text_message(sender_id,
                           response[RESULT][FULFILLMENT][SPEECH])
@@ -46,7 +49,13 @@ def handle_message(message_text, sender_id, request_id):
 def top_topics_flow(sender_id):
     top_topics = top_two_scoring_topics(sender_id)
     send_text_message(
-        sender_id, 'Your top topics are {}'.format(', '.join(top_topics)))
+        sender_id, 'Your strengths are {}'.format(', '.join(top_topics)))
+
+
+def botton_topics_flow(sender_id):
+    bottom_topics = bottom_two_scoring_topics(sender_id)
+    send_text_message(
+        sender_id, 'Your weaknesses are {}'.format(', '.join(bottom_topics)))
 
 
 def questions_answered_correctly_flow(sender_id, response):
