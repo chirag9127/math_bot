@@ -26,10 +26,16 @@ def handle_message(message_text, sender_id, request_id):
         video_flow(sender_id, message_text)
     elif intent == TEST:
         test_start_flow(sender_id, response)
+    elif intent == QUESTIONS_ANSWERED:
+        questions_answered_flow(sender_id, response)
     elif intent == DEFAULT:
         send_text_message(sender_id,
                           response[RESULT][FULFILLMENT][SPEECH])
         send_helper_messages(sender_id)
+
+
+def questions_answered_flow(sender_id, response):
+    send_text_message(sender_id, response[RESULT][FULFILLMENT][SPEECH])
 
 
 def test_start_flow(sender_id, response):
