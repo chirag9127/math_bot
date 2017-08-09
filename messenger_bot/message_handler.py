@@ -46,7 +46,7 @@ def handle_message(message_text, sender_id, request_id):
 def top_topics_flow(sender_id):
     top_topics = top_two_scoring_topics(sender_id)
     send_text_message(
-        sender_id, 'Your top topics are {}'.format(top_topics))
+        sender_id, 'Your top topics are {}'.format(', '.join(top_topics)))
 
 
 def questions_answered_correctly_flow(sender_id, response):
