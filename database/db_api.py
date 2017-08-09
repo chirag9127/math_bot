@@ -4,7 +4,7 @@ import random
 
 from helper_scripts.utility import enum
 from database.db_connection import DBConnection
-from messender_bot.logger import log
+from messenger_bot.logger import log
 
 answer = namedtuple('answer', 'options, correct')
 
