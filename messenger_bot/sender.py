@@ -57,7 +57,7 @@ def send_image_local(recipient_id, image_path, f):
         "Content-Type": data.content_type
     }
     r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-                      params=params, headers=headers, data=data)
+                      params=params, headers=headers, data=data).json()
 
 
 def send_video(recipient_id, video_link):
