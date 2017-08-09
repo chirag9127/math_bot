@@ -27,7 +27,7 @@ def questions_answered_last_month(sender_id):
     return questions_answered(sender_id, 30)
 
 
-def questions_asnwered_correctly(sender_id, num):
+def questions_answered_correctly(sender_id, num):
     with db_connection.cursor() as cursor:
         sql = "select count(*) from answer_provided where time_asked \
             BETWEEN (select CURRENT_TIMESTAMP + interval '-%s' day) \
@@ -39,15 +39,15 @@ def questions_asnwered_correctly(sender_id, num):
 
 
 def questions_answered_correctly_today(sender_id):
-    return questions_answered(sender_id, 1)
+    return questions_answered_correctly(sender_id, 1)
 
 
 def questions_answered_correctly_last_week(sender_id):
-    return questions_answered(sender_id, 7)
+    return questions_answered_correctly(sender_id, 7)
 
 
 def questions_answered_correctly_last_month(sender_id):
-    return questions_answered(sender_id, 30)
+    return questions_answered_correctly(sender_id, 30)
 
 
 def score_in_given_topic(sender_id, topic):

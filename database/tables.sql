@@ -106,3 +106,12 @@ on q.id = a.question_id
 where a.is_correct = 1 AND a.sender_id = '1384341615018517'
 GROUP BY q.topic 
 LIMIT 2;
+
+# get questions answered during last week
+select DATE(time_asked) AS ForDate, count(*)
+from answer_provided 
+where time_asked 
+BETWEEN (select CURRENT_TIMESTAMP + interval '-7' day) 
+AND (select CURRENT_TIMESTAMP) AND
+sender_id = '1384341615018517'
+GROUP BY ForDate;
