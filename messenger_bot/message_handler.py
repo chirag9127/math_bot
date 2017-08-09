@@ -35,10 +35,18 @@ def handle_message(message_text, sender_id, request_id):
         questions_answered_flow(sender_id, response)
     elif intent == QUESTIONS_ANSWERED_CORRECTLY:
         questions_answered_correctly_flow(sender_id, response)
+    elif intent == TOP_TOPICS:
+        top_topics_flow(sender_id)
     elif intent == DEFAULT:
         send_text_message(sender_id,
                           response[RESULT][FULFILLMENT][SPEECH])
         send_helper_messages(sender_id)
+
+
+def top_topics_flow(sender_id):
+    top_topics = top_two_scoring_topics(sender_id)
+    send_text_message(
+        sender_id, 'Your top topics are {}'.format(top_topics))
 
 
 def questions_answered_correctly_flow(sender_id, response):
@@ -70,12 +78,14 @@ def questions_answered_flow(sender_id, response):
         questions_answered = questions_answered_last_week(sender_id)
     send_text_message(sender_id, 'You have answered {0} questions {1}'.format(
         questions_answered, time_periods))
+    send_helper_messages(sender_id)
 
 
 def test_start_flow(sender_id, response):
     topic = response[RESULT][PARAMETERS][TOPICS]
     send_num_questions(
         sender_id, response[RESULT][FULFILLMENT][SPEECH], topic)
+    send_helper_messages(sender_id)
 
 
 def video_flow(sender_id, message_text):

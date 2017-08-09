@@ -161,7 +161,10 @@ def send_helper_messages(sender_id):
         "and I'll help you solve it :)",
         "You can request video tutorial  by typing "
         "'Video Search: How to solve linear equations?'",
-        "Start a test by typing 'Let's do a test in Geometry'"
+        "Start a test by typing 'Let's do a test in Geometry'",
+        "You can check how many questions you have done correctly in the "
+        "last month by 'Questions done correctly last month'",
+        "Get questions done today by 'Questions done today'",
     ]
     send_text_message(sender_id, random.choice(messages))
 
