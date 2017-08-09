@@ -2,6 +2,7 @@ import json
 import os
 import random
 import requests
+from requests_toolbelt import MultipartEncoder
 from uuid import uuid4
 from helper_scripts.utility import filter_question
 from messenger_bot.consts import *
@@ -48,7 +49,15 @@ def send_image_local(recipient_id, image_path, f):
         },
         'filedata': (image_path, f)
     })
-    send(data)
+    data = MultipartEncoder(data)
+    params = {
+        "access_token": os.environ["PAGE_ACCESS_TOKEN"]
+    }
+    headers = {
+        "Content-Type": data.content_type
+    }
+    r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+                      params=params, headers=headers, data=data)
 
 
 def send_video(recipient_id, video_link):
