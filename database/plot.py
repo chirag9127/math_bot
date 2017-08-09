@@ -15,7 +15,7 @@ def save_img(fig, file_id):
 
 
 def get_file_name(file_id):
-        return os.getcwd()+'/images/score_{}.jpeg'.format(file_id)
+        return os.getcwd()+'/database/images/score_{}.jpeg'.format(file_id)
 
 
 def delete_img(file_id):
