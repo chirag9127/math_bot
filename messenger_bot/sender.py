@@ -49,7 +49,7 @@ def send_image_local(recipient_id, image_path, f):
         },
         'filedata': (image_path, f)
     }
-    data = MultipartEncoder(data)
+    data = MultipartEncoder(str(data))
     params = {
         "access_token": os.environ["PAGE_ACCESS_TOKEN"]
     }
