@@ -1,4 +1,5 @@
 from database.db_connection import DBConnection
+from messenger_bot.logger import log
 
 
 db_connection = DBConnection.Instance().get_connection()
@@ -84,7 +85,8 @@ def bottom_two_scoring_topics(sender_id):
             ORDER BY count(*) \
             LIMIT 2"
         cursor.execute(sql, (sender_id))
-        return cursor.fetchall()
+        res = cursor.fetchall()
+        return [r['topic'] for r in res]
 
 
 def questions_grouped_by_date_last_week(sender_id):
