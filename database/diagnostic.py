@@ -1,4 +1,3 @@
-from messenger_bot.logger import log
 from database.db_connection import DBConnection
 
 
@@ -71,7 +70,8 @@ def top_two_scoring_topics(sender_id):
             ORDER BY count(*) DESC \
             LIMIT 2"
         cursor.execute(sql, (sender_id))
-        return cursor.fetchall()
+        res = cursor.fetchall()
+        return [r['topic'] for r in res]
 
 
 def bottom_two_scoring_topics(sender_id):
