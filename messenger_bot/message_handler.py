@@ -1,7 +1,10 @@
 from messenger_bot.consts import *
 from database.db_api import question_from_topic, options_and_answer
 from database.diagnostic import questions_answered_today, \
-    questions_answered_last_week, questions_answered_last_month
+    questions_answered_last_week, questions_answered_last_month, \
+    questions_answered_correctly_today, \
+    questions_answered_correctly_last_week, \
+    questions_answered_correctly_last_month
 from messenger_bot.api_ai import APIAI
 from messenger_bot.logger import log
 from messenger_bot.sender import send_text_message, send_question, \
@@ -30,10 +33,28 @@ def handle_message(message_text, sender_id, request_id):
         test_start_flow(sender_id, response)
     elif intent == QUESTIONS_ANSWERED:
         questions_answered_flow(sender_id, response)
+    elif intent == QUESTIONS_ANSWERED_CORRECTLY:
+        questions_answered_correctly_flow(sender_id, response)
     elif intent == DEFAULT:
         send_text_message(sender_id,
                           response[RESULT][FULFILLMENT][SPEECH])
         send_helper_messages(sender_id)
+
+
+def questions_answered_correctly_flow(sender_id, response):
+    time_periods = response[RESULT][PARAMETERS][TIME_PERIODS]
+    if time_periods == '' or time_periods.lower() == 'today':
+        time_periods = 'today'
+        questions_answered = questions_answered_correctly_today(sender_id)
+    elif time_periods.lower() == 'last month':
+        time_periods = 'last month'
+        questions_answered = questions_answered_correctly_last_month(sender_id)
+    elif time_periods.lower() == 'last week':
+        time_periods = 'last week'
+        questions_answered = questions_answered_correctly_last_week(sender_id)
+    send_text_message(
+        sender_id, 'You have answered {0} questions correctly {1}'.format(
+            questions_answered, time_periods))
 
 
 def questions_answered_flow(sender_id, response):
