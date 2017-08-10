@@ -2,6 +2,7 @@ import json
 import os
 import random
 import requests
+from requests_toolbelt import MultipartEncoder
 from uuid import uuid4
 from helper_scripts.utility import filter_question
 from messenger_bot.consts import *
@@ -32,6 +33,31 @@ def send_image(recipient_id, image_link):
         }
     })
     send(data)
+
+
+def send_image_local(recipient_id, image_path, f):
+    data = {
+        "recipient": {
+            "id": recipient_id
+        },
+        "message": {
+            "attachment": {
+                "type": "image",
+                "payload": {
+                }
+            }
+        },
+        'filedata': (image_path, f)
+    }
+    data = MultipartEncoder(str(data))
+    params = {
+        "access_token": os.environ["PAGE_ACCESS_TOKEN"]
+    }
+    headers = {
+        "Content-Type": data.content_type
+    }
+    r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+                      params=params, headers=headers, data=data).json()
 
 
 def send_video(recipient_id, video_link):
@@ -165,6 +191,8 @@ def send_helper_messages(sender_id):
         "You can check how many questions you have done correctly in the "
         "last month by 'Questions done correctly last month'",
         "Get questions done today by 'Questions done today'",
+        "You can check your strengths and weaknesses here.",
+        "Try 'Plot scores for last week'",
     ]
     send_text_message(sender_id, random.choice(messages))
 

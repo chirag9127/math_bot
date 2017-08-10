@@ -6,7 +6,7 @@ import numpy as np
 
 
 def get_file_name(file_id):
-        return os.getcwd()+'/database/images/score_{}.png'.format(file_id)
+    return os.getcwd()+'/database/images/score_{}.png'.format(file_id)
 
 
 def delete_img(file_id):
