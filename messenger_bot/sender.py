@@ -35,7 +35,7 @@ def send_image(recipient_id, image_link):
     send(data)
 
 
-def send_image_local(recipient_id, image_path, f):
+def send_image_local(recipient_id, image_path):
     data = {
         "recipient": {
             {"id": recipient_id}
@@ -47,9 +47,9 @@ def send_image_local(recipient_id, image_path, f):
                 }
             }
         },
-        'filedata': (image_path, f)
+        'filedata': (os.path.basename(image_path), open(image_path, 'rb'))
     }
-    data = MultipartEncoder(str(data))
+    data = MultipartEncoder(data)
     params = {
         "access_token": os.environ["PAGE_ACCESS_TOKEN"]
     }
