@@ -14,4 +14,3 @@ Keras==2.0.6
 h5py==2.7.0
 matplotlib==2.0.2
 requests_toolbelt==0.8.0
-tkinter

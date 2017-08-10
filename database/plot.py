@@ -1,4 +1,6 @@
 import os
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from database.diagnostic import (questions_grouped_by_date_last_week,
                                  correct_questions_grouped_by_date_last_week)
@@ -14,7 +16,7 @@ def delete_img(file_id):
 
 
 def mathplot_plot(x_axis, y_axis_1, y_axis_2, file_id):
-    ind = np.arange(len(x_axis)) 
+    ind = np.arange(len(x_axis))
     width = 0.35
     fig, ax = plt.subplots()
     rects1 = ax.bar(ind, y_axis_2, width, color='lightgreen')
@@ -28,7 +30,7 @@ def mathplot_plot(x_axis, y_axis_1, y_axis_2, file_id):
     autolabel(ax, rects1)
     autolabel(ax, rects2)
     plt.savefig(get_file_name(file_id))
-    
+
 
 def autolabel(ax, rects):
     """
