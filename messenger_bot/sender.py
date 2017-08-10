@@ -49,6 +49,8 @@ def send_image_local(recipient_id, image_path):
         }),
         'filedata': (os.path.basename(image_path), open(image_path, 'rb'))
     }
+    log('REACHED HERE')
+    log(image_path)
     data = MultipartEncoder(data)
     params = {
         'access_token': os.environ["PAGE_ACCESS_TOKEN"]
