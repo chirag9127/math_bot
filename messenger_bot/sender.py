@@ -37,13 +37,13 @@ def send_image(recipient_id, image_link):
 
 def send_image_local(recipient_id, image_path):
     data = {
-        "recipient": {
-            "id": recipient_id
-        },
-        "message": str({
-            "attachment": {
-                "type": "image",
-                "payload": {
+        'recipient': str({
+            'id': recipient_id
+        }),
+        'message': str({
+            'attachment': {
+                'type': 'image',
+                'payload': {
                 }
             }
         }),
@@ -51,10 +51,10 @@ def send_image_local(recipient_id, image_path):
     }
     data = MultipartEncoder(data)
     params = {
-        "access_token": os.environ["PAGE_ACCESS_TOKEN"]
+        'access_token': os.environ["PAGE_ACCESS_TOKEN"]
     }
     headers = {
-        "Content-Type": data.content_type
+        'Content-Type': data.content_type
     }
     r = requests.post("https://graph.facebook.com/v2.6/me/messages",
                       params=params, headers=headers, data=data).json()
