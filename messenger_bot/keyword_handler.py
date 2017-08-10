@@ -5,7 +5,7 @@ from search.youtube_search import get_most_relevant_video
 
 
 def is_keyword_query(message_text):
-    if message_text.startswith('Solve:'):
+    if message_text.lower().startswith('solve'):
         return True
     elif message_text.startswith('Video Search:'):
         return True
@@ -13,7 +13,7 @@ def is_keyword_query(message_text):
 
 
 def handle_keyword(sender_id, message_text):
-    if message_text.startswith('Solve:'):
+    if message_text.lower().startswith('solve'):
         handle_solver(sender_id, message_text)
     elif message_text.startswith('Video Search:'):
         handle_video_search(sender_id, message_text)
@@ -30,7 +30,7 @@ def handle_video_search(sender_id, message_text):
 
 
 def handle_solver(sender_id, message_text):
-    question = message_text[6:]
+    question = message_text[5:].strip()
     solution_gifs = get_solution_gifs(question)
     if solution_gifs:
         send_text_message(
