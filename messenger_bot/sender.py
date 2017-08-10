@@ -40,13 +40,13 @@ def send_image_local(recipient_id, image_path):
         "recipient": {
             "id": recipient_id
         },
-        "message": {
+        "message": str({
             "attachment": {
                 "type": "image",
                 "payload": {
                 }
             }
-        },
+        }),
         'filedata': (os.path.basename(image_path), open(image_path, 'rb'))
     }
     data = MultipartEncoder(data)
