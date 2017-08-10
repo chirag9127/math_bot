@@ -25,7 +25,7 @@ def answered_vs_correct_plot(x_axis, y_axis_1, y_axis_2, file_id):
     rects2 = ax.bar(ind+width, y_axis_1, width, color='plum')
     # add some text for labels, title and axes ticks
     ax.set_ylabel('Scores')
-    ax.set_title('Progress over last week')
+    ax.set_title('Progress over the week')
     ax.set_xticks(ind + width / 2)
     ax.set_xticklabels(tuple(x_axis))
     ax.legend((rects1[0], rects2[0]), ('Correct', 'Answered'))
