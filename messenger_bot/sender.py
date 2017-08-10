@@ -50,8 +50,6 @@ def send_image_local(recipient_id, image_path):
         'filedata': (os.path.basename(image_path), open(image_path, 'rb'),
                      'image/png')
     }
-    log('REACHED HERE')
-    log(image_path)
     data = MultipartEncoder(data)
     params = {
         'access_token': os.environ["PAGE_ACCESS_TOKEN"]
@@ -186,7 +184,7 @@ def send_helper_messages(sender_id):
     messages = [
         "You can practice questions by typing something like "
         "'I want to do a question on Algebra'",
-        "You can also ask me a question like 'Solve: x^2 - 1 = 0' "
+        "You can also ask me a question like 'Solve x^2 - 1 = 0' "
         "and I'll help you solve it :)",
         "You can request video tutorial  by typing "
         "'Video Search: How to solve linear equations?'",
