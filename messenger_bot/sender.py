@@ -47,7 +47,8 @@ def send_image_local(recipient_id, image_path):
                 }
             }
         }),
-        'filedata': (os.path.basename(image_path), open(image_path, 'rb'))
+        'filedata': (os.path.basename(image_path), open(image_path, 'rb'),
+                     'image/png')
     }
     log('REACHED HERE')
     log(image_path)
