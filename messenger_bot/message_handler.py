@@ -106,7 +106,6 @@ def test_start_flow(sender_id, response):
     topic = response[RESULT][PARAMETERS][TOPICS]
     send_num_questions(
         sender_id, response[RESULT][FULFILLMENT][SPEECH], topic)
-    send_helper_messages(sender_id)
 
 
 def video_flow(sender_id, message_text):
