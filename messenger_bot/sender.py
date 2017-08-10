@@ -38,7 +38,7 @@ def send_image(recipient_id, image_link):
 def send_image_local(recipient_id, image_path):
     data = {
         "recipient": {
-            {"id": recipient_id}
+            "id": recipient_id
         },
         "message": {
             "attachment": {
