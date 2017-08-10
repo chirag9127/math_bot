@@ -54,8 +54,7 @@ def plot_scores_flow(sender_id):
     img_id = str(uuid4())
     plot_scores_for_last_week(sender_id, img_id)
     image_path = get_file_name(img_id)
-    with open(image_path, 'rb') as f:
-        send_image_local(sender_id, image_path, f)
+    send_image_local(sender_id, image_path)
     delete_img(img_id)
 
 

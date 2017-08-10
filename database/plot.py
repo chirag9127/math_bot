@@ -1,5 +1,7 @@
 import os
 from messenger_bot.logger import log
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from database.diagnostic import (questions_grouped_by_date_last_week,
                                  correct_questions_grouped_by_date_last_week,
