@@ -55,7 +55,7 @@ def plot_scores_flow(sender_id):
     plot_scores_for_last_week(sender_id, img_id)
     image_path = get_file_name(img_id)
     send_image_local(sender_id, image_path)
-    # delete_img(img_id)
+    delete_img(img_id)
 
 
 def top_topics_flow(sender_id):
