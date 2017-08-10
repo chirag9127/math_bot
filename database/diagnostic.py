@@ -105,6 +105,22 @@ def questions_grouped_by_date_last_week(sender_id):
         log('error! questions group by date')
 
 
+def scores_in_topics(sender_id):
+    try:
+        with db_connection.cursor() as cursor:
+            sql = "select count(*), q.topic \
+                    from answer_provided a join questions_question q \
+                    on q.id = a.question_id \
+                    where a.is_correct = 1 AND a.sender_id = %s \
+                    GROUP BY q.topic \
+                    ORDER BY count(*) DESC"
+            cursor.execute(sql, (sender_id))
+            return cursor.fetchall()
+    except:
+
+        log('error! scores in topics')
+
+
 def correct_questions_grouped_by_date_last_week(sender_id):
     try:
         with db_connection.cursor() as cursor:
