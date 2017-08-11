@@ -19,4 +19,4 @@ Our main objective was to build a working prototype for the hackathon. Hence, we
 7. Analytics on user performance:
 
 ## System Architecture
-![alt text](https://github.com/chirag9127/math_bot/blob/master/SystemArchitecture.jpeg)
+![alt text](https://github.com/chirag9127/math_bot/blob/master/SystemArchitecture.png)
