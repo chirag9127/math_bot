@@ -12,7 +12,7 @@ from messenger_bot.api_ai import APIAI
 from messenger_bot.logger import log
 from messenger_bot.sender import send_text_message, send_question, \
     send_helper_messages, send_open_graph_video, send_num_questions, \
-    send_image_local
+    send_image_local, send_plot_menu
 from search.youtube_search import get_most_relevant_video
 from search.bing_search import BingSearcher
 from uuid import uuid4
@@ -44,9 +44,11 @@ def handle_message(message_text, sender_id, request_id, bing_search=False):
     elif intent == BOTTOM_TOPICS:
         bottom_topics_flow(sender_id)
     elif intent == PLOT_SCORES:
-        plot_scores_flow(sender_id)
+        plot_scores_flow(sender_id, response)
     elif intent == SCORES_IN_TOPICS:
         scores_in_topics_flow(sender_id)
+    elif intent == PLOT_MENU:
+        plot_menu_flow(sender_id)
     elif intent == DEFAULT:
         if not bing_search:
             corrected_sentence = BingSearcher().correct_spelling(
@@ -58,6 +60,10 @@ def handle_message(message_text, sender_id, request_id, bing_search=False):
         send_text_message(sender_id,
                           response[RESULT][FULFILLMENT][SPEECH])
         send_helper_messages(sender_id)
+
+
+def plot_menu_flow(sender_id):
+    send_plot_menu(sender_id)
 
 
 def scores_in_topics_flow(sender_id):
@@ -73,17 +79,37 @@ def scores_in_topics_flow(sender_id):
     send_helper_messages(sender_id)
 
 
-def plot_scores_flow(sender_id):
+def plot_scores_flow(sender_id, response):
     img_id = str(uuid4())
-    if plot_scores_for_last_week(sender_id, img_id):
-        image_path = get_file_name(img_id)
-        send_image_local(sender_id, image_path)
-        delete_img(img_id)
+    time_periods = response[RESULT][PARAMETERS][TIME_PERIODS]
+    if time_periods.lower() == 'last month':
+        if plot_scores_for_last_month(sender_id, img_id):
+            __helper_plot_scores(sender_id, img_id)
+        else:
+            send_text_message(
+                sender_id, 'You can only see your results after '
+                           'practicing on the platform')
+    elif time_periods.lower() == 'last week':
+        if plot_scores_for_last_week(sender_id, img_id):
+            __helper_plot_scores(sender_id, img_id)
+        else:
+            send_text_message(
+                sender_id, 'You can only see your results after '
+                           'practicing on the platform')
     else:
-        send_text_message(
-            sender_id, 'You can only see your results after '
-                       'practicing on the platform')
+        if plot_scores_for_eternity(sender_id, img_id):
+            __helper_plot_scores(sender_id, img_id)
+        else:
+            send_text_message(
+                sender_id, 'You can only see your results after '
+                           'practicing on the platform')
     send_helper_messages(sender_id)
+
+
+def __helper_plot_scores(sender_id, img_id):
+    image_path = get_file_name(img_id)
+    send_image_local(sender_id, image_path)
+    delete_img(img_id)
 
 
 def top_topics_flow(sender_id):

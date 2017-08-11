@@ -73,7 +73,8 @@ def autolabel(ax, rects):
 def call_bar_plot(
         question_count, correct_count, file_id, title, question_color):
     try:
-        x_axis = [item['ForDate'].strftime('%m/%d/%Y') for item in question_count]
+        x_axis = [item['ForDate'].strftime('%m/%d/%Y')
+                  for item in question_count]
         y_axis_1 = [item['count(*)'] for item in question_count]
         y_axis_2 = [item['count(*)'] for item in correct_count]
         x_axis = x_axis if len(x_axis) > 0 else [0]
@@ -92,15 +93,18 @@ def plot_scores_for_last_week(sender_id, file_id):
     correct_count = list(correct_questions_grouped_by_date_last_week(sender_id))
     correct_count = polish_correct_count(question_count, correct_count)
     return call_bar_plot(
-        question_count, correct_count, file_id, 'Progress over the week', 'lightcoral')
+        question_count, correct_count, file_id,
+        'Progress over the week', 'lightcoral')
 
 
 def plot_scores_for_last_month(sender_id, file_id):
     question_count = list(questions_grouped_by_date_last_month(sender_id))
-    correct_count = list(correct_questions_grouped_by_date_last_month(sender_id))
+    correct_count = list(correct_questions_grouped_by_date_last_month(
+        sender_id))
     correct_count = polish_correct_count(question_count, correct_count)
     return call_bar_plot(
-        question_count, correct_count, file_id, 'Progress over the month', 'royalblue')
+        question_count, correct_count, file_id,
+        'Progress over the month', 'royalblue')
 
 
 def plot_scores_for_eternity(sender_id, file_id):
@@ -108,7 +112,8 @@ def plot_scores_for_eternity(sender_id, file_id):
     correct_count = list(correct_questions_grouped_by_date_eternity(sender_id))
     correct_count = polish_correct_count(question_count, correct_count)
     return call_bar_plot(
-        question_count, correct_count, file_id, 'Progress since you started', 'rosybrown')
+        question_count, correct_count, file_id,
+        'Progress since you started', 'rosybrown')
 
 
 def polish_correct_count(question_count, correct_count):

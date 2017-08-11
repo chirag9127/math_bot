@@ -6,7 +6,8 @@ from uuid import uuid4
 from messenger_bot.consts import *
 from messenger_bot.logger import log
 from messenger_bot.sender import send_text_message, send_image, \
-    send_question, send_video, send_happy_gif, send_helper_messages
+    send_question, send_video, send_happy_gif, send_helper_messages, \
+    send_plot_menu
 from messenger_bot.api_ai import APIAI
 from database.db_api import question_from_topic, options_and_answer, \
     has_video, video
@@ -103,7 +104,7 @@ def handle_test(payload, sender_id, request_id):
         send_text_message(sender_id, "You got {0} out of {1}".format(
             count_correct, count_total
         ))
-        send_helper_messages(sender_id)
+        send_plot_menu(sender_id)
     else:
         topics = payload['topics']
         question = question_from_topic(topics.pop())

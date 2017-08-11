@@ -198,6 +198,15 @@ def send_helper_messages(sender_id):
     send_text_message(sender_id, random.choice(messages))
 
 
+def send_plot_menu(sender_id):
+    send_text_message(sender_id,
+                      "Here is what you can plot: \r\n"
+                      "- Plot your scores in a graph using a query like "
+                      "'Plot scores for last week'\r\n"
+                      "- View your topicwise strengths using a "
+                      "query like 'Topic wise strengths'")
+
+
 def send_text_message(recipient_id, message_text):
     data = json.dumps({
         "recipient": {
