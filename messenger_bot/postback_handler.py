@@ -75,7 +75,7 @@ def handle_first_message(sender_id):
                       "algebra, geometry, etc.\r\n"
                       "- practice some questions\r\n"
                       "- Ask us to solve polynomial function equations\r\n"
-                      "- See a graph of your progress on diagnostic tests")
+                      "- See a graph of your progress on the platform")
     """
     send_text_message(sender_id, 'To begin with, we would do a quick '
                       'assessment of your SAT Math concepts by asking you '

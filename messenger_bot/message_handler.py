@@ -68,7 +68,8 @@ def scores_in_topics_flow(sender_id):
         delete_img(img_id)
     else:
         send_text_message(
-            sender_id, 'Sorry, we are not able to plot at this moment.')
+            sender_id, 'You can only see your results after '
+                       'practicing on the platform')
     send_helper_messages(sender_id)
 
 
@@ -80,7 +81,8 @@ def plot_scores_flow(sender_id):
         delete_img(img_id)
     else:
         send_text_message(
-            sender_id, 'Sorry, we are not able to plot at this moment.')
+            sender_id, 'You can only see your results after '
+                       'practicing on the platform')
     send_helper_messages(sender_id)
 
 
@@ -168,7 +170,7 @@ def greeting_flow(sender_id, response):
                       "algebra, geometry, etc.\r\n"
                       "- Practice some questions\r\n"
                       "- Ask us to solve polynomial function equations\r\n"
-                      "- See a graph of your progress on diagnostic tests")
+                      "- See a graph of your progress on the platform")
 
 
 def study_flow(sender_id, response, request_id):
