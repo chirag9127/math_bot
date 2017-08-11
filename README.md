@@ -44,9 +44,15 @@ All the apis intereact with the messenger bot. The user queries are interpreted 
 ### ML model - Deep Relevance Model
 - One of the biggest challenges with the Youtube search results were that they were not relevant in our context in many cases. 
 - E.g. If the user searched for Videos on Circles, they got a music video instead of tutorials on circles.
-- We created a dataset of 500 query, video title, video description triplets and labelled them as relevant or not. (1 for relevant and 0 for not relevant).
+- We created a dataset of 567 query, video title, video description triplets and labelled them as relevant or not. (1 for relevant and 0 for not relevant). We found 316 videos were relavant. 
 - Note: We do understand that the data is really small. However, we did not have the resources for manual annotation. We are planning to enlarge this dataset using Mechanical Turk.
-- We compared our algorithm with 2 baselines: 
+- We compared our algorithm with 2 baselines: Bag of words with a MLP layer and Mean word vectrs with a MLP layer.
+- Our evaluation metric was accuracy. The cross validation accuracy is listed here. The script for the final model is included in the repo below.
+| Algorithm | Accuracy |
+| ------------- | ------------- |
+| Bag of words  | 0.58  |
+| Mean word vectors  | 0.63  |
+| Our model | 0.75 |
 
 ![alt text](https://github.com/chirag9127/math_bot/blob/master/images/ml_diagram.png)
 
