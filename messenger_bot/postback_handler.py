@@ -74,7 +74,7 @@ def handle_first_message(sender_id):
                       "- Take a quick test \r\n"
                       "- Watch a youtube video explaining the concept like "
                       "algebra, geometry, etc.\r\n"
-                      "- practice some questions\r\n"
+                      "- Practice some questions\r\n"
                       "- Ask us to solve polynomial function equations\r\n"
                       "- See a graph of your progress on the platform")
     """

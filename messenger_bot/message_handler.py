@@ -185,8 +185,11 @@ def diagnostic_yes_flow(sender_id, response, request_id):
 
 
 def diagnostic_no_flow(sender_id, response):
-    send_text_message(sender_id, response[RESULT][FULFILLMENT][SPEECH])
-    send_helper_messages(sender_id)
+    # send_text_message(sender_id, response[RESULT][FULFILLMENT][SPEECH])
+    send_text_message(sender_id,
+                      "Ok. Do you want to see a video? If yes, type "
+                      "'Video in Integers'"
+    # send_helper_messages(sender_id)
 
 
 def greeting_flow(sender_id, response):
