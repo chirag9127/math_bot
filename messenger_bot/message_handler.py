@@ -6,7 +6,8 @@ from database.diagnostic import questions_answered_today, \
     questions_answered_correctly_last_week, \
     questions_answered_correctly_last_month, top_two_scoring_topics, \
     bottom_two_scoring_topics
-from database.plot import plot_scores_for_last_week, delete_img, get_file_name
+from database.plot import plot_scores_for_last_week, delete_img, \
+    get_file_name, scores_in_topics_plot
 from messenger_bot.api_ai import APIAI
 from messenger_bot.logger import log
 from messenger_bot.sender import send_text_message, send_question, \
@@ -44,6 +45,8 @@ def handle_message(message_text, sender_id, request_id, bing_search=False):
         bottom_topics_flow(sender_id)
     elif intent == PLOT_SCORES:
         plot_scores_flow(sender_id)
+    elif intent == SCORES_IN_TOPICS:
+        scores_in_topics_flow(sender_id)
     elif intent == DEFAULT:
         if not bing_search:
             corrected_sentence = BingSearcher().correct_spelling(
@@ -57,6 +60,18 @@ def handle_message(message_text, sender_id, request_id, bing_search=False):
         send_helper_messages(sender_id)
 
 
+def scores_in_topics_flow(sender_id):
+    img_id = str(uuid4())
+    if scores_in_topics_plot(sender_id, img_id):
+        image_path = get_file_name(img_id)
+        send_image_local(sender_id, image_path)
+        delete_img(img_id)
+    else:
+        send_text_message(
+            sender_id, 'Sorry, we are not able to plot at this moment.')
+    send_helper_messages(sender_id)
+
+
 def plot_scores_flow(sender_id):
     img_id = str(uuid4())
     if plot_scores_for_last_week(sender_id, img_id):
@@ -66,6 +81,7 @@ def plot_scores_flow(sender_id):
     else:
         send_text_message(
             sender_id, 'Sorry, we are not able to plot at this moment.')
+    send_helper_messages(sender_id)
 
 
 def top_topics_flow(sender_id):
@@ -145,8 +161,7 @@ def diagnostic_no_flow(sender_id, response):
 
 
 def greeting_flow(sender_id, response):
-    send_text_message(sender_id, 'Hi! How are you doing today? '
-                                 'Here is what we can help you with:')
+    send_text_message(sender_id, 'Hi! How are you doing today?')
     send_helper_messages(sender_id)
 
 

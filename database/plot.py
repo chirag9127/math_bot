@@ -53,8 +53,10 @@ def scores_in_topics_plot(sender_id, file_id):
                 shadow=True, startangle=90)
         ax1.axis('equal')
         plt.savefig(get_file_name(file_id))
+        return True
     except:
         log('error! scores in topic')
+        return False
 
 
 def autolabel(ax, rects):
