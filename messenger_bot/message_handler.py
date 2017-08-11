@@ -7,12 +7,13 @@ from database.diagnostic import questions_answered_today, \
     questions_answered_correctly_last_month, top_two_scoring_topics, \
     bottom_two_scoring_topics
 from database.plot import plot_scores_for_last_week, delete_img, \
-    get_file_name, scores_in_topics_plot
+    get_file_name, scores_in_topics_plot, plot_scores_for_last_month, \
+    plot_scores_for_eternity
 from messenger_bot.api_ai import APIAI
 from messenger_bot.logger import log
 from messenger_bot.sender import send_text_message, send_question, \
     send_helper_messages, send_open_graph_video, send_num_questions, \
-    send_image_local
+    send_image_local, send_plot_menu
 from search.youtube_search import get_most_relevant_video
 from search.bing_search import BingSearcher
 from uuid import uuid4
@@ -44,9 +45,11 @@ def handle_message(message_text, sender_id, request_id, bing_search=False):
     elif intent == BOTTOM_TOPICS:
         bottom_topics_flow(sender_id)
     elif intent == PLOT_SCORES:
-        plot_scores_flow(sender_id)
+        plot_scores_flow(sender_id, response)
     elif intent == SCORES_IN_TOPICS:
         scores_in_topics_flow(sender_id)
+    elif intent == PLOT_MENU:
+        plot_menu_flow(sender_id)
     elif intent == DEFAULT:
         if not bing_search:
             corrected_sentence = BingSearcher().correct_spelling(
@@ -60,6 +63,10 @@ def handle_message(message_text, sender_id, request_id, bing_search=False):
         send_helper_messages(sender_id)
 
 
+def plot_menu_flow(sender_id):
+    send_plot_menu(sender_id)
+
+
 def scores_in_topics_flow(sender_id):
     img_id = str(uuid4())
     if scores_in_topics_plot(sender_id, img_id):
@@ -68,20 +75,42 @@ def scores_in_topics_flow(sender_id):
         delete_img(img_id)
     else:
         send_text_message(
-            sender_id, 'Sorry, we are not able to plot at this moment.')
+            sender_id, 'You can only see your results after '
+                       'practicing on the platform')
     send_helper_messages(sender_id)
 
 
-def plot_scores_flow(sender_id):
+def plot_scores_flow(sender_id, response):
     img_id = str(uuid4())
-    if plot_scores_for_last_week(sender_id, img_id):
-        image_path = get_file_name(img_id)
-        send_image_local(sender_id, image_path)
-        delete_img(img_id)
+    time_periods = response[RESULT][PARAMETERS][TIME_PERIODS]
+    if time_periods.lower() == 'last month':
+        if plot_scores_for_last_month(sender_id, img_id):
+            __helper_plot_scores(sender_id, img_id)
+        else:
+            send_text_message(
+                sender_id, 'You can only see your results after '
+                           'practicing on the platform')
+    elif time_periods.lower() == 'last week':
+        if plot_scores_for_last_week(sender_id, img_id):
+            __helper_plot_scores(sender_id, img_id)
+        else:
+            send_text_message(
+                sender_id, 'You can only see your results after '
+                           'practicing on the platform')
     else:
-        send_text_message(
-            sender_id, 'Sorry, we are not able to plot at this moment.')
+        if plot_scores_for_eternity(sender_id, img_id):
+            __helper_plot_scores(sender_id, img_id)
+        else:
+            send_text_message(
+                sender_id, 'You can only see your results after '
+                           'practicing on the platform')
     send_helper_messages(sender_id)
+
+
+def __helper_plot_scores(sender_id, img_id):
+    image_path = get_file_name(img_id)
+    send_image_local(sender_id, image_path)
+    delete_img(img_id)
 
 
 def top_topics_flow(sender_id):
@@ -168,7 +197,7 @@ def greeting_flow(sender_id, response):
                       "algebra, geometry, etc.\r\n"
                       "- Practice some questions\r\n"
                       "- Ask us to solve polynomial function equations\r\n"
-                      "- See a graph of your progress on diagnostic tests")
+                      "- See a graph of your progress on the platform")
 
 
 def study_flow(sender_id, response, request_id):
