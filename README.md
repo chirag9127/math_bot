@@ -19,7 +19,7 @@ Our main objective was to build a working prototype for the hackathon. Hence, we
 7. Analytics on user performance:
 
 ## System Architecture
-![alt text](https://github.com/chirag9127/math_bot/blob/master/SystemArchitecture.jpeg)
+![alt text](https://github.com/chirag9127/math_bot/blob/master/images/SystemArchitecture.jpeg)
 
 ### Analytics
 Analytics queries the database to get diagnostics like topic wise score, questions answered correctly versus questiona attempted over the last week/month/since beginning.
@@ -42,7 +42,15 @@ All the apis intereact with the messenger bot. The user queries are interpreted 
 - you tube search api - used to search videos for use queries. 
 
 ### ML model - Deep Relevance Model
-- TO be filled
+- One of the biggest challenges with the Youtube search results were that they were not relevant in our context in many cases. 
+- E.g. If the user searched for Videos on Circles, they got a music video instead of tutorials on circles.
+- We created a dataset of 500 query, video title, video description triplets and labelled them as relevant or not. (1 for relevant and 0 for not relevant).
+- Note: We do understand that the data is really small. However, we did not have the resources for manual annotation. We are planning to enlarge this dataset using Mechanical Turk.
+- We compared our algorithm with 2 baselines: 
+
+![alt text](https://github.com/chirag9127/math_bot/blob/master/images/ml_diagram.png)
+
+The github link for the ML part is here: https://github.com/chirag9127/math_bot_ml (We deployed it on an AWS service since we had difficulty deploying  it to Heroku)
 
 ### Data set generation
 - scraped various SAT prep sites to get questions and answers
