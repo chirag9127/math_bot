@@ -45,7 +45,7 @@ All the apis intereact with the messenger bot. The user queries are interpreted 
 - TO be filled
 
 ### Data set generation
-- scapped various SAT prep sites to get questions and answers
+- scraped various SAT prep sites to get questions and answers
 - conducted ui testing with a number of initial users to get the test data for api.ai. These mainly include queries that
   users input to practise questions, take diagnostic test, get graphs of scores, search videos on relevant topics and 
   get solutions to various 
