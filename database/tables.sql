@@ -124,3 +124,11 @@ BETWEEN (select CURRENT_TIMESTAMP + interval '-7' day)
 AND (select CURRENT_TIMESTAMP) AND is_correct = 1 AND
 sender_id = '1384341615018517'
 GROUP BY ForDate;
+
+select DATE(time_asked) AS ForDate, count(*)
+from answer_provided 
+where time_asked 
+BETWEEN (select CURRENT_TIMESTAMP + interval '-8' day) 
+AND (select CURRENT_TIMESTAMP) AND is_correct = 1 AND
+sender_id = '1384341615018517'
+GROUP BY ForDate;
