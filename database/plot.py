@@ -17,11 +17,7 @@ def delete_img(file_id):
     os.remove(get_file_name(file_id))
 
 
-<<<<<<< HEAD
 def answered_vs_correct_plot(file_id, x_axis=[0], y_axis_1=[0], y_axis_2=[0]):
-=======
-def answered_vs_correct_plot(x_axis, y_axis_1, y_axis_2, file_id):
->>>>>>> f8cb256859e6ee282f7af54a44f457e5200beb46
     ind = np.arange(len(x_axis))
     width = 0.35
     fig, ax = plt.subplots()
