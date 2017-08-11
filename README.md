@@ -31,3 +31,10 @@ An Amazon RDS instance is used to store the answers provided by a sender. There 
 - answers - question_id, answer
 - answers provided by user - This table is used for generating the analytical reports
 
+### API's used
+- api.ai -
+- wolfram api - https://products.wolframalpha.com/api/. This is used to provide graphical solution to mathematical queries.
+  Wolfram api has solutions to a wide variety of topics covered and the soltuions to a query are sent as a list of gifs.
+  This is sent to the messenger bot.
+- bing spell checker
+
