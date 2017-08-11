@@ -1,4 +1,3 @@
-
 def correct(original, output):
     newString = []
     index = 0
@@ -11,7 +10,7 @@ def correct(original, output):
         else:
             newString.append(original[index])
             index += 1
-    print(('').join(newString))
+    return ''.join(newString)
 
 
 def get_len_diff(original, start):
@@ -22,5 +21,4 @@ def get_len_diff(original, start):
 
 
 if __name__ == "__main__":
-    correct('i wnt ot lern algebra', [(2,'want'), (6, 'to'), (9, 'learn')])
-
+    correct('i wnt ot lern algebra', [(2, 'want'), (6, 'to'), (9, 'learn')])

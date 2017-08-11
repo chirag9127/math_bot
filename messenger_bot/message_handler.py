@@ -13,14 +13,14 @@ from messenger_bot.sender import send_text_message, send_question, \
     send_helper_messages, send_open_graph_video, send_num_questions, \
     send_image_local
 from search.youtube_search import get_most_relevant_video
+from search.bing_search import BingSearcher
 from uuid import uuid4
 
 
-def handle_message(message_text, sender_id, request_id):
+def handle_message(message_text, sender_id, request_id, bing_search=False):
     response = APIAI.Instance().message_response(
         message_text, sender_id)
     intent = response[RESULT][METADATA][INTENT_NAME]
-    # insert_user_response(request_id, str(response))
     log(response)
     if intent == STUDY:
         study_flow(sender_id, response, request_id)
@@ -45,6 +45,13 @@ def handle_message(message_text, sender_id, request_id):
     elif intent == PLOT_SCORES:
         plot_scores_flow(sender_id)
     elif intent == DEFAULT:
+        if not bing_search:
+            corrected_sentence = BingSearcher().correct_spelling(
+                message_text
+            )
+            handle_message(corrected_sentence, sender_id, request_id,
+                           bing_search=True)
+            return
         send_text_message(sender_id,
                           response[RESULT][FULFILLMENT][SPEECH])
         send_helper_messages(sender_id)
@@ -52,10 +59,13 @@ def handle_message(message_text, sender_id, request_id):
 
 def plot_scores_flow(sender_id):
     img_id = str(uuid4())
-    plot_scores_for_last_week(sender_id, img_id)
-    image_path = get_file_name(img_id)
-    send_image_local(sender_id, image_path)
-    delete_img(img_id)
+    if plot_scores_for_last_week(sender_id, img_id):
+        image_path = get_file_name(img_id)
+        send_image_local(sender_id, image_path)
+        delete_img(img_id)
+    else:
+        send_text_message(
+            sender_id, 'Sorry, we are not able to plot at this moment.')
 
 
 def top_topics_flow(sender_id):
