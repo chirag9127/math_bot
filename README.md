@@ -33,7 +33,7 @@ An Amazon RDS instance is used to store the answers provided by a sender. There 
 
 ### API's used
 All the apis intereact with the messenger bot. The user queries are interpreted by the messenger bot and the relevant apis are called.
-- api.ai - We used this to form our NLU engine. 
+- api.ai - We used this to form our NLU engine. The other option we explored was RASA NLU. However, we found this more intuitive and easier to get the ground running. 
 - wolfram api - https://products.wolframalpha.com/api/. This is used to provide graphical solution to mathematical queries.
   Wolfram api has solutions to a wide variety of topics covered and the soltuions to a query are sent as a list of gifs.
   This is sent to the messenger bot.
@@ -64,7 +64,7 @@ The github link for the ML part is here: https://github.com/chirag9127/math_bot_
 Improvements: Get more data!!!
 
 ### Data set generation
-- scraped various SAT prep sites to get questions and answers
+- scraped various SAT prep sites to create a dataset of ~500 questions and answers
 - conducted ui testing with a number of initial users to get the test data for api.ai. These mainly include queries that
   users input to practise questions, take diagnostic test, get graphs of scores, search videos on relevant topics and 
   get solutions to various 
