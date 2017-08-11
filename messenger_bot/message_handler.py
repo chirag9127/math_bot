@@ -6,7 +6,8 @@ from database.diagnostic import questions_answered_today, \
     questions_answered_correctly_last_week, \
     questions_answered_correctly_last_month, top_two_scoring_topics, \
     bottom_two_scoring_topics
-from database.plot import plot_scores_for_last_week, delete_img, get_file_name
+from database.plot import plot_scores_for_last_week, delete_img, \
+    get_file_name, scores_in_topics_flow
 from messenger_bot.api_ai import APIAI
 from messenger_bot.logger import log
 from messenger_bot.sender import send_text_message, send_question, \
@@ -68,6 +69,7 @@ def scores_in_topics_flow(sender_id):
     else:
         send_text_message(
             sender_id, 'Sorry, we are not able to plot at this moment.')
+    send_helper_messages(sender_id)
 
 
 def plot_scores_flow(sender_id):
@@ -79,6 +81,7 @@ def plot_scores_flow(sender_id):
     else:
         send_text_message(
             sender_id, 'Sorry, we are not able to plot at this moment.')
+    send_helper_messages(sender_id)
 
 
 def top_topics_flow(sender_id):
