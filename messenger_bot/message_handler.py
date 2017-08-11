@@ -59,10 +59,13 @@ def handle_message(message_text, sender_id, request_id, bing_search=False):
 
 def plot_scores_flow(sender_id):
     img_id = str(uuid4())
-    plot_scores_for_last_week(sender_id, img_id)
-    image_path = get_file_name(img_id)
-    send_image_local(sender_id, image_path)
-    delete_img(img_id)
+    if plot_scores_for_last_week(sender_id, img_id):
+        image_path = get_file_name(img_id)
+        send_image_local(sender_id, image_path)
+        delete_img(img_id)
+    else:
+        send_text_message(
+            sender_id, 'Sorry, we are not able to plot at this moment.')
 
 
 def top_topics_flow(sender_id):

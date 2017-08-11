@@ -28,7 +28,7 @@ def verify():
 def webhook():
     data = request.get_json()
     request_id = str(uuid4())
-    #insert_user_request(request_id, str(data))
+    # insert_user_request(request_id, str(data))
 
     if data["object"] == "page":
 
@@ -39,11 +39,13 @@ def webhook():
                         sender_id = messaging_event["sender"]["id"]
                         # recipient_id = messaging_event["recipient"]["id"]
                         log(messaging_event)
-                        message_text = messaging_event["message"]["text"]
-                        if is_keyword_query(message_text):
-                            handle_keyword(sender_id, message_text)
-                        else:
-                            handle_message(message_text, sender_id, request_id)
+                        if 'text' in messaging_event["message"]:
+                            message_text = messaging_event["message"]["text"]
+                            if is_keyword_query(message_text):
+                                handle_keyword(sender_id, message_text)
+                            else:
+                                handle_message(message_text, sender_id,
+                                               request_id)
                     if messaging_event.get("delivery"):  # delivery confirmation
                         pass
 

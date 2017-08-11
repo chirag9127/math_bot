@@ -18,7 +18,7 @@ def delete_img(file_id):
 
 
 def answered_vs_correct_plot(x_axis, y_axis_1, y_axis_2, file_id):
-    ind = np.arange(len(x_axis)) 
+    ind = np.arange(len(x_axis))
     width = 0.35
     fig, ax = plt.subplots()
     rects1 = ax.bar(ind, y_axis_2, width, color='lightgreen')
@@ -41,7 +41,8 @@ def scores_in_topics_plot(sender_id, file_id):
         sizes = [item['count(*)'] for item in data]
         fig1, ax1 = plt.subplots()
         ax1.set_title('topic wise strengths')
-        ax1.pie(sizes, labels=labels, autopct='%1.1f%%', shadow=True, startangle=90)
+        ax1.pie(sizes, labels=labels, autopct='%1.1f%%',
+                shadow=True, startangle=90)
         ax1.axis('equal')
         plt.savefig(get_file_name(file_id))
     except:
@@ -63,9 +64,12 @@ def plot_scores_for_last_week(sender_id, file_id):
     try:
         question_count = questions_grouped_by_date_last_week(sender_id)
         correct_count = correct_questions_grouped_by_date_last_week(sender_id)
-        x_axis = [item['ForDate'].strftime('%m/%d/%Y') for item in question_count]
+        x_axis = [item['ForDate'].strftime('%m/%d/%Y')
+                  for item in question_count]
         y_axis_1 = [item['count(*)'] for item in question_count]
         y_axis_2 = [item['count(*)'] for item in correct_count]
         answered_vs_correct_plot(x_axis, y_axis_1, y_axis_2, file_id)
+        return True
     except:
         log('unable to plot')
+        return False
