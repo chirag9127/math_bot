@@ -7,7 +7,7 @@ from database.diagnostic import questions_answered_today, \
     questions_answered_correctly_last_month, top_two_scoring_topics, \
     bottom_two_scoring_topics
 from database.plot import plot_scores_for_last_week, delete_img, \
-    get_file_name, scores_in_topics_flow
+    get_file_name, scores_in_topics_plot
 from messenger_bot.api_ai import APIAI
 from messenger_bot.logger import log
 from messenger_bot.sender import send_text_message, send_question, \
