@@ -47,16 +47,22 @@ All the apis intereact with the messenger bot. The user queries are interpreted 
 - We created a dataset of 567 query, video title, video description triplets and labelled them as relevant or not. (1 for relevant and 0 for not relevant). We found 316 videos were relavant. 
 - Note: We do understand that the data is really small. However, we did not have the resources for manual annotation. We are planning to enlarge this dataset using Mechanical Turk.
 - We compared our algorithm with 2 baselines: Bag of words with a MLP layer and Mean word vectrs with a MLP layer.
-- Our evaluation metric was accuracy. The cross validation accuracy is listed here. The script for the final model is included in the repo below.
+- Our evaluation metric was accuracy. The cross validation accuracy is listed here. The script for the final model is included in the repo below. 
+- Our model has three embeddings for the query, youtube video title and youtube video description.
+- We used Google news 100d pre trained vectors for the word embeddings.
+- 
+
 | Algorithm | Accuracy |
-| ------------- | ------------- |
+| --- | --- |
 | Bag of words  | 0.58  |
 | Mean word vectors  | 0.63  |
-| Our model | 0.75 |
+| Our model | 0.76 |
 
 ![alt text](https://github.com/chirag9127/math_bot/blob/master/images/ml_diagram.png)
 
 The github link for the ML part is here: https://github.com/chirag9127/math_bot_ml (We deployed it on an AWS service since we had difficulty deploying  it to Heroku)
+
+Improvements: Get more data!!!
 
 ### Data set generation
 - scraped various SAT prep sites to get questions and answers
