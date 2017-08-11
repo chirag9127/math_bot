@@ -10,13 +10,13 @@ The bot allows students to:
 The bot is deployed on Heroku and is currently available on Facebook Messenger. 
 
 Our main objective was to build a working prototype for the hackathon. Hence, we used external APIs wherever possible. The following are the different components of the bot. 
-1. Scraper:
-2. Query handler: 
-3. Intent detection:
-4. Question Solver:
-5. Spell corrector:
-6. Video Searcher:
-7. Analytics on user performance:
+1. Scraper
+2. Query handler
+3. Intent detection
+4. Question Solver
+5. Spell corrector
+6. Video Searcher
+7. Analytics on user performance
 
 ## System Architecture
 ![alt text](https://github.com/chirag9127/math_bot/blob/master/images/SystemArchitecture.jpeg)
@@ -33,7 +33,7 @@ An Amazon RDS instance is used to store the answers provided by a sender. There 
 
 ### API's used
 All the apis intereact with the messenger bot. The user queries are interpreted by the messenger bot and the relevant apis are called.
-- api.ai -
+- api.ai - We used this to form our NLU engine. 
 - wolfram api - https://products.wolframalpha.com/api/. This is used to provide graphical solution to mathematical queries.
   Wolfram api has solutions to a wide variety of topics covered and the soltuions to a query are sent as a list of gifs.
   This is sent to the messenger bot.
@@ -50,7 +50,6 @@ All the apis intereact with the messenger bot. The user queries are interpreted 
 - Our evaluation metric was accuracy. The cross validation accuracy is listed here. The script for the final model is included in the repo below. 
 - Our model has three embeddings for the query, youtube video title and youtube video description.
 - We used Google news 100d pre trained vectors for the word embeddings.
-- 
 
 | Algorithm | Accuracy |
 | --- | --- |
