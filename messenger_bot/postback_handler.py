@@ -65,13 +65,24 @@ def handle_new_test(payload, sender_id, request_id):
 
 def handle_first_message(sender_id):
     APIAI.Instance().event_response("getting_started_event", sender_id)
-    send_text_message(sender_id, 'Hi! My name is Noah, and I will be your '
-                      'SAT Buddy to help you get your desired score!')
+    send_text_message(sender_id, "Hi! My name is Noah! I'm here to help you "
+                                 "prepare well for SAT maths. ")
     send_happy_gif(sender_id)
+    send_text_message(sender_id,
+                      "You can ask me to do any of the following: \r\n"
+                      "- Take a quick test \r\n"
+                      "- Watch a youtube video explaining the concept like "
+                      "algebra, geometry, etc.\r\n"
+                      "- practice some questions\r\n"
+                      "- Ask us to solve polynomial function equations\r\n"
+                      "- See a graph of your progress on diagnostic tests")
+    """
     send_text_message(sender_id, 'To begin with, we would do a quick '
                       'assessment of your SAT Math concepts by asking you '
                       '5 questions to understand your strengths '
                       'and weaknesses :)')
+    """
+    send_text_message(sender_id, "Do you want to do a diagnostic test?")
     send_text_message(sender_id, "Type 'Yes' to go ahead with the test.")
 
 

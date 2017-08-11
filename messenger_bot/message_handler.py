@@ -161,8 +161,14 @@ def diagnostic_no_flow(sender_id, response):
 
 
 def greeting_flow(sender_id, response):
-    send_text_message(sender_id, 'Hi! How are you doing today?')
-    send_helper_messages(sender_id)
+    send_text_message(sender_id,
+                      "Hi! You can ask me to do any of the following: \r\n"
+                      "- Take a quick test \r\n"
+                      "- Watch a youtube video explaining the concept like "
+                      "algebra, geometry, etc.\r\n"
+                      "- Practice some questions\r\n"
+                      "- Ask us to solve polynomial function equations\r\n"
+                      "- See a graph of your progress on diagnostic tests")
 
 
 def study_flow(sender_id, response, request_id):
