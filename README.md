@@ -25,3 +25,9 @@ Our main objective was to build a working prototype for the hackathon. Hence, we
 Analytics queries the database to get diagnostics like topic wise score, questions answered correctly versus questiona attempted over the last week/month/since beginning.
 Matplotlib is used to plot the results for each sender.
 
+### Database
+An Amazon RDS instance is used to store the answers provided by a sender. There are tables for :
+- questions - which include id, question text
+- answers - question_id, answer
+- answers provided by user - This table is used for generating the analytical reports
+
