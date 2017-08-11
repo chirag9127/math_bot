@@ -20,3 +20,8 @@ Our main objective was to build a working prototype for the hackathon. Hence, we
 
 ## System Architecture
 ![alt text](https://github.com/chirag9127/math_bot/blob/master/SystemArchitecture.jpeg)
+
+### Analytics
+Analytics queries the database to get diagnostics like topic wise score, questions answered correctly versus questiona attempted over the last week/month/since beginning.
+Matplotlib is used to plot the results for each sender.
+
