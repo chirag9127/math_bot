@@ -58,7 +58,7 @@ def get_most_relevant_video(query, dl_gk=False):
             }
             r = requests.post("http://math-bot-ml-dev.hrywversu2.us-east-1."
                               "elasticbeanstalk.com/", headers=headers,
-                            data=json_data)
+                              data=json_data)
             if r.status_code == 200:
                 response = r.json()
                 preds = response['preds']
@@ -71,4 +71,5 @@ def get_most_relevant_video(query, dl_gk=False):
                         index = i
                 return data["ids"][index]
     else:
-        videos[0]['video_id']
+        if videos:
+            return videos[0]['video_id']
