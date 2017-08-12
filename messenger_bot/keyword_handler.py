@@ -22,11 +22,15 @@ def handle_keyword(sender_id, message_text):
 def handle_video_search(sender_id, message_text):
     message_text = message_text[13:]
     most_relevant_video = get_most_relevant_video(message_text)
-    video_link = 'https://www.youtube.com/watch?v={}'.format(
-        most_relevant_video)
-    send_text_message(sender_id, 'Here is a video on this:')
-    send_open_graph_video(sender_id, video_link)
-    send_helper_messages(sender_id)
+    if most_relevant_video:
+        video_link = 'https://www.youtube.com/watch?v={}'.format(
+            most_relevant_video)
+        send_text_message(sender_id, 'Here is a video on this:')
+        send_open_graph_video(sender_id, video_link)
+        send_helper_messages(sender_id)
+    else:
+        send_text_message(sender_id, 'Sorry! We could not find a video '
+                                     'for the topic')
 
 
 def handle_solver(sender_id, message_text):
