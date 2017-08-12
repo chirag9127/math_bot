@@ -71,4 +71,4 @@ def get_most_relevant_video(query, dl_gk=False):
                         index = i
                 return data["ids"][index]
     else:
-        video[0]['video_id']
+        videos[0]['video_id']
