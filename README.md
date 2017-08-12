@@ -19,7 +19,7 @@ Our main objective was to build a working prototype for the hackathon. Hence, we
 7. Analytics on user performance
 
 ## System Architecture
-![alt text](https://github.com/chirag9127/math_bot/blob/master/images/SystemArchitecture.jpeg)
+![alt text](https://github.com/chirag9127/math_bot/blob/master/SystemArchitecture.png)
 
 ### Analytics
 Analytics queries the database to get diagnostics like topic wise score, questions answered correctly versus questiona attempted over the last week/month/since beginning.
