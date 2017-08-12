@@ -37,35 +37,38 @@ class YouTubeSearcher:
         return videos
 
 
-def get_most_relevant_video(query):
+def get_most_relevant_video(query, dl_gk=False):
     videos = YouTubeSearcher().search_for_videos(query)
-    if videos:
-        data = {
-            "query": [],
-            "title": [],
-            "description": [],
-            "ids": [],
-        }
-        for video in videos:
-            data["query"].append(query)
-            data["title"].append(video['title'])
-            data["description"].append(video['description'])
-            data["ids"].append(video['video_id'])
-        json_data = json.dumps(data)
-        headers = {
-            "Content-Type": "application/json"
-        }
-        r = requests.post("http://math-bot-ml-dev.hrywversu2.us-east-1."
-                          "elasticbeanstalk.com/", headers=headers,
-                          data=json_data)
-        if r.status_code == 200:
-            response = r.json()
-            preds = response['preds']
-            index = 0
-            max_prob = 0.0
-            for i, item in enumerate(preds):
-                prob = item[0]
-                if prob > max_prob:
-                    max_prob = prob
-                    index = i
-            return data["ids"][index]
+    if dl_gk:
+        if videos:
+            data = {
+                "query": [],
+                "title": [],
+                "description": [],
+                "ids": [],
+            }
+            for video in videos:
+                data["query"].append(query)
+                data["title"].append(video['title'])
+                data["description"].append(video['description'])
+                data["ids"].append(video['video_id'])
+            json_data = json.dumps(data)
+            headers = {
+                "Content-Type": "application/json"
+            }
+            r = requests.post("http://math-bot-ml-dev.hrywversu2.us-east-1."
+                              "elasticbeanstalk.com/", headers=headers,
+                            data=json_data)
+            if r.status_code == 200:
+                response = r.json()
+                preds = response['preds']
+                index = 0
+                max_prob = 0.0
+                for i, item in enumerate(preds):
+                    prob = item[0]
+                    if prob > max_prob:
+                        max_prob = prob
+                        index = i
+                return data["ids"][index]
+    else:
+        video[0]['video_id']
