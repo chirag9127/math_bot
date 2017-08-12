@@ -8,6 +8,7 @@ from apiclient.discovery import build
 DEVELOPER_KEY = os.environ['YOUTUBE_DEVELOPER_KEY']
 YOUTUBE_API_SERVICE_NAME = "youtube"
 YOUTUBE_API_VERSION = "v3"
+DEEP_RELEVANCE_MODEL_SERVICE = os.environ['DEEP_RELEVANCE_MODEL_SERVICE']
 
 
 class YouTubeSearcher:
@@ -37,7 +38,8 @@ class YouTubeSearcher:
         return videos
 
 
-def get_most_relevant_video(query, dl_gk=False):
+def get_most_relevant_video(query, dl_gk=True):
+    # TODO: Build GK service to toggle
     videos = YouTubeSearcher().search_for_videos(query)
     if dl_gk:
         if videos:
@@ -56,8 +58,8 @@ def get_most_relevant_video(query, dl_gk=False):
             headers = {
                 "Content-Type": "application/json"
             }
-            r = requests.post("http://math-bot-ml-dev.hrywversu2.us-east-1."
-                              "elasticbeanstalk.com/", headers=headers,
+            r = requests.post(DEEP_RELEVANCE_MODEL_SERVICE,
+                              headers=headers,
                               data=json_data)
             if r.status_code == 200:
                 response = r.json()
