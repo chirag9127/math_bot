@@ -115,14 +115,23 @@ def __helper_plot_scores(sender_id, img_id):
 
 def top_topics_flow(sender_id):
     top_topics = top_two_scoring_topics(sender_id)
-    send_text_message(
-        sender_id, 'Your strengths are {}'.format(', '.join(top_topics)))
+    if top_topics:
+        send_text_message(
+            sender_id, 'Your strengths are {}'.format(', '.join(top_topics)))
+    else:
+        send_text_message(
+            sender_id, 'Please solve more questions to use this feature')
 
 
 def bottom_topics_flow(sender_id):
     bottom_topics = bottom_two_scoring_topics(sender_id)
-    send_text_message(
-        sender_id, 'Your weaknesses are {}'.format(', '.join(bottom_topics)))
+    if bottom_topics:
+        send_text_message(
+            sender_id, 'Your weaknesses are {}'.format(
+                ', '.join(bottom_topics)))
+    else:
+        send_text_message(
+            sender_id, 'Please solve more questions to use this feature')
 
 
 def questions_answered_correctly_flow(sender_id, response):
