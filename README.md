@@ -1,4 +1,9 @@
 # Math Bot
+
+Youtube Video:
+
+[![IMAGE ALT TEXT HERE](http://img.youtube.com/vi/O_AjwNLQHCk/0.jpg)](https://www.youtube.com/watch?v=O_AjwNLQHCk)
+
 Math Bot is a bot for helping students prepare for SAT Math. This bot powers SAT Buddy (https://www.facebook.com/SATBuddy/)
 
 The bot allows students to:
