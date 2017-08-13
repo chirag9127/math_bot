@@ -1,18 +1,20 @@
-from database.db_connection import DBConnection
+from database.db_connection import execute_sql
 from messenger_bot.logger import log
 
 
-db_connection = DBConnection.Instance().get_connection()
-
-
 def questions_answered(sender_id, num):
-    with db_connection.cursor() as cursor:
+    try:
         sql = "select count(*) from answer_provided where time_asked \
             BETWEEN (select CURRENT_TIMESTAMP + interval '-%s' day) \
             AND (select CURRENT_TIMESTAMP) \
             AND sender_id = %s"
-        cursor.execute(sql, (num, sender_id))
-        return cursor.fetchone()['count(*)']
+        cursor = execute_sql(sql)
+        response = cursor.fetchone()['count(*)']
+        cursor.close()
+        return response
+    except:
+        log('error! questions answered')
+        return None
 
 
 def questions_answered_today(sender_id):
@@ -28,14 +30,19 @@ def questions_answered_last_month(sender_id):
 
 
 def questions_answered_correctly(sender_id, num):
-    with db_connection.cursor() as cursor:
+    try:
         sql = "select count(*) from answer_provided where time_asked \
             BETWEEN (select CURRENT_TIMESTAMP + interval '-%s' day) \
             AND (select CURRENT_TIMESTAMP) \
             AND is_correct = 1 \
             AND sender_id = %s"
-        cursor.execute(sql, (num, sender_id))
-        return cursor.fetchone()['count(*)']
+        cursor = execute_sql(sql)
+        response = cursor.fetchone()['count(*)']
+        cursor.close()
+        return response
+    except:
+        log('error! questions answered correctly')
+        return None
 
 
 def questions_answered_correctly_today(sender_id):
@@ -51,18 +58,23 @@ def questions_answered_correctly_last_month(sender_id):
 
 
 def score_in_given_topic(sender_id, topic):
-    with db_connection.cursor() as cursor:
+    try:
         sql = "select count(*) \
             from answer_provided a join questions_question q \
             on q.id = a.question_id \
             where a.is_correct = 1 \
             AND q.topic = %s AND a.sender_id = %s"
-        cursor.execute(sql, (topic, sender_id))
-        return cursor.fetchone()['count(*)']
+        cursor = execute_sql(sql)
+        response = cursor.fetchone()['count(*)']
+        cursor.close()
+        return response
+    except:
+        log('error! score in a given topic')
+        return None
 
 
 def top_two_scoring_topics(sender_id):
-    with db_connection.cursor() as cursor:
+    try:
         sql = "select count(*), q.topic \
             from answer_provided a join questions_question q \
             on q.id = a.question_id \
@@ -70,13 +82,18 @@ def top_two_scoring_topics(sender_id):
             GROUP BY q.topic \
             ORDER BY count(*) DESC \
             LIMIT 2"
-        cursor.execute(sql, (sender_id))
+        cursor = execute_sql(sql)
         res = cursor.fetchall()
-        return [r['topic'] for r in res]
+        res = [r['topic'] for r in res]
+        cursor.close()
+        return res
+    except:
+        log('error! top two scoring topics')
+        return None
 
 
 def bottom_two_scoring_topics(sender_id):
-    with db_connection.cursor() as cursor:
+    try:
         sql = "select count(*), q.topic \
             from answer_provided a join questions_question q \
             on q.id = a.question_id \
@@ -84,112 +101,131 @@ def bottom_two_scoring_topics(sender_id):
             GROUP BY q.topic \
             ORDER BY count(*) \
             LIMIT 2"
-        cursor.execute(sql, (sender_id))
+        cursor = execute_sql(sql)
         res = cursor.fetchall()
-        return [r['topic'] for r in res]
+        res = [r['topic'] for r in res]
+        cursor.close()
+        return res
+    except:
+        log('error! bottom two scoring topics')
+        return None
 
 
 def questions_grouped_by_date_last_week(sender_id):
     try:
-        with db_connection.cursor() as cursor:
-            sql = "select DATE(time_asked) AS ForDate, count(*) \
-                    from answer_provided \
-                    where time_asked \
-                    BETWEEN (select CURRENT_TIMESTAMP + interval '-7' day) \
-                    AND (select CURRENT_TIMESTAMP) AND \
-                    sender_id = %s \
-                    GROUP BY ForDate"
-            cursor.execute(sql, (sender_id))
-            return cursor.fetchall()
+        sql = "select DATE(time_asked) AS ForDate, count(*) \
+                from answer_provided \
+                where time_asked \
+                BETWEEN (select CURRENT_TIMESTAMP + interval '-7' day) \
+                AND (select CURRENT_TIMESTAMP) AND \
+                sender_id = %s \
+                GROUP BY ForDate"
+        cursor = execute_sql(sql)
+        response = cursor.fetchall()
+        cursor.close()
+        return response
     except:
         log('error! questions group by date')
+        return None
 
 
 def scores_in_topics(sender_id):
     try:
-        with db_connection.cursor() as cursor:
-            sql = "select count(*), q.topic \
-                    from answer_provided a join questions_question q \
-                    on q.id = a.question_id \
-                    where a.is_correct = 1 AND a.sender_id = %s \
-                    GROUP BY q.topic \
-                    ORDER BY count(*) DESC"
-            cursor.execute(sql, (sender_id))
-            return cursor.fetchall()
+        sql = "select count(*), q.topic \
+                from answer_provided a join questions_question q \
+                on q.id = a.question_id \
+                where a.is_correct = 1 AND a.sender_id = %s \
+                GROUP BY q.topic \
+                ORDER BY count(*) DESC"
+        cursor = execute_sql(sql)
+        response = cursor.fetchall()
+        cursor.close()
+        return response
     except:
         log('error! scores in topics')
+        return None
 
 
 def correct_questions_grouped_by_date_last_week(sender_id):
     try:
-        with db_connection.cursor() as cursor:
-            sql = "select DATE(time_asked) AS ForDate, count(*) \
-                    from answer_provided \
-                    where time_asked \
-                    BETWEEN (select CURRENT_TIMESTAMP + interval '-7' day) \
-                    AND (select CURRENT_TIMESTAMP) AND is_correct = 1 AND \
-                    sender_id = %s\
-                    GROUP BY ForDate"
-            cursor.execute(sql, (sender_id))
-            return cursor.fetchall()
+        sql = "select DATE(time_asked) AS ForDate, count(*) \
+                from answer_provided \
+                where time_asked \
+                BETWEEN (select CURRENT_TIMESTAMP + interval '-7' day) \
+                AND (select CURRENT_TIMESTAMP) AND is_correct = 1 AND \
+                sender_id = %s\
+                GROUP BY ForDate"
+        cursor = execute_sql(sql)
+        response = cursor.fetchall()
+        cursor.close()
+        return response
     except:
         log('error! correct questions group by date')
+        return None
 
 
 def questions_grouped_by_date_last_month(sender_id):
     try:
-        with db_connection.cursor() as cursor:
-            sql = "select DATE(time_asked) AS ForDate, count(*) \
-                    from answer_provided \
-                    where time_asked \
-                    BETWEEN (select CURRENT_TIMESTAMP + interval '-30' day) \
-                    AND (select CURRENT_TIMESTAMP) AND \
-                    sender_id = %s \
-                    GROUP BY ForDate"
-            cursor.execute(sql, (sender_id))
-            return cursor.fetchall()
+        sql = "select DATE(time_asked) AS ForDate, count(*) \
+                from answer_provided \
+                where time_asked \
+                BETWEEN (select CURRENT_TIMESTAMP + interval '-30' day) \
+                AND (select CURRENT_TIMESTAMP) AND \
+                sender_id = %s \
+                GROUP BY ForDate"
+        cursor = execute_sql(sql)
+        response = cursor.fetchall()
+        cursor.close()
+        return response
     except:
         log('error! questions group by date')
+        return None
 
 
 def correct_questions_grouped_by_date_last_month(sender_id):
     try:
-        with db_connection.cursor() as cursor:
-            sql = "select DATE(time_asked) AS ForDate, count(*) \
-                    from answer_provided \
-                    where time_asked \
-                    BETWEEN (select CURRENT_TIMESTAMP + interval '-30' day) \
-                    AND (select CURRENT_TIMESTAMP) AND is_correct = 1 AND \
-                    sender_id = %s\
-                    GROUP BY ForDate"
-            cursor.execute(sql, (sender_id))
-            return cursor.fetchall()
+        sql = "select DATE(time_asked) AS ForDate, count(*) \
+                from answer_provided \
+                where time_asked \
+                BETWEEN (select CURRENT_TIMESTAMP + interval '-30' day) \
+                AND (select CURRENT_TIMESTAMP) AND is_correct = 1 AND \
+                sender_id = %s\
+                GROUP BY ForDate"
+        cursor = execute_sql(sql)
+        response = cursor.fetchall()
+        cursor.close()
+        return response
     except:
         log('error! correct questions group by date')
+        return None
 
 
 def questions_grouped_by_date_eternity(sender_id):
     try:
-        with db_connection.cursor() as cursor:
-            sql = "select DATE(time_asked) AS ForDate, count(*) \
-                    from answer_provided \
-                    where sender_id = %s \
-                    GROUP BY ForDate"
-            cursor.execute(sql, (sender_id))
-            return cursor.fetchall()
+        sql = "select DATE(time_asked) AS ForDate, count(*) \
+                from answer_provided \
+                where sender_id = %s \
+                GROUP BY ForDate"
+        cursor = execute_sql(sql)
+        response = cursor.fetchall()
+        cursor.close()
+        return response
     except:
         log('error! questions group by date')
+        return None
 
 
 def correct_questions_grouped_by_date_eternity(sender_id):
     try:
-        with db_connection.cursor() as cursor:
-            sql = "select DATE(time_asked) AS ForDate, count(*) \
-                    from answer_provided \
-                    where sender_id = %s AND \
-                    is_correct = 1 \
-                    GROUP BY ForDate"
-            cursor.execute(sql, (sender_id))
-            return cursor.fetchall()
+        sql = "select DATE(time_asked) AS ForDate, count(*) \
+                from answer_provided \
+                where sender_id = %s AND \
+                is_correct = 1 \
+                GROUP BY ForDate"
+        cursor = execute_sql(sql)
+        response = cursor.fetchall()
+        cursor.close()
+        return response
     except:
         log('error! correct questions group by date')
+        return None

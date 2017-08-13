@@ -1,10 +1,8 @@
 from collections import namedtuple
-import doctest
 import random
 
 from helper_scripts.utility import enum
-from database.db_connection import DBConnection
-from messenger_bot.logger import log
+from database.db_connection import execute_sql
 
 answer = namedtuple('answer', 'options, correct')
 
@@ -92,20 +90,3 @@ def subtopics():
     response = cursor.fetchall()
     cursor.close()
     return response
-
-
-def execute_sql(query):
-    db_connection = DBConnection.Instance().get_connection()
-    try:
-        cursor = db_connection.cursor()
-        cursor.execute(query)
-    except:
-        db_connection.close()
-        cursor = db_connection.cursor()
-        cursor.execute(query)
-        log("error! execute sql {}".format(query))
-    return cursor
-
-
-if __name__ == "__main__":
-    doctest.testmod()
