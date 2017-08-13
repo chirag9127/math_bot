@@ -84,6 +84,7 @@ def top_two_scoring_topics(sender_id):
             LIMIT 2"
         cursor = execute_sql(sql, sender_id)
         res = cursor.fetchall()
+        log(res)
         res = [r['topic'] for r in res]
         cursor.close()
         return res
