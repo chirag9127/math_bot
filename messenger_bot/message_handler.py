@@ -115,6 +115,7 @@ def __helper_plot_scores(sender_id, img_id):
 
 def top_topics_flow(sender_id):
     top_topics = top_two_scoring_topics(sender_id)
+    log(top_topics)
     if top_topics:
         send_text_message(
             sender_id, 'Your strengths are {}'.format(', '.join(top_topics)))
