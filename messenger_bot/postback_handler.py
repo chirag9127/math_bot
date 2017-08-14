@@ -66,8 +66,8 @@ def handle_new_test(payload, sender_id, request_id):
 
 def handle_first_message(sender_id):
     APIAI.Instance().event_response("getting_started_event", sender_id)
-    send_text_message(sender_id, "Hi! My name is Noah! I'm here to help you "
-                                 "prepare well for SAT maths. ")
+    send_text_message(sender_id, "Hi! My name is Aditya! I'm here to help you "
+                                 "learn Math. ")
     send_happy_gif(sender_id)
     send_text_message(sender_id,
                       "You can ask me to do any of the following: \r\n"
