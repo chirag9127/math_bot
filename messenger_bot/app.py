@@ -27,8 +27,6 @@ def verify():
 @app.route('/', methods=['POST'])
 def webhook():
     data = request.get_json()
-    log(data)
-    return "ok", 200
     request_id = str(uuid4())
     # insert_user_request(request_id, str(data))
 
