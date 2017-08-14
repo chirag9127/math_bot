@@ -8,7 +8,7 @@ def questions_answered(sender_id, num):
             BETWEEN (select CURRENT_TIMESTAMP + interval '-%s' day) \
             AND (select CURRENT_TIMESTAMP) \
             AND sender_id = %s"
-        cursor = execute_sql(sql)
+        cursor = execute_sql(sql, num, sender_id)
         response = cursor.fetchone()['count(*)']
         cursor.close()
         return response
@@ -36,7 +36,7 @@ def questions_answered_correctly(sender_id, num):
             AND (select CURRENT_TIMESTAMP) \
             AND is_correct = 1 \
             AND sender_id = %s"
-        cursor = execute_sql(sql)
+        cursor = execute_sql(sql, num, sender_id)
         response = cursor.fetchone()['count(*)']
         cursor.close()
         return response
@@ -64,7 +64,7 @@ def score_in_given_topic(sender_id, topic):
             on q.id = a.question_id \
             where a.is_correct = 1 \
             AND q.topic = %s AND a.sender_id = %s"
-        cursor = execute_sql(sql)
+        cursor = execute_sql(sql, topic, sender_id)
         response = cursor.fetchone()['count(*)']
         cursor.close()
         return response
@@ -82,7 +82,7 @@ def top_two_scoring_topics(sender_id):
             GROUP BY q.topic \
             ORDER BY count(*) DESC \
             LIMIT 2"
-        cursor = execute_sql(sql)
+        cursor = execute_sql(sql, sender_id)
         res = cursor.fetchall()
         log(res)
         res = [r['topic'] for r in res]
@@ -102,7 +102,7 @@ def bottom_two_scoring_topics(sender_id):
             GROUP BY q.topic \
             ORDER BY count(*) \
             LIMIT 2"
-        cursor = execute_sql(sql)
+        cursor = execute_sql(sql, sender_id)
         res = cursor.fetchall()
         res = [r['topic'] for r in res]
         cursor.close()
@@ -121,7 +121,7 @@ def questions_grouped_by_date_last_week(sender_id):
                 AND (select CURRENT_TIMESTAMP) AND \
                 sender_id = %s \
                 GROUP BY ForDate"
-        cursor = execute_sql(sql)
+        cursor = execute_sql(sql, sender_id)
         response = cursor.fetchall()
         cursor.close()
         return response
@@ -138,7 +138,7 @@ def scores_in_topics(sender_id):
                 where a.is_correct = 1 AND a.sender_id = %s \
                 GROUP BY q.topic \
                 ORDER BY count(*) DESC"
-        cursor = execute_sql(sql)
+        cursor = execute_sql(sql, sender_id)
         response = cursor.fetchall()
         cursor.close()
         return response
@@ -156,7 +156,7 @@ def correct_questions_grouped_by_date_last_week(sender_id):
                 AND (select CURRENT_TIMESTAMP) AND is_correct = 1 AND \
                 sender_id = %s\
                 GROUP BY ForDate"
-        cursor = execute_sql(sql)
+        cursor = execute_sql(sql, sender_id)
         response = cursor.fetchall()
         cursor.close()
         return response
@@ -174,7 +174,7 @@ def questions_grouped_by_date_last_month(sender_id):
                 AND (select CURRENT_TIMESTAMP) AND \
                 sender_id = %s \
                 GROUP BY ForDate"
-        cursor = execute_sql(sql)
+        cursor = execute_sql(sql, sender_id)
         response = cursor.fetchall()
         cursor.close()
         return response
@@ -192,7 +192,7 @@ def correct_questions_grouped_by_date_last_month(sender_id):
                 AND (select CURRENT_TIMESTAMP) AND is_correct = 1 AND \
                 sender_id = %s\
                 GROUP BY ForDate"
-        cursor = execute_sql(sql)
+        cursor = execute_sql(sql, sender_id)
         response = cursor.fetchall()
         cursor.close()
         return response
@@ -207,7 +207,7 @@ def questions_grouped_by_date_eternity(sender_id):
                 from answer_provided \
                 where sender_id = %s \
                 GROUP BY ForDate"
-        cursor = execute_sql(sql)
+        cursor = execute_sql(sql, sender_id)
         response = cursor.fetchall()
         cursor.close()
         return response
@@ -223,7 +223,7 @@ def correct_questions_grouped_by_date_eternity(sender_id):
                 where sender_id = %s AND \
                 is_correct = 1 \
                 GROUP BY ForDate"
-        cursor = execute_sql(sql)
+        cursor = execute_sql(sql, sender_id)
         response = cursor.fetchall()
         cursor.close()
         return response

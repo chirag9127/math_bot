@@ -24,11 +24,11 @@ class DBConnection(object):
         self.conn.close()
 
 
-def execute_sql(query):
+def execute_sql(query, *args):
     db_connection = DBConnection.Instance().get_connection()
     try:
         cursor = db_connection.cursor()
-        cursor.execute(query)
+        cursor.execute(query, args)
     except:
         db_connection.close()
         cursor = db_connection.cursor()
