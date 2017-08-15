@@ -24,14 +24,14 @@ def handle_message(message_text, sender_id, request_id, bing_search=False):
         message_text, sender_id)
     intent = response[RESULT][METADATA][INTENT_NAME]
     log(response)
-    if intent == STUDY:
+    if intent == DIAGNOSTIC_YES:
+        diagnostic_yes_flow(sender_id, response, request_id)
+    elif intent == STUDY:
         study_flow(sender_id, response, request_id)
     elif intent == GREETING:
         greeting_flow(sender_id, response)
     elif intent == DIAGNOSTIC_NO:
         diagnostic_no_flow(sender_id, response)
-    elif intent == DIAGNOSTIC_YES:
-        diagnostic_yes_flow(sender_id, response, request_id)
     elif intent == VIDEO_SEARCH:
         video_flow(sender_id, message_text)
     elif intent == TEST:
